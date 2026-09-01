@@ -7,7 +7,7 @@ export default class Gameboard{
 
     //place ships by calling coordinates and Ship class
     placeShip(coord1, coord2){
-
+        
     }
 
     //use coordinate clicked on to "receive" an attack and check if its a miss or hit
