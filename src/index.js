@@ -8,8 +8,11 @@
 // REFER TO TO-DO LIST FOR GENERAL DOM CONTROL IDEAS
 
 //------------ general --------------
-//Play a game of battleship online and determine the size of the board
-//Base your rules loosely around a pre-existing example
+//10x10 board
+//4 ships (2, 3, 4, 5 tiles wide/long)
+//use fire emoji to signify successful hit 
+//use water emoji to signify unsuccessful hit
+//decide how to design boat for player
 
 //------------ gameboard --------------
 //Determine how a player will actually place a ship.
@@ -24,3 +27,15 @@
 
 //----------- ui-controller --------------
 //All button clicks/user interaction run through this file
+
+
+
+
+//to-do list:
+// 1) Create board in class first as array (like tic-tac-toe)
+// 2) Write the Gameboard methods first
+// 3) Write loadDOM function for render-board module
+    // - ask for player name input and put them vs computer
+    // - render default 10x10 board 
+// 4) Write Players class 
+

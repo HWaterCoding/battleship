@@ -2,23 +2,21 @@ import Ship from "./ship.js";
 
 export default class Gameboard{
     constructor(){
-
+        this.missedAttacks = [];
+        this.hitAttacks = [];
+        //to keep track of which ships are placed so far
+        this.ships = [];
     }
 
     //place ships by calling coordinates and Ship class
-    placeShip(coord1, coord2){
-        
+    placeShip(x, y, direction, ship){
+
     }
 
-    //use coordinate clicked on to "receive" an attack and check if its a miss or hit
-    receiveAttack(square){
+    //use coordinates clicked on to "receive" an attack and check if its a miss or hit
+    receiveAttack(x, y){
         //if miss, add to missedAttacks
         //if hit, call hit() on Ship object    
-    }
-
-    //keep track of tiles on board that are no longer viable
-    missedAttacks(){
-
     }
 
     //determine if all ships are sunk after every move

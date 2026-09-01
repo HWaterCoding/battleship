@@ -1,11 +1,15 @@
 import Gameboard from "./gameboard.js";
 
 export default class Players{
-    constructor(){
-
+    constructor(name, board){
+        this.name = name;
+        this.board = board;
     }
 
-    //START BY MAKING THE GAME SIMPLY COMPUTER VS PALYER 
+    
+
+
+    //START BY MAKING THE GAME SIMPLY COMPUTER VS PLAYER 
     //AND NOT WORRYING ABOUT THE INVISIBILITY COMPONENT JUST YET
 
     //each player needs it owns gameboard class. 
