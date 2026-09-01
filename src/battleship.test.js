@@ -16,3 +16,8 @@ test("successfully confirms if a ship is NOT sunk", ()=>{
     myShip.isHit();
     expect(myShip.isSunk()).toBe(false);
 });
+
+
+
+
+//gameboard class testing
