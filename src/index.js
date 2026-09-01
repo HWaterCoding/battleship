@@ -3,6 +3,10 @@
 
 //pseudocode:
 
+// GO THROUGH THESE SECTIONS IN ORDER 
+// REFER TO TIC-TAC-TOE FOR TILE-BASED INTERACTION
+// REFER TO TO-DO LIST FOR GENERAL DOM CONTROL IDEAS
+
 //------------ general --------------
 //Play a game of battleship online and determine the size of the board
 //Base your rules loosely around a pre-existing example
