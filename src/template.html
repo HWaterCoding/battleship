@@ -4,8 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3857/3857575.png">
 </head>
 <body>
     
+    <h1>Let's play Battleship!</h1>
+
+    <h4>Instructions/Rules</h4>
+    <!-- brief explanation of the game -->
+
+
+    <button id="startGameBtn">Start Game!</button>
+
+    <!-- This changes to "it's (players) turn!"" when game starts -->
+    <p id="turnText">Place your ships...</p>
+
+    <div id="container">
+        <!-- populate these boards with for loops on load -->
+        <div id="firstBoard"></div>
+        <div id="secondBoard"></div>
+
+        <!-- area to display ships or something? -->
+        
+        <div id="overlay">
+            <div id="gameOverModal">
+                <!-- put stuff to pop up at end of game -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- <footer></footer> -->
+
 </body>
 </html>
