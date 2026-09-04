@@ -11,7 +11,15 @@ export default class Ship{
     }
 
     //compare length of ship to # of times it's been hit
+    // isSunk(){
+    //     return this.length === this.hit ? true : false;
+    // }
+
     isSunk(){
-        return this.length === this.hit ? true : false;
+        if(this.length === this.hit){
+            this.sunk === true;
+        }else{
+            this.sunk === false;
+        }
     }
 }

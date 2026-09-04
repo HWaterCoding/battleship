@@ -11,6 +11,6 @@ export function loadDOM(){
     //generate the 10x10 board and attach data-attributes to each tile
 }
 
-export function renderBoard(){
+export function renderBoard(board){
     //display both play boards and render using Gameboard class info
 }
