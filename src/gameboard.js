@@ -76,3 +76,14 @@ export default class Gameboard{
 }
 
 
+//I need to fine-tune this a bit. If a tile contains a "1" I don't
+//just need to know a ship is there, but which ship in specific.
+//I need to know which ship that coordinate belongs to when placed.
+//this should be done in "placeShip()"
+
+//alternative == on makeBoard() function, rather than just adding a
+//value of 0, you could also add more information to each board tile
+//maybe consider adding a "ships" property or something?
+//make each board tile an object containing a value 0, 1, 2, 3
+//and then also include a ships {key:value} pair where value starts
+//as "none" and is updated when a that tile contains a ship
