@@ -21,11 +21,14 @@ export default class Gameboard{
     //these will all look different on your own board, but 0 and 1
     //will have to look the same on the opponents board
     
-    makeBoard(){
+    createBoard(){
         for(let i = 0; i < this.rows; i++){
             const row = [];
             for(let j = 0; j < this.cols; j++){
-                row.push(0);
+                row.push({
+                    value: 0,
+                    ship: "none"
+                });
             }
             this.board.push(row);
         }
@@ -39,6 +42,9 @@ export default class Gameboard{
 
     //place ships by calling coordinates and Ship class
     placeShip(x, y, direction, ship){
+
+        //directions === "vertical" OR "horizontal"
+        //pass in ship type as well to determine length
 
         //change the "0's"chosen to "1's" to represent ship tiles
 
