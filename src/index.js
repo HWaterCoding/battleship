@@ -45,4 +45,4 @@ import Gameboard from "./gameboard.js";
 
 const board = new Gameboard();
 board.createBoard();
-console.log(board);
+console.log(board.getBoard())

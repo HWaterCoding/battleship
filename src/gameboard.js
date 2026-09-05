@@ -43,14 +43,66 @@ export default class Gameboard{
 
     //place ships by calling coordinates and Ship class
     placeShip(x, y, direction, ship){
+        //make sure the ship is being placed on an empty square
+        if(this.board[x][y].value !== 0){
+            throw new Error("You can only place a ship on an empty square.")
+        }
 
-        //directions === "vertical" OR "horizontal"
-        //pass in ship type as well to determine length
+        //need to create actual ship instances here?
 
-        //change the "0's"chosen to "1's" to represent ship tiles
+
+        //retrieve ship.length property passed in.
+        //create a for loop for as long as the length
+        switch(direction){
+            case "right":
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x][y + i];
+                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                }
+                for(let i = 0; i < ship.length; i++){
+                    //change the array index reference to go right
+                    const current = this.board[x][y + i];
+                    //update the value of every tile along the way from 0 to 1
+                    current.value = 1;
+                }
+            break;
+            case "left":
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x][y - i];
+                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                }
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x][y - i];
+                    current.value = 1;
+                }
+            break;
+            case "up":
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x - i][y];
+                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                }
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x - i][y];
+                    current.value = 1;
+                }
+            break;
+            case "down":
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x + i][y];
+                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                }
+                for(let i = 0; i < ship.length; i++){
+                    const current = this.board[x + i][y];
+                    current.value = 1;
+                }
+            break;
+        }
 
         //access this.ships [] to keep track of which ship takes
         //up which coordinates/tiles 
+
+
+        //WE STILL NEED TO MAKE SURE A PLACED SHIP WILL FIT ON BOARD
     }
 
     //use coordinates clicked on to "receive" an attack and check if its a miss or hit
