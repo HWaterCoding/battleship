@@ -21,6 +21,7 @@ export default class Gameboard{
     //these will all look different on your own board, but 0 and 1
     //will have to look the same on the opponents board
     
+    //initial creation of the board
     createBoard(){
         for(let i = 0; i < this.rows; i++){
             const row = [];

@@ -39,3 +39,10 @@
     // - render default 10x10 board 
 // 4) Write Players class 
 
+
+
+import Gameboard from "./gameboard.js";
+
+const board = new Gameboard();
+board.createBoard();
+console.log(board);
