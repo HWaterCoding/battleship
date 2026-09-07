@@ -4,24 +4,24 @@ import Gameboard from "./gameboard.js";
 // ship class testing
 test.skip("successfully confirms if a ship is sunk", ()=>{
     const myShip = new Ship(4);
-    myShip.isHit();
-    myShip.isHit();
-    myShip.isHit();
-    myShip.isHit();
+    myShip.hit();
+    myShip.hit();
+    myShip.hit();
+    myShip.hit();
     expect(myShip.isSunk()).toBe(true);
 });
 
 test.skip("successfully confirms if a ship is NOT sunk", ()=>{
     const myShip = new Ship(4);
-    myShip.isHit();
-    myShip.isHit();
+    myShip.hit();
+    myShip.hit();
     expect(myShip.isSunk()).toBe(false);
 });
 
 test.skip("Changes sunk property on ship object", ()=>{
     const myShip = new Ship(2);
-    myShip.isHit();
-    myShip.isHit();
+    myShip.hit();
+    myShip.hit();
     myShip.isSunk();
     expect(myShip.sunk).toBe(true);
 });

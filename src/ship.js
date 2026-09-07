@@ -6,7 +6,7 @@ export default class Ship{
         this.sunk = false;
     }
 
-    isHit(){
+    hit(){
         this.hit++;
     }
 

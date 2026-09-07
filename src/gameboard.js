@@ -42,9 +42,9 @@ export default class Gameboard{
 
 
     //place ships by calling coordinates and Ship class
-    placeShip(x, y, direction, ship){
+    placeShip(row, col, direction, ship){
         //make sure the ship is being placed on an empty square
-        if(this.board[x][y].value !== 0){
+        if(this.board[row][col].value !== 0){
             throw new Error("You can only place a ship on an empty square.")
         }
 
@@ -56,43 +56,45 @@ export default class Gameboard{
         switch(direction){
             case "right":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x][y + i];
+                    const current = this.board[row][col + i];
+                    if(current[col] > 9) throw new Error("Off the board!")
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    //change the array index reference to go right
-                    const current = this.board[x][y + i];
-                    //update the value of every tile along the way from 0 to 1
+                    const current = this.board[row][col + i];
                     current.value = 1;
                 }
             break;
             case "left":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x][y - i];
+                    const current = this.board[row][col - i];
+                    if(current[col] < 0) throw new Error("Off the board!")
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x][y - i];
+                    const current = this.board[row][col - i];
                     current.value = 1;
                 }
             break;
             case "up":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x - i][y];
+                    const current = this.board[row - i][col];
+                    if(current[row] < 0) throw new Error("Off the board!")
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x - i][y];
+                    const current = this.board[row - i][col];
                     current.value = 1;
                 }
             break;
             case "down":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x + i][y];
+                    const current = this.board[row + i][col];
+                    if(current[row] > 9) throw new Error("Off the board!")
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[x + i][y];
+                    const current = this.board[row + i][col];
                     current.value = 1;
                 }
             break;
@@ -100,27 +102,29 @@ export default class Gameboard{
 
         //access this.ships [] to keep track of which ship takes
         //up which coordinates/tiles 
-
-
-        //WE STILL NEED TO MAKE SURE A PLACED SHIP WILL FIT ON BOARD
     }
 
     //use coordinates clicked on to "receive" an attack and check if its a miss or hit
     receiveAttack(x, y){
         const row = x;
         const col = y;
-        const board = this.getBoard();
+        const tile = this.board[row][col];
 
-        if(board[row][col] === 0){
-            //this is a miss!
-            //if miss, add to missedAttacks
+        switch(tile.value){
+            case 0:
+                this.missedAttacks.push(tile);
+            break;
+            case 1:
+                this.hitAttacks.push(tile);
+                //retrieve the correct ship from this.ships []
+                //and compare it to the ship: value on tile obj
+                //check if the ship hit is now sunk
+            break;
+            case 2:
+                throw new Error("You've already guessed this tile!")                
+            case 3:
+                throw new Error("You've already guessed this tile!")
         }
-        if(board[row][col] === 1){
-            //this is a hit!
-            //if hit, call hit() on Ship object    
-        }
-
-        //check if tile clicked was already a miss/hit tile?
     }
 
     //determine if all ships are sunk after every move
