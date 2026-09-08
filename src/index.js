@@ -30,19 +30,16 @@
 
 
 
-
-//to-do list:
-// 1) Create board in class first as array (like tic-tac-toe)
-// 2) Write the Gameboard methods first
-// 3) Write loadDOM function for render-board module
-    // - ask for player name input and put them vs computer
-    // - render default 10x10 board 
-// 4) Write Players class 
-
-
-
 import Gameboard from "./gameboard.js";
 
 const board = new Gameboard();
 board.createBoard();
 console.log(board.getBoard())
+
+
+//IMMEDIATE TO-DO:
+//refactor createBoard() to not use numerical values
+//refactor placeShip() to use updated board tile properties
+//create ship objects directly in constructor
+//store them in this.ships
+//Have them occupy the tiles in placeShip()
