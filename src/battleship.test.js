@@ -49,13 +49,13 @@ test("places a ship and changes values from 0 to 1", ()=>{
     gameboard.createBoard();
 
     const myShip = new Ship(3);
-    gameboard.placeShip(0, 1, "right", myShip);
+    gameboard.placeShip(0, 1, "right", myShip, 3);
 
     const board = gameboard.getBoard();
 
-    expect(board[0][1]).toEqual({value: 1, ship: "none"});
-    expect(board[0][2]).toEqual({value: 1, ship: "none"});
-    expect(board[0][3]).toEqual({value: 1, ship: "none"});
+    expect(board[0][1]).toEqual({value: 1, ship: myShip});
+    expect(board[0][2]).toEqual({value: 1, ship: myShip});
+    expect(board[0][3]).toEqual({value: 1, ship: myShip});
 
     expect(board[0][0]).toEqual({value: 0, ship: "none"});
     expect(board[0][4]).toEqual({value: 0, ship: "none"});

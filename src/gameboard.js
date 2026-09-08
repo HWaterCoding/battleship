@@ -11,15 +11,6 @@ export default class Gameboard{
         this.cols = 10;
         this.board = [];
     }
-
-    //when creating the gameboard, can use numbers to indicate
-    //if a tile is hit, missed, or unclicked, or ship.
-    //0 = empty tile
-    //1 = tile containing ship
-    //2 = successful attack
-    //3 = missed attack
-    //these will all look different on your own board, but 0 and 1
-    //will have to look the same on the opponents board
     
     //initial creation of the board
     createBoard(){
@@ -27,8 +18,9 @@ export default class Gameboard{
             const row = [];
             for(let j = 0; j < this.cols; j++){
                 row.push({
+                    //consider changing to ship: "", attacked: untouched/miss/hit
                     value: 0,
-                    ship: "none"
+                    ship: ""
                 });
             }
             this.board.push(row);
@@ -48,11 +40,6 @@ export default class Gameboard{
             throw new Error("You can only place a ship on an empty square.")
         }
 
-        //need to create actual ship instances here?
-
-
-        //retrieve ship.length property passed in.
-        //create a for loop for as long as the length
         switch(direction){
             case "right":
                 for(let i = 0; i < ship.length; i++){
@@ -104,13 +91,10 @@ export default class Gameboard{
                 }
                 for(let i = 0; i < ship.length; i++){
                     const current = this.board[row - i][col];
-                    current.value = 1;  
+                    current.value = 1;
                 }
             break;
         }
-
-        //access this.ships [] to keep track of which ship takes
-        //up which coordinates/tiles 
     }
 
     //use coordinates clicked on to "receive" an attack and check if its a miss or hit
@@ -144,16 +128,3 @@ export default class Gameboard{
         //If it doesn't, all their ships are sunk!
     }
 }
-
-
-//I need to fine-tune this a bit. If a tile contains a "1" I don't
-//just need to know a ship is there, but which ship in specific.
-//I need to know which ship that coordinate belongs to when placed.
-//this should be done in "placeShip()"
-
-//alternative == on makeBoard() function, rather than just adding a
-//value of 0, you could also add more information to each board tile
-//maybe consider adding a "ships" property or something?
-//make each board tile an object containing a value 0, 1, 2, 3
-//and then also include a ships {key:value} pair where value starts
-//as "none" and is updated when a that tile contains a ship
