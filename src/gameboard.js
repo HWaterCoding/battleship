@@ -56,8 +56,10 @@ export default class Gameboard{
         switch(direction){
             case "right":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row][col + i];
-                    if(current[col] > 9) throw new Error("Off the board!")
+                    const targetColumn = col + i;
+                    if(targetColumn > 9) throw new Error("Off the board!");
+
+                    const current = this.board[row][targetColumn];
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
@@ -65,10 +67,13 @@ export default class Gameboard{
                     current.value = 1;
                 }
             break;
+
             case "left":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row][col - i];
-                    if(current[col] < 0) throw new Error("Off the board!")
+                    const targetColumn = col - i;
+                    if(targetColumn < 0) throw new Error("Off the board!")
+
+                    const current = this.board[row][targetColumn];
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
@@ -78,24 +83,28 @@ export default class Gameboard{
             break;
             case "up":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row - i][col];
-                    if(current[row] < 0) throw new Error("Off the board!")
+                    const targetRow = row + i;
+                    if(targetRow < 0) throw new Error("Off the board!")
+
+                    const current = this.board[targetRow][col];
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row - i][col];
+                    const current = this.board[row + i][col];
                     current.value = 1;
                 }
             break;
             case "down":
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row + i][col];
-                    if(current[row] > 9) throw new Error("Off the board!")
+                    const targetRow = row - i;
+                    if(targetRow > 9) throw new Error("Off the board!")
+
+                    const current = this.board[targetRow][col];
                     if(current.value !== 0) throw new Error("You can't place a ship here!");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row + i][col];
-                    current.value = 1;
+                    const current = this.board[row - i][col];
+                    current.value = 1;  
                 }
             break;
         }
@@ -105,9 +114,7 @@ export default class Gameboard{
     }
 
     //use coordinates clicked on to "receive" an attack and check if its a miss or hit
-    receiveAttack(x, y){
-        const row = x;
-        const col = y;
+    receiveAttack(row, col){
         const tile = this.board[row][col];
 
         switch(tile.value){
