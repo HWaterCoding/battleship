@@ -2,6 +2,7 @@ import Ship from "./ship.js";
 
 export default class Gameboard{
     constructor(){
+        //initiate ship objects on creation of gameboard
         this.ships = [
             new Ship(1),
             new Ship(2),
@@ -12,13 +13,12 @@ export default class Gameboard{
         this.board = [];
     }
     
-    //initial creation of the board
+    //initial creation/recreation of the board
     createBoard(){
         for(let i = 0; i < 10; i++){
             const row = [];
             for(let j = 0; j < 10; j++){
                 row.push({
-                    //changed to ship: null, attacked: unattacked/hit/miss
                     ship: null,
                     attacked: "unattacked"
                 });
@@ -32,8 +32,7 @@ export default class Gameboard{
         return this.board.map(row => [...row]);
     }
 
-
-    //place ships by calling coordinates and Ship class
+    //place ship on board by passing in coordinates and direction
     placeShip(row, col, direction, ship){
         //make sure the ship is being placed on an empty square
         if(this.board[row][col].ship !== null){
@@ -106,10 +105,10 @@ export default class Gameboard{
 
         switch(tile.attacked){
             case "unattacked":
+                //if there's a ship, process the hit and ask if it's sunk
                 if(tile.ship !== null){
                     tile.attacked = "hit";
                     tile.ship.hit();
-                    //check if the ship hit is now sunk
                     tile.ship.isSunk();
 
                 } else{
@@ -126,6 +125,7 @@ export default class Gameboard{
     //determine if all ships are sunk after every move
     isGameOver(){
         //check if all ships in this.ships .sunk property is true
+        return this.ships.every(ship => ship.sunk);
     }
 
     //this function will be to convert row coordinates. Currently [0, 0] refers
@@ -133,7 +133,7 @@ export default class Gameboard{
     //it should refer to the bottom left corner of the board, instead.
     //this function will map coordinates from what the user enters via a
     //traditional chess-style coordinate system to one usable for placeShip()
-    convertCoordinates(){
-
+    convertCoordinates(row, col){
+        
     }
 }

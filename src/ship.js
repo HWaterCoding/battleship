@@ -2,17 +2,17 @@
 export default class Ship{
     constructor(length){
         this.length = length;
-        this.hit = 0;
+        this.timesHit = 0;
         this.sunk = false;
     }
 
     hit(){
-        this.hit++;
+        this.timesHit++;
     }
 
     //compare length of ship to # of times it's been hit
     isSunk(){
-        return this.length === this.hit ?
+        return this.length === this.timesHit ?
         this.sunk = true : this.sunk = false;
     }
 }
