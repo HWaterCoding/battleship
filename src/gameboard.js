@@ -2,25 +2,25 @@ import Ship from "./ship.js";
 
 export default class Gameboard{
     constructor(){
-        this.missedAttacks = [];
-        this.hitAttacks = [];
-        //to keep track of which ships are placed so far
-        this.ships = [];
-
-        this.rows = 10;
-        this.cols = 10;
+        this.ships = [
+            new Ship(1),
+            new Ship(2),
+            new Ship(3),
+            new Ship(4),
+            new Ship(5),
+        ];
         this.board = [];
     }
     
     //initial creation of the board
     createBoard(){
-        for(let i = 0; i < this.rows; i++){
+        for(let i = 0; i < 10; i++){
             const row = [];
-            for(let j = 0; j < this.cols; j++){
+            for(let j = 0; j < 10; j++){
                 row.push({
-                    //consider changing to ship: "", attacked: untouched/miss/hit
-                    value: 0,
-                    ship: ""
+                    //changed to ship: null, attacked: unattacked/hit/miss
+                    ship: null,
+                    attacked: "unattacked"
                 });
             }
             this.board.push(row);
@@ -36,10 +36,12 @@ export default class Gameboard{
     //place ships by calling coordinates and Ship class
     placeShip(row, col, direction, ship){
         //make sure the ship is being placed on an empty square
-        if(this.board[row][col].value !== 0){
-            throw new Error("You can only place a ship on an empty square.")
+        if(this.board[row][col].ship !== null){
+            throw new Error("There's already a ship here.")
         }
 
+        //consider the direction the ship is being placed and check if the
+        //entire path it's being placed in is vacant and fits on the board
         switch(direction){
             case "right":
                 for(let i = 0; i < ship.length; i++){
@@ -47,11 +49,11 @@ export default class Gameboard{
                     if(targetColumn > 9) throw new Error("Off the board!");
 
                     const current = this.board[row][targetColumn];
-                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                    if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
                     const current = this.board[row][col + i];
-                    current.value = 1;
+                    current.ship = ship;
                 }
             break;
 
@@ -61,37 +63,38 @@ export default class Gameboard{
                     if(targetColumn < 0) throw new Error("Off the board!")
 
                     const current = this.board[row][targetColumn];
-                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                    if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
                     const current = this.board[row][col - i];
-                    current.value = 1;
+                    current.ship = ship;
                 }
             break;
+
             case "up":
                 for(let i = 0; i < ship.length; i++){
-                    const targetRow = row + i;
+                    const targetRow = row - i;
                     if(targetRow < 0) throw new Error("Off the board!")
 
                     const current = this.board[targetRow][col];
-                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                    if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
                     const current = this.board[row + i][col];
-                    current.value = 1;
+                    current.ship = ship;
                 }
             break;
             case "down":
                 for(let i = 0; i < ship.length; i++){
-                    const targetRow = row - i;
+                    const targetRow = row + i;
                     if(targetRow > 9) throw new Error("Off the board!")
 
                     const current = this.board[targetRow][col];
-                    if(current.value !== 0) throw new Error("You can't place a ship here!");
+                    if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
                     const current = this.board[row - i][col];
-                    current.value = 1;
+                    current.ship = ship;
                 }
             break;
         }
@@ -101,30 +104,36 @@ export default class Gameboard{
     receiveAttack(row, col){
         const tile = this.board[row][col];
 
-        switch(tile.value){
-            case 0:
-                this.missedAttacks.push(tile);
+        switch(tile.attacked){
+            case "unattacked":
+                if(tile.ship !== null){
+                    tile.attacked = "hit";
+                    tile.ship.hit();
+                    //check if the ship hit is now sunk
+                    tile.ship.isSunk();
+
+                } else{
+                    tile.attacked = "miss";
+                }
             break;
-            case 1:
-                this.hitAttacks.push(tile);
-                //retrieve the correct ship from this.ships []
-                //and compare it to the ship: value on tile obj
-                //check if the ship hit is now sunk
-            break;
-            case 2:
-                throw new Error("You've already guessed this tile!")                
-            case 3:
-                throw new Error("You've already guessed this tile!")
+            case "hit":
+                throw new Error("You've already guessed this tile!");
+            case "miss":
+                throw new Error("You've already guessed this tile!");
         }
     }
 
     //determine if all ships are sunk after every move
     isGameOver(){
-        //check if all ships on one side are sunk
-        //if they're all sunk, end the game
+        //check if all ships in this.ships .sunk property is true
+    }
 
-        //you could potentially make this incredibly simple.
-        //check if a players board contains any 1's. 
-        //If it doesn't, all their ships are sunk!
+    //this function will be to convert row coordinates. Currently [0, 0] refers
+    //to the top-left corner of the board due to array indexing, but logically,
+    //it should refer to the bottom left corner of the board, instead.
+    //this function will map coordinates from what the user enters via a
+    //traditional chess-style coordinate system to one usable for placeShip()
+    convertCoordinates(){
+
     }
 }

@@ -38,8 +38,5 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
-//refactor createBoard() to not use numerical values
-//refactor placeShip() to use updated board tile properties
-//create ship objects directly in constructor
-//store them in this.ships
-//Have them occupy the tiles in placeShip()
+//create mapping function for coordinate conversion(do math)
+//Clean up Gameboard class logic and do Players class next
