@@ -37,9 +37,7 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
-//make sure that once a ship in gameboard is placed, it cant be placed again
-//reset ship state when createBoard() is run, or, write resetBoard() separately
-
+//DO THE BELOW
 
 //consider the possibility of splitting up the createBoard() function
 //into 2 functions, one that creates the board, and another that creates

@@ -4,7 +4,7 @@ import Gameboard from "./gameboard.js";
 
 
 // ship class testing
-test.skip("successfully confirms if a ship is sunk", ()=>{
+test("successfully confirms if a ship is sunk", ()=>{
     const myShip = new Ship(4);
     myShip.hit();
     myShip.hit();
@@ -13,14 +13,14 @@ test.skip("successfully confirms if a ship is sunk", ()=>{
     expect(myShip.isSunk()).toBe(true);
 });
 
-test.skip("successfully confirms if a ship is NOT sunk", ()=>{
+test("successfully confirms if a ship is NOT sunk", ()=>{
     const myShip = new Ship(4);
     myShip.hit();
     myShip.hit();
     expect(myShip.isSunk()).toBe(false);
 });
 
-test.skip("Changes sunk property on ship object", ()=>{
+test("Changes sunk property on ship object", ()=>{
     const myShip = new Ship(2);
     myShip.hit();
     myShip.hit();
@@ -31,7 +31,7 @@ test.skip("Changes sunk property on ship object", ()=>{
 
 
 //gameboard class testing
-test.skip("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
+test("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
     const gameboard = new Gameboard();
     gameboard.createBoard();
     gameboard.createBoard();
@@ -48,9 +48,38 @@ test.skip("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
     });
 });
 
-test.skip("Correctly places a ship horizontally", ()=>{
+test("resetBoard() properly resets gameboard and ship data", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
+    
+    const myShip = gameboard.ships[2];
+
+    gameboard.placeShip(0, 1, "right", myShip);
+
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+    gameboard.receiveAttack(0, 3);
+
+    expect(myShip.sunk).toEqual(true);
+
+    gameboard.resetBoard();
+
+    const board = gameboard.getBoard();
+    
+    expect(board.length).toBe(10);
+    expect(board[0].length).toBe(10);
+
+    const newShip = gameboard.ships[2];
+    expect(newShip.sunk).toEqual(false);
+
+    board.forEach(row => {
+        row.forEach(tile => {
+            expect(tile).toEqual({ ship: null, attacked: "unattacked" });
+        });
+    });
+})
+
+test("Correctly places a ship horizontally", ()=>{
+    const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[2];
     gameboard.placeShip(9, 1, "right", myShip);
@@ -65,9 +94,8 @@ test.skip("Correctly places a ship horizontally", ()=>{
     expect(board[0][4]).toEqual({ ship: null, attacked: "unattacked" });
 });
 
-test.skip("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
+test("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     const myShip = gameboard.ships[2];
     gameboard.placeShip(1, 1, "up", myShip);
@@ -84,7 +112,6 @@ test.skip("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
 
 test("Prevents placing the same ship twice", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     const myShip = gameboard.ships[2];
     gameboard.placeShip(1, 1, "up", myShip);
@@ -94,9 +121,8 @@ test("Prevents placing the same ship twice", ()=>{
     }).toThrow("Ship already placed!");
 });
 
-test.skip("registers a hit ship correctly", ()=>{
+test("registers a hit ship correctly", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     const myShip = gameboard.ships[2];
     gameboard.placeShip(9, 1, "right", myShip);
@@ -109,9 +135,8 @@ test.skip("registers a hit ship correctly", ()=>{
     expect(board[0][2].ship.timesHit).toBe(1);
 });
 
-test.skip("Correctly sinks a ship once all tiles are hit", ()=>{
+test("Correctly sinks a ship once all tiles are hit", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
     
     const myShip = gameboard.ships[2];
     gameboard.placeShip(0, 1, "right", myShip);
@@ -123,9 +148,8 @@ test.skip("Correctly sinks a ship once all tiles are hit", ()=>{
     expect(myShip.sunk).toEqual(true);
 });
 
-test.skip("inversion function converts row coordinate", ()=>{
+test("inversion function converts row coordinate", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     const myShip = gameboard.ships[0];
     gameboard.placeShip(0, 1, "right", myShip);
@@ -135,9 +159,8 @@ test.skip("inversion function converts row coordinate", ()=>{
     expect(board[9][1]).toEqual({ship: myShip, attacked: "unattacked"});
 });
 
-test.skip("When all ships are sunk, the game is over", ()=>{
+test("When all ships are sunk, the game is over", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     gameboard.ships.forEach(ship =>
         ship.sunk = true
@@ -146,9 +169,8 @@ test.skip("When all ships are sunk, the game is over", ()=>{
     expect(gameboard.isGameOver()).toBe(true);
 });
 
-test.skip("As long as at least one ship tile remains, the game isn't over", ()=>{
+test("As long as at least one ship tile remains, the game isn't over", ()=>{
     const gameboard = new Gameboard();
-    gameboard.createBoard();
 
     gameboard.ships.forEach(ship =>
         ship.sunk = true
@@ -158,3 +180,7 @@ test.skip("As long as at least one ship tile remains, the game isn't over", ()=>
 
     expect(gameboard.isGameOver()).toBe(false);
 });
+
+
+
+//Players Class methods

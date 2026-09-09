@@ -3,15 +3,37 @@ import Ship from "./ship.js";
 export default class Gameboard{
     constructor(){
         //initiate ship objects on creation of gameboard
-        this.ships = [];
-        // this.placed = [];
-        this.board = [];
+        // this.board = [];
+        // this.ships = [];
+
+        //new
+        this.board = this.createBoard();
+        this.ships = this.createFleet();
     }
     
     //initial creation/recreation of the board
-    //this current doesn't technically reset because SHIPS arent reset
+    
+    // createBoard(){
+    //     this.board = [];
+    //     for(let i = 0; i < 10; i++){
+    //         const row = [];
+    //         for(let j = 0; j < 10; j++){
+    //             row.push({
+    //                 ship: null,
+    //                 attacked: "unattacked"
+    //             });
+    //         }
+    //         this.board.push(row);
+    //     }
+
+    //     this.ships = [];
+    //     for(let i = 1; i <= 5; i++){
+    //         this.ships.push(new Ship(i));
+    //     }
+    // }
+
     createBoard(){
-        this.board = [];
+        const board = [];
         for(let i = 0; i < 10; i++){
             const row = [];
             for(let j = 0; j < 10; j++){
@@ -20,13 +42,22 @@ export default class Gameboard{
                     attacked: "unattacked"
                 });
             }
-            this.board.push(row);
+            board.push(row);
         }
+        return board;
+    }
 
-        this.ships = [];
+    createFleet(){
+        const ships = [];
         for(let i = 1; i <= 5; i++){
-            this.ships.push(new Ship(i));
+            ships.push(new Ship(i));
         }
+        return ships;
+    }
+
+    resetBoard(){
+        this.board = this.createBoard();
+        this.ships = this.createFleet();
     }
 
     //return the current state of the board for rendering
@@ -38,8 +69,7 @@ export default class Gameboard{
     placeShip(row, col, direction, ship){
 
         //ensure ship hasn't already been placed
-        const board = this.getBoard();
-        const hasBeenPlaced = board.some(row => 
+        const hasBeenPlaced = this.board.some(row => 
             row.some(tile => 
                 tile.ship === ship)
             );
