@@ -3,13 +3,7 @@ import Ship from "./ship.js";
 export default class Gameboard{
     constructor(){
         //initiate ship objects on creation of gameboard
-        this.ships = [
-            new Ship(1),
-            new Ship(2),
-            new Ship(3),
-            new Ship(4),
-            new Ship(5),
-        ];
+        this.ships = [];
         this.board = [];
     }
     
@@ -26,6 +20,11 @@ export default class Gameboard{
                 });
             }
             this.board.push(row);
+        }
+
+        this.ships = [];
+        for(let i = 1; i <= 5; i++){
+            this.ships.push(new Ship(i));
         }
     }
 
@@ -131,7 +130,7 @@ export default class Gameboard{
         return this.ships.every(ship => ship.sunk);
     }
 
-    //THIS FUNCTION WILL BE CALLED AFTER USER INPUT, NOT IN GAMEBOARD ITSELF
+    //to replace traditional chess-style index with array index
     invertRowCoordinate(row){
         const converted = 9 - row;
         return converted;

@@ -37,6 +37,14 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
-//Write Jest tests for isGameOver()
 //make sure that once a ship in gameboard is placed, it cant be placed again
 //reset ship state when createBoard() is run, or, write resetBoard() separately
+
+
+//consider the possibility of splitting up the createBoard() function
+//into 2 functions, one that creates the board, and another that creates
+//the ship objects, and have them return a result. Then, in the
+//constructor of the Gameboard class, set this.board and this.ships
+//to equal those function calls, similar to how you intialize the
+//Tree class from binary search tree, building the tree immedieately
+//by calling buildTree() in the constructor
