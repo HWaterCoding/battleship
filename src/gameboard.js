@@ -4,6 +4,7 @@ export default class Gameboard{
     constructor(){
         //initiate ship objects on creation of gameboard
         this.ships = [];
+        // this.placed = [];
         this.board = [];
     }
     
@@ -35,6 +36,15 @@ export default class Gameboard{
 
     //place ship on board by passing in coordinates and direction
     placeShip(row, col, direction, ship){
+
+        //ensure ship hasn't already been placed
+        const board = this.getBoard();
+        const hasBeenPlaced = board.some(row => 
+            row.some(tile => 
+                tile.ship === ship)
+            );
+        if(hasBeenPlaced) throw new Error("Ship already placed!");
+
         row = this.invertRowCoordinate(row);
         //make sure the ship is being placed on an empty square
         if(this.board[row][col].ship !== null){
