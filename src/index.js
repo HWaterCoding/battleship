@@ -8,17 +8,16 @@
 // REFER TO TO-DO LIST FOR GENERAL DOM CONTROL IDEAS
 
 //------------ general --------------
-//10x10 board
-//4 ships (2, 3, 4, 5 tiles wide/long)
 //use fire emoji to signify successful hit 
 //use water emoji to signify unsuccessful hit
 //decide how to design boat for player
 
 //------------ gameboard --------------
-//Determine how a player will actually place a ship.
+// to-do
 
 //------------- players --------------
-//Each player needs their own gameboard, and half needs to be "invisible"
+//Each player needs their own gameboard
+//Other players gameboard needs to be invisible
 
 //------------ DOM --------------
 // (Reference how you did DOM creation in to-do list project)
@@ -36,9 +35,8 @@ const board = new Gameboard();
 board.createBoard();
 console.log(board.getBoard())
 
-console.log(board.invertRowCoordinate(6));
-
 
 //IMMEDIATE TO-DO:
-//create mapping function for coordinate conversion(do math)
-//Clean up Gameboard class logic and do Players class next
+//Write Jest tests for isGameOver()
+//make sure that once a ship in gameboard is placed, it cant be placed again
+//reset ship state when createBoard() is run, or, write resetBoard() separately
