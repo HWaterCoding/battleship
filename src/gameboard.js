@@ -14,7 +14,9 @@ export default class Gameboard{
     }
     
     //initial creation/recreation of the board
+    //this current doesn't technically reset because SHIPS arent reset
     createBoard(){
+        this.board = [];
         for(let i = 0; i < 10; i++){
             const row = [];
             for(let j = 0; j < 10; j++){
@@ -34,6 +36,7 @@ export default class Gameboard{
 
     //place ship on board by passing in coordinates and direction
     placeShip(row, col, direction, ship){
+        row = this.invertRowCoordinate(row);
         //make sure the ship is being placed on an empty square
         if(this.board[row][col].ship !== null){
             throw new Error("There's already a ship here.")
@@ -79,7 +82,7 @@ export default class Gameboard{
                     if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row + i][col];
+                    const current = this.board[row - i][col];
                     current.ship = ship;
                 }
             break;
@@ -92,7 +95,7 @@ export default class Gameboard{
                     if(current.ship !== null) throw new Error("There's already a ship here.");
                 }
                 for(let i = 0; i < ship.length; i++){
-                    const current = this.board[row - i][col];
+                    const current = this.board[row + i][col];
                     current.ship = ship;
                 }
             break;
@@ -101,6 +104,7 @@ export default class Gameboard{
 
     //use coordinates clicked on to "receive" an attack and check if its a miss or hit
     receiveAttack(row, col){
+        row = this.invertRowCoordinate(row);
         const tile = this.board[row][col];
 
         switch(tile.attacked){
@@ -124,16 +128,12 @@ export default class Gameboard{
 
     //determine if all ships are sunk after every move
     isGameOver(){
-        //check if all ships in this.ships .sunk property is true
         return this.ships.every(ship => ship.sunk);
     }
 
-    //this function will be to convert row coordinates. Currently [0, 0] refers
-    //to the top-left corner of the board due to array indexing, but logically,
-    //it should refer to the bottom left corner of the board, instead.
-    //this function will map coordinates from what the user enters via a
-    //traditional chess-style coordinate system to one usable for placeShip()
-    convertCoordinates(row, col){
-        
+    //THIS FUNCTION WILL BE CALLED AFTER USER INPUT, NOT IN GAMEBOARD ITSELF
+    invertRowCoordinate(row){
+        const converted = 9 - row;
+        return converted;
     }
 }

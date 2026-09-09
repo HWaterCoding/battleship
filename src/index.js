@@ -36,6 +36,8 @@ const board = new Gameboard();
 board.createBoard();
 console.log(board.getBoard())
 
+console.log(board.invertRowCoordinate(6));
+
 
 //IMMEDIATE TO-DO:
 //create mapping function for coordinate conversion(do math)
