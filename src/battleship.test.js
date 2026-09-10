@@ -183,4 +183,6 @@ test("As long as at least one ship tile remains, the game isn't over", ()=>{
 
 
 
-//Players Class methods
+//Game Controller methods and tests::
+
+
