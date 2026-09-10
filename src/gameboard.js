@@ -3,35 +3,11 @@ import Ship from "./ship.js";
 export default class Gameboard{
     constructor(){
         //initiate ship objects on creation of gameboard
-        // this.board = [];
-        // this.ships = [];
-
-        //new
         this.board = this.createBoard();
         this.ships = this.createFleet();
     }
     
     //initial creation/recreation of the board
-    
-    // createBoard(){
-    //     this.board = [];
-    //     for(let i = 0; i < 10; i++){
-    //         const row = [];
-    //         for(let j = 0; j < 10; j++){
-    //             row.push({
-    //                 ship: null,
-    //                 attacked: "unattacked"
-    //             });
-    //         }
-    //         this.board.push(row);
-    //     }
-
-    //     this.ships = [];
-    //     for(let i = 1; i <= 5; i++){
-    //         this.ships.push(new Ship(i));
-    //     }
-    // }
-
     createBoard(){
         const board = [];
         for(let i = 0; i < 10; i++){
@@ -47,6 +23,7 @@ export default class Gameboard{
         return board;
     }
 
+    //create all ship objects
     createFleet(){
         const ships = [];
         for(let i = 1; i <= 5; i++){
@@ -55,6 +32,7 @@ export default class Gameboard{
         return ships;
     }
 
+    //reset board and ship data to original status
     resetBoard(){
         this.board = this.createBoard();
         this.ships = this.createFleet();
@@ -68,7 +46,7 @@ export default class Gameboard{
     //place ship on board by passing in coordinates and direction
     placeShip(row, col, direction, ship){
 
-        //ensure ship hasn't already been placed
+        //ensure the ship hasn't already been placed
         const hasBeenPlaced = this.board.some(row => 
             row.some(tile => 
                 tile.ship === ship)
@@ -87,7 +65,7 @@ export default class Gameboard{
             case "right":
                 for(let i = 0; i < ship.length; i++){
                     const targetColumn = col + i;
-                    if(targetColumn > 9) throw new Error("Off the board!");
+                    if(targetColumn > 9) throw new Error("The ship can't fit here!");
 
                     const current = this.board[row][targetColumn];
                     if(current.ship !== null) throw new Error("There's already a ship here.");
@@ -101,7 +79,7 @@ export default class Gameboard{
             case "left":
                 for(let i = 0; i < ship.length; i++){
                     const targetColumn = col - i;
-                    if(targetColumn < 0) throw new Error("Off the board!")
+                    if(targetColumn < 0) throw new Error("The ship can't fit here!")
 
                     const current = this.board[row][targetColumn];
                     if(current.ship !== null) throw new Error("There's already a ship here.");
@@ -170,7 +148,7 @@ export default class Gameboard{
         return this.ships.every(ship => ship.sunk);
     }
 
-    //to replace traditional chess-style index with array index
+    //replace traditional chess-style index with array board index
     invertRowCoordinate(row){
         const converted = 9 - row;
         return converted;
