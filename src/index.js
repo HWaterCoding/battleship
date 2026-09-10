@@ -37,7 +37,4 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
-//player class next.
-//gameboard controller afterwards
-
-//for player class, just start with player vs cpu and add 2 player afterwards
+//gameboard controller class and game logic

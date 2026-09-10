@@ -14,3 +14,12 @@ export function loadDOM(){
 export function renderBoard(board){
     //display both play boards and render using Gameboard class info
 }
+
+
+
+//The opposing players board has to be invisible. So the computers board
+//cannot be visible to the player.
+
+//the "invisible" half of the board will only contain red "x's"
+//to indicate where the player has already played to eliminate
+//those tiles from contention and become unclickable
