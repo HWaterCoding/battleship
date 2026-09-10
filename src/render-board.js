@@ -2,7 +2,9 @@
 
 export function loadDOM(){
 
-    
+    //when creating the board and tile elements, attach the
+    //proper index (x, y) of each tile to the element as a 
+    //data attribute: (bottom left tile: data-x: 0, data-y: 0)
 
     for(let i = 0; i < 10; i++){
         //do stuff
@@ -21,5 +23,8 @@ export function renderBoard(board){
 //cannot be visible to the player.
 
 //the "invisible" half of the board will only contain red "x's"
-//to indicate where the player has already played to eliminate
+//to indicate incorrect guessses
+//AND 
+//fire emoji's to indicate correct guesses
+
 //those tiles from contention and become unclickable

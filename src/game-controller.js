@@ -10,52 +10,64 @@ export default class GameController{
             new Players("name2", "computer"),
         ]
         this.isGameActive = true;
+        this.winner = null;
     }
 
-    //return the opposite of the active player
+    //return the opponent of the active player
     getOpponent(){
-        const current = this.getActivePlayer();
-        return current === this.players[0] ? this.players[1] : this.players[0];
+        return this.activePlayer === this.players[0] ? 
+            this.players[1] : this.players[0];
     }
 
+    //switch whose turn it is
     switchPlayers(){
         this.activePlayer = this.activePlayer === 
             this.players[0] ? this.players[1] : this.players[0];
     }
 
-    //after every turn played, call checkWinner() to ask if game is over
+    //play a full turn of the game
     playTurn(row, col){
-        const opponent = this.getOpponent();
-
+        //if game is not active, you cannot play. Throw error.
+        if(this.isGameActive === false){
+            throw new Error("This game has concluded!");
+        }
+        
         //attack the board of the player who is not the active player
+        const opponent = this.getOpponent();
         opponent.board.receiveAttack(row, col);
-        this.checkWinner()
+
+        //if there is a winner, end the game and declare game inactive
+        const isWinner = this.checkWinner();
+        if(isWinner){
+            this.winner = this.activePlayer;
+            this.isGameActive = false;
+            return;
+        } 
+
+        //if there is no winner, then switch the player.
         this.switchPlayers();
     }
     
-    //when a player plays a turn, check if they are a winner by running
-    //isGameOver() in Gameboard on the opponents board. If all of the 
-    //opponents ships are sunk, then the activePlayer is the winner.
+    //check if active player is winner by asking if opponents ships are all sunk
     checkWinner(){
-        const current = this.getActivePlayer();
-
-        const opponent = current === 
-            this.players[0] ? this.players[1] : this.players[0];
-
+        const opponent = this.getOpponent();
         const isOver = opponent.board.isGameOver();
 
+        //current player is winner, and game is no longer active
         if(isOver){
-            //current player is the winner!
-            //what do I actually do here, though...
-            return {
-                winner: current
-            }
+            this.isGameActive = false;
+            return true;
         }
+        return false;
     }
 
     //reset the gameboard and ship data of both players
+    //re-activate game and set active player to player1 again
     resetGame(){
         this.players[0].board.resetBoard();
         this.players[1].board.resetBoard();
+
+        this.isGameActive = true;
+        this.activePlayer = this.players[0];
     }
 }
