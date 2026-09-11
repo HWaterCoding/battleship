@@ -228,6 +228,22 @@ test("playTurn() properly handles a winning attack", () => {
     expect(controller.activePlayer).toBe(controller.players[0]);
 })
 
+test("playTurn() does not switch players after an invalid attack", () => {
+    const controller = new GameController();
+
+    // Attack once.
+    controller.playTurn(0, 0);
+
+    // Switch back manually so Player 1 attacks the same tile again.
+    controller.switchPlayers();
+
+    expect(() => {
+        controller.playTurn(0, 0);
+    }).toThrow();
+
+    expect(controller.activePlayer).toBe(controller.players[0]);
+})
+
 test("checkWinner() returns true only when the opponent has lost", () => {
     const controller = new GameController();
 

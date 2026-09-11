@@ -13,9 +13,6 @@
 //decide how to design boat for player
 //enforce the fact that every player has to play all their ships!
 
-//------------ gameboard --------------
-// to-do
-
 //------------- players --------------
 //Each player needs their own gameboard
 //Other players gameboard needs to be invisible
