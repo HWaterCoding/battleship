@@ -24,10 +24,13 @@ import "./styles.css";
 
 
 import Gameboard from "./gameboard.js";
+import { createBoards } from "./render-board.js";
 
 const board = new Gameboard();
 board.createBoard();
 console.log(board.getBoard())
+
+createBoards();
 
 
 //IMMEDIATE TO-DO:

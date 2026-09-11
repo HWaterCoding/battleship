@@ -1,19 +1,45 @@
 //BOTH INITIAL DOM LOADING AND TURN-GENERATED DOM UPDATES
+import GameController from "./game-controller.js";
+import Players from "./players.js";
 
-export function loadDOM(){
+
+export function createBoards(){
+
+    const leftPlayerBoard = document.getElementById("leftPlayerBoard");
+    const rightPlayerBoard = document.getElementById("rightPlayerBoard");
 
     //when creating the board and tile elements, attach the
     //proper index (x, y) of each tile to the element as a 
     //data attribute: (bottom left tile: data-x: 0, data-y: 0)
 
-    for(let i = 0; i < 10; i++){
-        //do stuff
+    for(let i = 9; i >= 0; i--){
+
+        const leftRow = document.createElement("div");
+        leftRow.classList.add("tile", "rows");
+        leftRow.dataset.y = `y${i}`;
+
+        const rightRow = document.createElement("div");
+        rightRow.classList.add("tile", "rows");
+        rightRow.dataset.y = `y${i}`;
+
+        leftPlayerBoard.appendChild(leftRow);
+        rightPlayerBoard.appendChild(rightRow);
+    
+        for(let j = 0; j < 10; j++){
+            const leftColumn = document.createElement("div");
+            leftColumn.classList.add("tile", "columns");
+            leftColumn.dataset.x = `x${j}`;
+            leftRow.appendChild(leftColumn);
+
+            const rightColumn = document.createElement("div");
+            rightColumn.classList.add("tile", "columns");
+            rightColumn.dataset.x = `x${j}`;
+            rightRow.appendChild(rightColumn);
+        }
     }
-    //initial DOM creation of needed elements for page?
-    //generate the 10x10 board and attach data-attributes to each tile
 }
 
-export function renderBoard(board){
+export function updateBoard(board){
     //display both play boards and render using Gameboard class info
 }
 

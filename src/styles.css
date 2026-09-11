@@ -62,7 +62,11 @@ main{
 #gameButtons{
     padding: clamp(0.5rem, 15px, 1.5rem);
     display: flex;
-    gap: clamp(0.5rem, 1rem, 1.5rem)
+    gap: clamp(0.5rem, 1rem, 1.5rem);
+}
+
+#gameButtons button{
+    cursor: pointer;
 }
 
 #turnText, #gameText{
@@ -87,8 +91,24 @@ main{
 
 #leftPlayerBoard{
     border: 2px solid grey;
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 800px;
 }
 
+.tile{
+    border: 1px solid red;
+}
+
+.rows{
+    display: flex;
+    flex: 1;
+}
+
+.columns{
+    flex: 1;
+}
 
 
 
@@ -101,6 +121,10 @@ main{
 
 #rightPlayerBoard{
     border: 2px solid grey;
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 800px;
 }
 
 
