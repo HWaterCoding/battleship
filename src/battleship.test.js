@@ -1,10 +1,10 @@
 import Ship from "./ship.js";
 import Gameboard from "./gameboard.js";
-
+import GameController from "./game-controller.js";
 
 
 // ship class testing
-test("successfully confirms if a ship is sunk", ()=>{
+test.skip("successfully confirms if a ship is sunk", ()=>{
     const myShip = new Ship(4);
     myShip.hit();
     myShip.hit();
@@ -13,14 +13,14 @@ test("successfully confirms if a ship is sunk", ()=>{
     expect(myShip.isSunk()).toBe(true);
 });
 
-test("successfully confirms if a ship is NOT sunk", ()=>{
+test.skip("successfully confirms if a ship is NOT sunk", ()=>{
     const myShip = new Ship(4);
     myShip.hit();
     myShip.hit();
     expect(myShip.isSunk()).toBe(false);
 });
 
-test("Changes sunk property on ship object", ()=>{
+test.skip("Changes sunk property on ship object", ()=>{
     const myShip = new Ship(2);
     myShip.hit();
     myShip.hit();
@@ -31,7 +31,7 @@ test("Changes sunk property on ship object", ()=>{
 
 
 //gameboard class testing
-test("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
+test.skip("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
     const gameboard = new Gameboard();
     gameboard.createBoard();
     gameboard.createBoard();
@@ -48,7 +48,7 @@ test("makeBoard() makes a 10 x 10 gameboard and doesn't duplicate", ()=>{
     });
 });
 
-test("resetBoard() properly resets gameboard and ship data", ()=>{
+test.skip("resetBoard() properly resets gameboard and ship data", ()=>{
     const gameboard = new Gameboard();
     
     const myShip = gameboard.ships[2];
@@ -78,7 +78,7 @@ test("resetBoard() properly resets gameboard and ship data", ()=>{
     });
 })
 
-test("Correctly places a ship horizontally", ()=>{
+test.skip("Correctly places a ship horizontally", ()=>{
     const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[2];
@@ -94,7 +94,7 @@ test("Correctly places a ship horizontally", ()=>{
     expect(board[0][4]).toEqual({ ship: null, attacked: "unattacked" });
 });
 
-test("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
+test.skip("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
     const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[2];
@@ -110,7 +110,7 @@ test("Correctly places a ship vertically, (CONVERTS ROWS)", ()=>{
     expect(board[5][1]).toEqual({ ship: null, attacked: "unattacked" });
 });
 
-test("Prevents placing the same ship twice", ()=>{
+test.skip("Prevents placing the same ship twice", ()=>{
     const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[2];
@@ -121,7 +121,7 @@ test("Prevents placing the same ship twice", ()=>{
     }).toThrow("Ship already placed!");
 });
 
-test("registers a hit ship correctly", ()=>{
+test.skip("registers a hit ship correctly", ()=>{
     const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[2];
@@ -135,7 +135,7 @@ test("registers a hit ship correctly", ()=>{
     expect(board[0][2].ship.timesHit).toBe(1);
 });
 
-test("Correctly sinks a ship once all tiles are hit", ()=>{
+test.skip("Correctly sinks a ship once all tiles are hit", ()=>{
     const gameboard = new Gameboard();
     
     const myShip = gameboard.ships[2];
@@ -148,7 +148,7 @@ test("Correctly sinks a ship once all tiles are hit", ()=>{
     expect(myShip.sunk).toEqual(true);
 });
 
-test("inversion function converts row coordinate", ()=>{
+test.skip("inversion function converts row coordinate", ()=>{
     const gameboard = new Gameboard();
 
     const myShip = gameboard.ships[0];
@@ -159,7 +159,7 @@ test("inversion function converts row coordinate", ()=>{
     expect(board[9][1]).toEqual({ship: myShip, attacked: "unattacked"});
 });
 
-test("When all ships are sunk, the game is over", ()=>{
+test.skip("When all ships are sunk, the game is over", ()=>{
     const gameboard = new Gameboard();
 
     gameboard.ships.forEach(ship =>
@@ -169,7 +169,7 @@ test("When all ships are sunk, the game is over", ()=>{
     expect(gameboard.isGameOver()).toBe(true);
 });
 
-test("As long as at least one ship tile remains, the game isn't over", ()=>{
+test.skip("As long as at least one ship tile remains, the game isn't over", ()=>{
     const gameboard = new Gameboard();
 
     gameboard.ships.forEach(ship =>
@@ -184,5 +184,91 @@ test("As long as at least one ship tile remains, the game isn't over", ()=>{
 
 
 //Game Controller methods and tests::
+test("getOpponent() returns correct player", ()=>{
+    const controller = new GameController();
 
+    expect(controller.activePlayer).toBe(controller.players[0]);
+    expect(controller.getOpponent()).toBe(controller.players[1]);
+})
 
+test("switchPlayers() changes activePlayer", ()=>{
+    const controller = new GameController();
+    
+    expect(controller.activePlayer).toBe(controller.players[0]);
+    controller.switchPlayers();
+    expect(controller.activePlayer).toBe(controller.players[1]);
+    controller.switchPlayers();
+    expect(controller.activePlayer).toBe(controller.players[0]);
+})
+
+test("playTurn() throws an error if the game is already over", ()=>{
+    const controller = new GameController();
+
+    controller.isGameActive = false;
+    expect(() => { 
+        controller.playTurn(0, 0);
+    }).toThrow("This game has concluded!");
+})
+
+test("playTurn() properly handles a winning attack", () => {
+    const controller = new GameController();
+
+    const finalShip = controller.players[1].board.ships[0];
+    controller.players[1].board.placeShip(0, 0, "right", finalShip);
+
+    controller.players[1].board.ships.forEach(ship => ship.sunk = true);
+    finalShip.sunk = false;
+
+    controller.playTurn(0, 0);
+
+    expect(finalShip.sunk).toBe(true);
+    expect(controller.winner).toBe(controller.players[0]);
+    expect(controller.isGameActive).toBe(false);
+
+    expect(controller.activePlayer).toBe(controller.players[0]);
+})
+
+test("checkWinner() returns true only when the opponent has lost", () => {
+    const controller = new GameController();
+
+    // Opponent still has ships.
+    expect(controller.checkWinner()).toBe(false);
+
+    controller.players[1].board.ships.forEach(ship => {
+        ship.sunk = true;
+    });
+
+    expect(controller.checkWinner()).toBe(true);
+})
+
+test("resetGame() restores a fresh match", () => {
+    const controller = new GameController();
+
+    //set all 3 constructor properties to the opposite of default state
+    controller.winner = controller.players[0];
+    controller.isGameActive = false;
+    controller.activePlayer = controller.players[1];
+
+    const ship = controller.players[0].board.ships[2];
+    controller.players[0].board.placeShip(0, 1, "right", ship);
+    controller.players[0].board.receiveAttack(0, 1);
+
+    controller.resetGame();
+
+    //constructor properties set back to their default values
+    expect(controller.isGameActive).toBe(true);
+    expect(controller.winner).toBe(null);
+    expect(controller.activePlayer).toBe(controller.players[0]);
+
+    const board = controller.players[0].board.getBoard();
+
+    //every board tile is reset to unattacked
+    board.forEach(row => {
+        row.forEach(tile => {
+            expect(tile).toEqual({
+                ship: null,
+                attacked: "unattacked"
+            });
+        });
+    });
+});

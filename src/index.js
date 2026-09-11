@@ -11,6 +11,7 @@
 //use fire emoji to signify successful hit 
 //use water emoji to signify unsuccessful hit
 //decide how to design boat for player
+//enforce the fact that every player has to play all their ships!
 
 //------------ gameboard --------------
 // to-do

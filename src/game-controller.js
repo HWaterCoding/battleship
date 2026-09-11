@@ -1,14 +1,12 @@
-//game rules/logic go here
-
 import Players from "./players.js";
 
 export default class GameController{
     constructor(){
-        this.activePlayer = this.players[0];
         this.players = [
-            new Players("name", "human"),
-            new Players("name2", "computer"),
+            new Players("Player1", "human"),
+            new Players("Player2", "computer"),
         ]
+        this.activePlayer = this.players[0];
         this.isGameActive = true;
         this.winner = null;
     }
@@ -51,23 +49,23 @@ export default class GameController{
     //check if active player is winner by asking if opponents ships are all sunk
     checkWinner(){
         const opponent = this.getOpponent();
-        const isOver = opponent.board.isGameOver();
+        const isWinner = opponent.board.isGameOver();
 
-        //current player is winner, and game is no longer active
-        if(isOver){
-            this.isGameActive = false;
+        //verify that someone has won the game
+        if(isWinner){
             return true;
         }
         return false;
     }
 
     //reset the gameboard and ship data of both players
-    //re-activate game and set active player to player1 again
+    //re-activate game and set active player to player1 again and reset winner
     resetGame(){
         this.players[0].board.resetBoard();
         this.players[1].board.resetBoard();
 
         this.isGameActive = true;
         this.activePlayer = this.players[0];
+        this.winner = null;
     }
 }
