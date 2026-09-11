@@ -1,11 +1,6 @@
 //entry point file
 
-
 //pseudocode:
-
-// GO THROUGH THESE SECTIONS IN ORDER 
-// REFER TO TIC-TAC-TOE FOR TILE-BASED INTERACTION
-// REFER TO TO-DO LIST FOR GENERAL DOM CONTROL IDEAS
 
 //------------ general --------------
 //use fire emoji to signify successful hit 
@@ -14,11 +9,10 @@
 //enforce the fact that every player has to play all their ships!
 
 //------------- players --------------
-//Each player needs their own gameboard
-//Other players gameboard needs to be invisible
 
 //------------ DOM --------------
-// (Reference how you did DOM creation in to-do list project)
+//Opponents gameboard needs to hide ships (rendering)
+//(Reference how you did DOM creation in to-do list project)
 //determine the starting DOM look of the game in createDOM
 //create another js file to determine DOM updates
 
@@ -35,4 +29,3 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
-//gameboard controller class and game logic

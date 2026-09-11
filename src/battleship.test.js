@@ -231,10 +231,10 @@ test("playTurn() properly handles a winning attack", () => {
 test("playTurn() does not switch players after an invalid attack", () => {
     const controller = new GameController();
 
-    // Attack once.
+    //attack once
     controller.playTurn(0, 0);
 
-    // Switch back manually so Player 1 attacks the same tile again.
+    //switch back manually so Player 1 attacks the same tile again
     controller.switchPlayers();
 
     expect(() => {
@@ -247,7 +247,7 @@ test("playTurn() does not switch players after an invalid attack", () => {
 test("checkWinner() returns true only when the opponent has lost", () => {
     const controller = new GameController();
 
-    // Opponent still has ships.
+    //opponent still has ships
     expect(controller.checkWinner()).toBe(false);
 
     controller.players[1].board.ships.forEach(ship => {
