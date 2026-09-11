@@ -1,3 +1,5 @@
+import "./styles.css";
+
 //entry point file
 
 //pseudocode:
@@ -29,3 +31,7 @@ console.log(board.getBoard())
 
 
 //IMMEDIATE TO-DO:
+//1. design a very basic layout for the webpage in the HTML
+//2. begin on the rendering logic; start by rendering in the boards
+//   on page load, and to be re-called upon resetting the game
+//3. handle rendering different board states(hit, miss, ship, etc)
