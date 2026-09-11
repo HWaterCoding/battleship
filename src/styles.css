@@ -30,18 +30,100 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
-/* styles */
+/* General Styles */
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    background-color: bisque;
+    height: 100vh;
 
+}
+
+/* Header Section */
 header{
     background-color: gainsboro;
     text-align: center;
     padding: clamp(1rem, 20px, 1.5rem);
 }
 
-body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+/* Main Section */
+main{
     display: flex;
     flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    flex: 1;
+
 }
 
+/* Above Boards Section */
+#gameButtons{
+    padding: clamp(0.5rem, 15px, 1.5rem);
+    display: flex;
+    gap: clamp(0.5rem, 1rem, 1.5rem)
+}
+
+#turnText, #gameText{
+    font-size: 1.5rem;
+    /* font change + style */
+}
+
+
+/* Player Boards Section */
+
+#boardContainer{
+    display: flex;
+    gap: clamp(2rem, 50px, 4rem);
+}
+
+#leftPlayer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 24px, 2rem);
+}
+
+#leftPlayerBoard{
+    border: 2px solid grey;
+}
+
+
+
+
+#rightPlayer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 24px, 2rem);
+}
+
+#rightPlayerBoard{
+    border: 2px solid grey;
+}
+
+
+
+/* Place Ship Overlay Form */
+
+#placeShipOverlay{
+    display: none;
+}
+
+
+
+/* Game Over Overlay */
+#gameOverOverlay{
+    display: none;
+}
+
+
+
+
+/* Footer Section */
+footer{
+    text-align: center;
+    padding: clamp(1rem, 20px, 1.5rem);
+    background-color: gainsboro;
+}

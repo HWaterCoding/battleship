@@ -18,18 +18,18 @@
     <main>
         <div id="gameButtons">
             <button id="startGameBtn">Start Game!</button>
-            <button id="resetGameBtn">Reset Game</button>\
+            <button id="resetGameBtn">Reset Game</button>
         </div>
     
         <!-- This changes to "it's (players) turn!"" when game starts -->
-        <p id="turnText"></p> <!--Update this dynamically to state who's turn it is-->
+        <p id="turnText">It's (players) turn!</p> <!--Update this dynamically to state who's turn it is-->
         <p id="gameText">Place your ships...</p> <!--Update this dynamically to post the result of the last turn, and eventually, who the winner is-->
     
-        <div id="container">
+        <div id="boardContainer">
             <!-- populate these boards with for loops on load -->
             <div id="leftPlayer">
                 <h3 id="p1text">Player 1's board</h3>
-                <div id="firstBoard"></div>
+                <div id="leftPlayerBoard"></div>
                 <button id="placeShipBtn">Place A Ship</button>
 
                 <div id="placeShipOverlay">
@@ -60,7 +60,7 @@
 
             <div id="rightPlayer">
                 <h3 id="p2text">Player 2's board</h3>
-                <div id="secondBoard"></div>
+                <div id="rightPlayerBoard"></div>
             </div>
     
             <div id="gameOverOverlay">
