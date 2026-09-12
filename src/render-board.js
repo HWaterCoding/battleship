@@ -12,6 +12,7 @@ export function createBoards(){
     //proper index (x, y) of each tile to the element as a 
     //data attribute: (bottom left tile: data-x: 0, data-y: 0)
 
+    //this condition is to invert the dataset.y property for conversion
     for(let i = 9; i >= 0; i--){
 
         const leftRow = document.createElement("div");
@@ -40,7 +41,19 @@ export function createBoards(){
 }
 
 export function updateBoard(board){
-    //display both play boards and render using Gameboard class info
+    //this function will be called after every playTurn()
+    //update board visual based on hit/miss/ship placed, etc...
+
+
+    //pass in entire gameboard from getBoard() on object
+    //forEach loop through all tiles and ask what it's "ship" and "attacked"
+    //properties are. Create switch to determine what to display depending on
+    //what the current state of the tile that you're iterating on.
+
+    //MAKE SURE TO SPECIFY DIFFERENCE BETWEEN P1 BOARD AND OPPONENT BOARD
+    //within the same forEach() function, when investigating "ship" status of a 
+    //tile, ask who's board you're on. If it is the CPU board, don't render ship
+    //tiles. Only render the missedAttacks and hitAttacks based on attacked: state
 }
 
 

@@ -1,5 +1,11 @@
 /* default styles */
 
+:root{
+    --board-primary: ;
+    --board-secondary: #c9c2c2;
+    --board-outline: rgb(136, 130, 130);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -52,7 +58,6 @@ header{
 main{
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
     flex: 1;
 
@@ -82,23 +87,31 @@ main{
     gap: clamp(2rem, 50px, 4rem);
 }
 
-#leftPlayer{
+#leftPlayer,
+#rightPlayer{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: clamp(1rem, 24px, 2rem);
 }
 
-#leftPlayerBoard{
-    border: 2px solid grey;
+#leftPlayerBoard, 
+#rightPlayerBoard{
+    border: 12px solid var(--board-outline);
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    height: 800px;
-    width: 800px;
+    height: 800px; /* make responsive sizing*/
+    width: 800px; /* make responsive sizing*/
 }
 
 .tile{
-    border: 1px solid red;
+    background: linear-gradient(135deg, #0077be, #00a8cc);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--board-secondary);
+    border-left: 2px solid var(--board-secondary);
+    border-right: 2px solid var(--board-secondary);
+    cursor: pointer;
 }
 
 .rows{
@@ -111,21 +124,6 @@ main{
 }
 
 
-
-#rightPlayer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(1rem, 24px, 2rem);
-}
-
-#rightPlayerBoard{
-    border: 2px solid grey;
-    display: flex;
-    flex-direction: column;
-    height: 800px;
-    width: 800px;
-}
 
 
 
@@ -147,7 +145,10 @@ main{
 
 /* Footer Section */
 footer{
-    text-align: center;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
     padding: clamp(1rem, 20px, 1.5rem);
     background-color: gainsboro;
 }
