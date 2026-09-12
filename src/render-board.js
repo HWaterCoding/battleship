@@ -17,11 +17,9 @@ export function createBoards(){
 
         const leftRow = document.createElement("div");
         leftRow.classList.add("tile", "rows");
-        leftRow.dataset.y = `y${i}`;
 
         const rightRow = document.createElement("div");
         rightRow.classList.add("tile", "rows");
-        rightRow.dataset.y = `y${i}`;
 
         leftPlayerBoard.appendChild(leftRow);
         rightPlayerBoard.appendChild(rightRow);
@@ -29,18 +27,22 @@ export function createBoards(){
         for(let j = 0; j < 10; j++){
             const leftColumn = document.createElement("div");
             leftColumn.classList.add("tile", "columns");
-            leftColumn.dataset.x = `x${j}`;
+            leftColumn.dataset.x = `${j}`;
+            leftColumn.dataset.y = `${i}`;
+
             leftRow.appendChild(leftColumn);
 
             const rightColumn = document.createElement("div");
             rightColumn.classList.add("tile", "columns");
-            rightColumn.dataset.x = `x${j}`;
+            rightColumn.dataset.x = `${j}`;
+            rightColumn.dataset.y = `${i}`;
             rightRow.appendChild(rightColumn);
         }
     }
 }
 
-export function updateBoard(board){
+//pass in which player, which board, and coordinates.
+export function updateBoard(player, board, row, col){
     //this function will be called after every playTurn()
     //update board visual based on hit/miss/ship placed, etc...
 
@@ -54,6 +56,15 @@ export function updateBoard(board){
     //within the same forEach() function, when investigating "ship" status of a 
     //tile, ask who's board you're on. If it is the CPU board, don't render ship
     //tiles. Only render the missedAttacks and hitAttacks based on attacked: state
+
+    //DON'T recreate entire board, just change classes on pre-existing tiles
+    //to update them visually
+
+
+    //HOW TO LINK RENDERED BOARD FROM ABOVE FUNCTION TO LOGICAL GAMEBOARD:
+    //when a tile is clicked, ask the data-x and data-y of the tile
+    //then retrieve the current state of the board from Gameboard class
+    //pass in the data-x and data-y of the tile to the Gameboard method
 }
 
 
