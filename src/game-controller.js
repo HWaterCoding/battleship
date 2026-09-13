@@ -1,10 +1,10 @@
 import Players from "./players.js";
 
 export default class GameController{
-    constructor(){
+    constructor(playername){
         this.players = [
-            new Players("Player1", "human"),
-            new Players("Player2", "computer"),
+            new Players(playername, "human"),
+            new Players("CPU", "computer"),
         ]
         this.activePlayer = this.players[0];
         this.isGameActive = true;

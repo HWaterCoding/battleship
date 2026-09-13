@@ -129,9 +129,8 @@ main{
 }
 
 
-/* Generic Board Styling */
+/* Generic Tile Styling */
 .tile{
-    background: linear-gradient(135deg, #0077be, #00a8cc);
     box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--board-secondary);
     border-left: 2px solid var(--board-secondary);
@@ -148,6 +147,23 @@ main{
     flex: 1;
 }
 
+/* Tile State Stylings */
+
+.waterTile{
+    background: linear-gradient(135deg, #0077be, #00a8cc);
+}
+
+.shipTile{
+    background: linear-gradient(135deg, #525455, #2d2e2e);
+}
+
+.missTile{
+    background: linear-gradient(135deg, #d61c1c, #a80505);
+}
+
+.hitTile{
+    background: linear-gradient(135deg, #189e39, #10fa30);
+}
 
 
 

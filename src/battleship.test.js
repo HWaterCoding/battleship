@@ -288,3 +288,7 @@ test("resetGame() restores a fresh match", () => {
         });
     });
 });
+
+
+// rendering tests:::
+

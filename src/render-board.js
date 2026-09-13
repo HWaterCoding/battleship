@@ -26,14 +26,14 @@ export function createBoards(){
     
         for(let j = 0; j < 10; j++){
             const leftColumn = document.createElement("div");
-            leftColumn.classList.add("tile", "columns");
+            leftColumn.classList.add("tile", "waterTile", "columns");
             leftColumn.dataset.x = `${j}`;
             leftColumn.dataset.y = `${i}`;
 
             leftRow.appendChild(leftColumn);
 
             const rightColumn = document.createElement("div");
-            rightColumn.classList.add("tile", "columns");
+            rightColumn.classList.add("tile", "waterTile", "columns");
             rightColumn.dataset.x = `${j}`;
             rightColumn.dataset.y = `${i}`;
             rightRow.appendChild(rightColumn);
@@ -57,27 +57,27 @@ export function updateBoard(player, boardContainer, visible){
                 if(tile.ship === null){
                     //unattacked with no ship (water)
                     tileInDOM.className = "";
-                    tileInDOM.classList.add("tile", "waterTile");
+                    tileInDOM.classList.add("tile", "columns", "waterTile");
                 } else{
                     if(!visible){
                         //if opponent board, display ship tiles as water tiles.
                         tileInDOM.className = "";
-                        tileInDOM.classList.add("tile", "waterTile");
+                        tileInDOM.classList.add("tile", "columns", "waterTile");
                     } else{
                         //if your board, display ship tiles
                         tileInDOM.className = "";
-                        tileInDOM.classList.add("tile", "shipTile");
+                        tileInDOM.classList.add("tile", "columns", "shipTile");
                     }
                 }
             } else if(tile.attacked === "hit"){
                 //if the tile has been attacked and contains a ship
                 tileInDOM.className = "";
-                tileInDOM.classList.add("tile", "hitTile");
+                tileInDOM.classList.add("tile", "columns", "hitTile");
                 //eventually, update this to add a fire emoji to the tiles content
             } else if(tile.attacked === "miss"){
                 //if the tile has been attacked but is empty
                 tileInDOM.className = "";
-                tileInDOM.classList.add("tile", "missTile");
+                tileInDOM.classList.add("tile", "columns", "missTile");
                 //eventually, update this to add a red X emoji to the tiles content
             }
         })
