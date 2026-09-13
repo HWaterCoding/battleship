@@ -41,40 +41,45 @@ export function createBoards(){
     }
 }
 
+
 //pass in which player, which board, and coordinates.
-export function updateBoard(player, board, row, col){
-    //this function will be called after every playTurn()
-    //update board visual based on hit/miss/ship placed, etc...
+export function updateBoard(player, boardContainer, visible){
+    const gameboard = player.board.getBoard();
 
+    gameboard.forEach((internalRow, internalRowIndex)=>{
+        internalRow.forEach((tile, columnIndex)=>{
+            //tile = logical gameboard tile, need to find DOM tile
+            const rowInDOM = 9 - internalRowIndex;
+            //grab the corresponding tile in the DOM after inverting coordinate
+            const tileInDOM = boardContainer.querySelector(`[data-y="${rowInDOM}"][data-x="${columnIndex}"]`);
 
-    //pass in entire gameboard from getBoard() on object
-    //forEach loop through all tiles and ask what it's "ship" and "attacked"
-    //properties are. Create switch to determine what to display depending on
-    //what the current state of the tile that you're iterating on.
-
-    //MAKE SURE TO SPECIFY DIFFERENCE BETWEEN P1 BOARD AND OPPONENT BOARD
-    //within the same forEach() function, when investigating "ship" status of a 
-    //tile, ask who's board you're on. If it is the CPU board, don't render ship
-    //tiles. Only render the missedAttacks and hitAttacks based on attacked: state
-
-    //DON'T recreate entire board, just change classes on pre-existing tiles
-    //to update them visually
-
-
-    //HOW TO LINK RENDERED BOARD FROM ABOVE FUNCTION TO LOGICAL GAMEBOARD:
-    //when a tile is clicked, ask the data-x and data-y of the tile
-    //then retrieve the current state of the board from Gameboard class
-    //pass in the data-x and data-y of the tile to the Gameboard method
+            if(tile.attacked === "unattacked"){
+                if(tile.ship === null){
+                    //unattacked with no ship (water)
+                    tileInDOM.className = "";
+                    tileInDOM.classList.add("tile", "waterTile");
+                } else{
+                    if(!visible){
+                        //if opponent board, display ship tiles as water tiles.
+                        tileInDOM.className = "";
+                        tileInDOM.classList.add("tile", "waterTile");
+                    } else{
+                        //if your board, display ship tiles
+                        tileInDOM.className = "";
+                        tileInDOM.classList.add("tile", "shipTile");
+                    }
+                }
+            } else if(tile.attacked === "hit"){
+                //if the tile has been attacked and contains a ship
+                tileInDOM.className = "";
+                tileInDOM.classList.add("tile", "hitTile");
+                //eventually, update this to add a fire emoji to the tiles content
+            } else if(tile.attacked === "miss"){
+                //if the tile has been attacked but is empty
+                tileInDOM.className = "";
+                tileInDOM.classList.add("tile", "missTile");
+                //eventually, update this to add a red X emoji to the tiles content
+            }
+        })
+    })
 }
-
-
-
-//The opposing players board has to be invisible. So the computers board
-//cannot be visible to the player.
-
-//the "invisible" half of the board will only contain red "x's"
-//to indicate incorrect guessses
-//AND 
-//fire emoji's to indicate correct guesses
-
-//those tiles from contention and become unclickable
