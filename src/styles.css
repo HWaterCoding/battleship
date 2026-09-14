@@ -213,7 +213,7 @@ main {
 }
 
 .shipTile {
-  background: linear-gradient(135deg, #525455, #2d2e2e);
+  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
 }
 
 .missTile {
@@ -222,6 +222,10 @@ main {
 
 .hitTile {
   background: linear-gradient(135deg, #189e39, #10fa30);
+}
+
+.sunkTile {
+  background: linear-gradient(135deg, #171817, #323533);
 }
 
 

@@ -2,8 +2,6 @@ import "./styles.css";
 
 //entry point file
 
-//pseudocode:
-
 //------------ general --------------
 //use fire emoji to signify successful hit
 //use red X emoji to signify unsuccessful hit
@@ -11,16 +9,16 @@ import "./styles.css";
 //decide how to design boat for player
 //enforce the fact that every player has to play all their ships!
 
-//------------- players --------------
-
-//------------ DOM --------------
-//Opponents gameboard needs to hide ships (rendering)
-//(Reference how you did DOM creation in to-do list project)
-//determine the starting DOM look of the game in createDOM
-//create another js file to determine DOM updates
 
 //----------- ui-controller --------------
 //All button clicks/user interaction run through this file
+//cannot start game until all ships are placed.
+//cannot attack if not your turn
+//once game has started, cannot click your own board
+//once game has started, cannot place or move ships.
+//once a ship has been placed, cannot place that same ship
+//Need to create logic for CPU placing ships
+//Need to create logic for CPU attacking tiles
 
 import Gameboard from "./gameboard.js";
 import Players from "./players.js";
@@ -45,10 +43,15 @@ players[1].board.placeShip(0, 0, "up", yourShip);
 updateBoard(players[0], p1board, true);
 updateBoard(players[1], p2board, false);
 
-controller.playTurn(0, 0);
+controller.playTurn(0, 0); //p1 attacks p2
 controller.playTurn(0, 1);
-controller.playTurn(0, 2);
+controller.playTurn(2, 0); //p1 attacks p2
 controller.playTurn(0, 3);
+controller.playTurn(1, 0); //p1 attacks p2
+controller.playTurn(5, 3);
+controller.playTurn(3, 0)//p1 attacks p2
+
+
 updateBoard(players[0], p1board, true);
 updateBoard(players[1], p2board, false);
 
@@ -58,14 +61,13 @@ console.log(controller.players[1].board.board);
 
 
 //IMMEDIATE TO-DO:
-//Fix a few things in CSS:
-//coordinate-placement so that it matches the corresponding tiles
-//gameOverModal and overlay logic
-//style both placeship modal and gameover modal properly
-
-//------- after CSS updating --------
-
 //begin wiring events in the ui-controller.
 //start with placeShip button and confirmations. 
+//wire start game button and reset game button
+// ^^ Don't let start game button work until all ships placed
 //move on to event delegation for all board tiles .closest()
-//
+
+
+//CSS updating::
+//gameOverModal and overlay logic
+//style both placeship modal and gameover modal properly
