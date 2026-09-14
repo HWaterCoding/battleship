@@ -17,6 +17,38 @@
     </header>
 
     <main>
+        <div id="placeShipOverlay">
+            <div id="placeShipModal">
+                <form action="">
+                    <h3>Place your ship!</h3>
+
+                    <div>
+                        <label for="shipLength">Size</label>
+                        <input type="number" name="shipLength" id="shipLength">
+                    </div>
+
+                    <div>
+                        <label for="rowCoord">X</label>
+                        <input type="text" id="rowCoord">
+                    </div>
+
+                    <div>
+                        <label for="columnCoord">Y</label>
+                        <input type="text" id="columnCoord">
+                    </div>
+
+                    <select name="shipDirection" id="shipDirection">
+                        <option value="up">Up</option>
+                        <option value="right">Right</option>
+                        <option value="down">Down</option>
+                        <option value="left">Left</option>
+                    </select>
+                            
+                    <button type="submit">Place Ship</button>
+                </form>
+            </div>
+        </div>
+
         <div id="gameButtons">
             <button id="startGameBtn">Start Game!</button>
             <button id="resetGameBtn">Reset Game</button>
@@ -59,31 +91,7 @@
                     <p>9</p>
                 </div>
                 <h3>x</h3>
-                <!-- <button id="placeShipBtn">Place A Ship</button> -->
-
-                <div id="placeShipOverlay">
-                    <div id="placeShipModal">
-                        <form action="">
-                            <label for="shipLength">Size</label>
-                            <input type="number" name="shipLength" id="shipLength">
-
-                            <label for="rowCoord">X</label>
-                            <input type="text" id="rowCoord">
-                            
-                            <label for="columnCoord">Y</label>
-                            <input type="text" id="columnCoord">
-
-                            <select name="shipDirection" id="shipDirection">
-                                <option value="up">Up</option>
-                                <option value="right">Right</option>
-                                <option value="down">Down</option>
-                                <option value="left">Left</option>
-                            </select>
-                            
-                            <button type="submit">Place Ship</button>
-                        </form>
-                    </div>
-                </div>
+                <button id="placeShipBtn">Place A Ship</button>
             </div>
 
             <div id="rightPlayer">
@@ -118,15 +126,14 @@
                 </div>
                 <h3>x</h3>
             </div>
-    
-            <div id="gameOverOverlay">
-                <div id="gameOverModal">
-                    <h2>Game Over!</h2>
-                    <h3 id="winningText">The winner is ...!</h2>
-                    <button id="restartGame">Restart Game</button>
-                </div>
-            </div>
+        </div>
 
+        <div id="gameOverOverlay">
+            <div id="gameOverModal">
+                <h2>Game Over!</h2>
+                <h3 id="winningText">The winner is ...!</h2>
+                <button id="restartGame">Restart Game</button>
+            </div>
         </div>
     </main>
 

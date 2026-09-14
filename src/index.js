@@ -5,8 +5,9 @@ import "./styles.css";
 //pseudocode:
 
 //------------ general --------------
-//use fire emoji to signify successful hit 
+//use fire emoji to signify successful hit
 //use red X emoji to signify unsuccessful hit
+//NEED AN ADDITIONAL CLASS FOR WHEN A SHIP IS FULLY SUNK
 //decide how to design boat for player
 //enforce the fact that every player has to play all their ships!
 
@@ -21,15 +22,10 @@ import "./styles.css";
 //----------- ui-controller --------------
 //All button clicks/user interaction run through this file
 
-
-
 import Gameboard from "./gameboard.js";
 import Players from "./players.js";
 import { createBoards, updateBoard } from "./render-board.js";
 import GameController from "./game-controller.js";
-
-
-
 
 createBoards();
 
@@ -50,22 +46,26 @@ updateBoard(players[0], p1board, true);
 updateBoard(players[1], p2board, false);
 
 controller.playTurn(0, 0);
+controller.playTurn(0, 1);
+controller.playTurn(0, 2);
+controller.playTurn(0, 3);
 updateBoard(players[0], p1board, true);
 updateBoard(players[1], p2board, false);
-
 
 console.log(controller.players[0].board.board);
 console.log(controller.players[1].board.board);
 
 
-// const player1 = new Players();
-// player1.board.createBoard();
-// console.log(player1.board.getBoard());
-
-
 
 //IMMEDIATE TO-DO:
-//1. design a very basic layout for the webpage in the HTML
-//2. begin on the rendering logic; start by rendering in the boards
-//   on page load, and to be re-called upon resetting the game
-//3. handle rendering different board states(hit, miss, ship, etc)
+//Fix a few things in CSS:
+//coordinate-placement so that it matches the corresponding tiles
+//gameOverModal and overlay logic
+//style both placeship modal and gameover modal properly
+
+//------- after CSS updating --------
+
+//begin wiring events in the ui-controller.
+//start with placeShip button and confirmations. 
+//move on to event delegation for all board tiles .closest()
+//

@@ -1,12 +1,12 @@
 /* default styles */
-
-:root{
-    --board-primary: ;
-    --board-secondary: #c9c2c2;
-    --board-outline: rgb(136, 130, 130);
+:root {
+  --board-secondary: #c9c2c2;
+  --board-outline: rgb(136, 130, 130);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -14,182 +14,212 @@
   margin: 0;
 }
 
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
 p {
   text-wrap: pretty;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-wrap: balance;
 }
 
 
-
 /* General Styles */
 body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
-    background-color: bisque;
-    height: 100vh;
-
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  background-color: bisque;
+  height: 100vh;
 }
+
 
 /* Header Section */
-header{
-    background-color: gainsboro;
-    text-align: center;
-    padding: clamp(1rem, 20px, 1.5rem);
+header {
+  background-color: gainsboro;
+  text-align: center;
+  padding: clamp(1rem, 20px, 1.5rem);
 }
+
 
 /* Main Section */
-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
 }
+
 
 /* Above Boards Section */
-#gameButtons{
-    padding: clamp(0.5rem, 15px, 1.5rem);
-    display: flex;
-    gap: clamp(0.5rem, 1rem, 1.5rem);
+#gameButtons {
+  padding: clamp(0.5rem, 15px, 1.5rem);
+  display: flex;
+  gap: clamp(0.5rem, 1rem, 1.5rem);
 }
 
-#gameButtons button{
-    cursor: pointer;
+#gameButtons button {
+  cursor: pointer;
 }
 
-#turnText, #gameText{
-    font-size: 1.5rem;
-    /* font change + style */
+#turnText,
+#gameText {
+  font-size: 1.5rem;
+  /* font change + style */
 }
 
 
 /* Player Boards Section */
-
-#boardContainer{
-    display: flex;
-    gap: clamp(4rem, 100px, 8rem);
+#boardContainer {
+  display: flex;
+  gap: clamp(4rem, 100px, 8rem);
 }
 
 #leftPlayer,
-#rightPlayer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(1rem, 24px, 2rem);
+#rightPlayer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1rem, 24px, 2rem);
 }
 
 #leftPlayer h3,
-#rightPlayer h3{
-    font-size: 2.5rem;
+#rightPlayer h3 {
+  font-size: 2.5rem;
 }
 
-#leftPlayerBoard, 
-#rightPlayerBoard{
-    border: 12px solid var(--board-outline);
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    height: 650px; /* make responsive sizing*/
-    width: 650px; /* make responsive sizing*/
+#leftPlayerBoard,
+#rightPlayerBoard {
+  border: 12px solid var(--board-outline);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 650px; /* make responsive sizing*/
+  width: 650px; /* make responsive sizing*/
 }
 
-.boardSection{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.boardSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-#y-coords{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    flex: 1;
+#y-coords {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
 }
 
-#x-coords{
-    display: flex;
-    gap: 10px;
+#x-coords {
+  display: flex;
+  gap: 10px;
 }
 
 
 /* Generic Tile Styling */
-.tile{
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 10px 20px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--board-secondary);
-    border-left: 2px solid var(--board-secondary);
-    border-right: 2px solid var(--board-secondary);
-    cursor: pointer;
+.tile {
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--board-secondary);
+  border-left: 2px solid var(--board-secondary);
+  border-right: 2px solid var(--board-secondary);
+  cursor: pointer;
 }
 
-.rows{
-    display: flex;
-    flex: 1;
+.rows {
+  display: flex;
+  flex: 1;
 }
 
-.columns{
-    flex: 1;
+.columns {
+  flex: 1;
 }
+
 
 /* Tile State Stylings */
-
-.waterTile{
-    background: linear-gradient(135deg, #0077be, #00a8cc);
+.waterTile {
+  background: linear-gradient(135deg, #0077be, #00a8cc);
 }
 
-.shipTile{
-    background: linear-gradient(135deg, #525455, #2d2e2e);
+.shipTile {
+  background: linear-gradient(135deg, #525455, #2d2e2e);
 }
 
-.missTile{
-    background: linear-gradient(135deg, #d61c1c, #a80505);
+.missTile {
+  background: linear-gradient(135deg, #d61c1c, #a80505);
 }
 
-.hitTile{
-    background: linear-gradient(135deg, #189e39, #10fa30);
+.hitTile {
+  background: linear-gradient(135deg, #189e39, #10fa30);
 }
-
 
 
 
 /* Place Ship Overlay Form */
+#placeShipOverlay {
+  display: none;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: rgba(160, 221, 221, 50%);
+  height: 100%;
+  width: 100%;
+}
 
-#placeShipOverlay{
-    display: none;
+#placeShipModal {
+    background-color: red;
+    justify-content: center;
+    align-items: center;
 }
 
 
 
 /* Game Over Overlay */
-#gameOverOverlay{
-    display: none;
+#gameOverOverlay {
+  display: none;
 }
 
 
 
-
 /* Footer Section */
-footer{
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    align-items: center;
-    padding: clamp(1rem, 20px, 1.5rem);
-    background-color: gainsboro;
+footer {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1rem, 20px, 1.5rem);
+  background-color: gainsboro;
 }

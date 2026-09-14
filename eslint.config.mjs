@@ -9,11 +9,11 @@ export default defineConfig([
     plugins: {
       js,
     },
-    
+
     rules: {
-	  "no-unused-vars": "warn",
-	  "no-undef": "warn",
-	},
+      "no-unused-vars": "warn",
+      "no-undef": "warn",
+    },
 
     extends: ["js/recommended"],
 
