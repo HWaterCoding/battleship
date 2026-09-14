@@ -118,32 +118,61 @@ main {
   font-size: 2.5rem;
 }
 
+.boardSection {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: 1fr auto auto;
+    gap: 8px;
+}
+
 #leftPlayerBoard,
 #rightPlayerBoard {
   border: 12px solid var(--board-outline);
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  height: 650px; /* make responsive sizing*/
-  width: 650px; /* make responsive sizing*/
+  height: 650px; 
+  width: 650px;
+  grid-column: 3/4;
+  grid-row: 1/2;
 }
 
-.boardSection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.y-label{
+    grid-column: 1/2;
+    grid-row: 1/2;
 }
 
-#y-coords {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  flex: 1;
+.y-coords {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-column: 2/3;
+    grid-row: 1/2;
 }
 
-#x-coords {
-  display: flex;
-  gap: 10px;
+.x-label{
+    grid-column: 3/4;
+    grid-row: 3/4;
+}
+
+.x-coords {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-column: 3/4;
+    grid-row: 2/3;
+}
+
+.x-label,
+.y-label{
+    text-align: center;
+    align-self: center;
+}
+
+.y-coords p,
+.x-coords p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 

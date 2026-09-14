@@ -59,12 +59,11 @@
         <p id="gameText">Place your ships...</p> <!--Update this dynamically to post the result of the last turn, and eventually, who the winner is-->
     
         <div id="boardContainer">
-            <!-- populate these boards with for loops on load -->
             <div id="leftPlayer">
                 <h2 id="p1text">Player 1's board</h2>
                 <div class="boardSection">
-                    <h3>y</h3>
-                    <div id="y-coords">
+                    <h3 class="y-label">y</h3>
+                    <div class="y-coords">
                         <p>9</p>
                         <p>8</p>
                         <p>7</p>
@@ -77,28 +76,29 @@
                         <p>0</p>
                     </div>
                     <div id="leftPlayerBoard"></div>
+                    <div></div>
+                    <div class="x-coords">
+                        <p>0</p> 
+                        <p>1</p>
+                        <p>2</p>
+                        <p>3</p>
+                        <p>4</p>
+                        <p>5</p>
+                        <p>6</p>
+                        <p>7</p>
+                        <p>8</p>
+                        <p>9</p>
+                    </div>
+                    <h3 class="x-label">x</h3>
                 </div>
-                <div id="x-coords">
-                    <p>0</p> 
-                    <p>1</p>
-                    <p>2</p>
-                    <p>3</p>
-                    <p>4</p>
-                    <p>5</p>
-                    <p>6</p>
-                    <p>7</p>
-                    <p>8</p>
-                    <p>9</p>
-                </div>
-                <h3>x</h3>
                 <button id="placeShipBtn">Place A Ship</button>
             </div>
 
             <div id="rightPlayer">
                 <h2 id="p2text">Player 2's board</h2>
                 <div class="boardSection">
-                    <h3>y</h3>
-                    <div id="y-coords">
+                    <h3 class="y-label">y</h3>
+                    <div class="y-coords">
                         <p>9</p>
                         <p>8</p>
                         <p>7</p>
@@ -111,20 +111,21 @@
                         <p>0</p>
                     </div>
                     <div id="rightPlayerBoard"></div>
+                    <div></div>
+                    <div class="x-coords">
+                        <p>0</p> 
+                        <p>1</p>
+                        <p>2</p>
+                        <p>3</p>
+                        <p>4</p>
+                        <p>5</p>
+                        <p>6</p>
+                        <p>7</p>
+                        <p>8</p>
+                        <p>9</p>
+                    </div>
+                    <h3 class="x-label">x</h3>
                 </div>
-                <div id="x-coords">
-                    <p>0</p> 
-                    <p>1</p>
-                    <p>2</p>
-                    <p>3</p>
-                    <p>4</p>
-                    <p>5</p>
-                    <p>6</p>
-                    <p>7</p>
-                    <p>8</p>
-                    <p>9</p>
-                </div>
-                <h3>x</h3>
             </div>
         </div>
 
