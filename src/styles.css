@@ -105,6 +105,10 @@ main {
   gap: clamp(4rem, 100px, 8rem);
 }
 
+#boardDivider{
+  border: 2px red solid;
+}
+
 #leftPlayer,
 #rightPlayer {
   display: flex;
