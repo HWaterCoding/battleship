@@ -49,7 +49,7 @@ export default class Gameboard {
     const hasBeenPlaced = this.board.some((row) =>
       row.some((tile) => tile.ship === ship),
     );
-    if (hasBeenPlaced) throw new Error("Ship already placed!");
+    if (hasBeenPlaced) throw new Error("That ship already placed!");
 
     row = this.invertRowCoordinate(row);
     //make sure the ship is being placed on an empty square
@@ -63,7 +63,7 @@ export default class Gameboard {
       case "right":
         for (let i = 0; i < ship.length; i++) {
           const targetColumn = col + i;
-          if (targetColumn > 9) throw new Error("The ship can't fit here!");
+          if (targetColumn > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
           if (current.ship !== null)
@@ -78,7 +78,7 @@ export default class Gameboard {
       case "left":
         for (let i = 0; i < ship.length; i++) {
           const targetColumn = col - i;
-          if (targetColumn < 0) throw new Error("The ship can't fit here!");
+          if (targetColumn < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
           if (current.ship !== null)
@@ -93,7 +93,7 @@ export default class Gameboard {
       case "up":
         for (let i = 0; i < ship.length; i++) {
           const targetRow = row - i;
-          if (targetRow < 0) throw new Error("Off the board!");
+          if (targetRow < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
           if (current.ship !== null)
@@ -107,7 +107,7 @@ export default class Gameboard {
       case "down":
         for (let i = 0; i < ship.length; i++) {
           const targetRow = row + i;
-          if (targetRow > 9) throw new Error("Off the board!");
+          if (targetRow > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
           if (current.ship !== null)

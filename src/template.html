@@ -19,32 +19,35 @@
     <main>
         <div id="placeShipOverlay">
             <div id="placeShipModal">
-                <form action="">
-                    <h3>Place your ship!</h3>
+                <form id="placeShipForm">
+                    <h3 id="errorText">Place your ship!</h3>
 
                     <div>
-                        <label for="shipLength">Size</label>
-                        <input type="number" name="shipLength" id="shipLength">
+                        <label for="shipLength">Ship Length:</label>
+                        <input type="number" name="shipLength" id="shipLength" min="1" max="5" required>
                     </div>
 
                     <div>
-                        <label for="rowCoord">X</label>
-                        <input type="text" id="rowCoord">
+                        <label for="rowCoord">X-axis:</label>
+                        <input type="number" id="rowCoord" min="0" max="9" required>
                     </div>
 
                     <div>
-                        <label for="columnCoord">Y</label>
-                        <input type="text" id="columnCoord">
+                        <label for="columnCoord">Y-axis:</label>
+                        <input type="number" id="columnCoord" min="0" max="9" required>
                     </div>
 
-                    <select name="shipDirection" id="shipDirection">
+                    <select name="shipDirection" id="shipDirection" required>
                         <option value="up">Up</option>
                         <option value="right">Right</option>
                         <option value="down">Down</option>
                         <option value="left">Left</option>
                     </select>
-                            
-                    <button type="submit">Place Ship</button>
+                    
+                    <div id="placeShipModalButtons">
+                        <button id="submitPlaceShipBtn" type="submit">Place Ship</button>
+                        <button id="cancelShipBtn">Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -55,9 +58,9 @@
         </div>
     
         <!-- This changes to "it's (players) turn!"" when game starts -->
-        <p id="turnText">It's (players) turn!</p> <!--Update this dynamically to state who's turn it is-->
         <p id="gameText">Place your ships...</p> <!--Update this dynamically to post the result of the last turn, and eventually, who the winner is-->
-    
+        <p id="turnText">Player turn filler text</p> <!--Update this dynamically to state who's turn it is-->
+
         <div id="boardContainer">
             <div id="leftPlayer">
                 <!-- populate p1text with Players.name -->

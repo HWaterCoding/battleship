@@ -20,10 +20,11 @@ import "./styles.css";
 //Need to create logic for CPU placing ships
 //Need to create logic for CPU attacking tiles
 
-import Gameboard from "./gameboard.js";
-import Players from "./players.js";
 import { createBoards, updateBoard } from "./render-board.js";
 import GameController from "./game-controller.js";
+import initApp from "./ui-controller.js";
+
+initApp();
 
 createBoards();
 
@@ -49,7 +50,7 @@ controller.playTurn(2, 0); //p1 attacks p2
 controller.playTurn(0, 3);
 controller.playTurn(1, 0); //p1 attacks p2
 controller.playTurn(5, 3);
-controller.playTurn(3, 0)//p1 attacks p2
+controller.playTurn(3, 0); //p1 attacks p2
 
 
 updateBoard(players[0], p1board, true);
@@ -60,9 +61,16 @@ console.log(controller.players[1].board.board);
 
 
 
+
+
 //IMMEDIATE TO-DO:
-//begin wiring events in the ui-controller.
-//start with placeShip button and confirmations. 
+//add mandatory form validation for placing ships 
+//(set limits on ship length, only allow coordinates from 0-9, etc)
+//handle all the error messages correctly for form feedback. consider better ways to display!
+//(REVISIT HANDLING ERRORS LESSON IF NEEDED)
+
+
+
 //wire start game button and reset game button
 // ^^ Don't let start game button work until all ships placed
 //move on to event delegation for all board tiles .closest()

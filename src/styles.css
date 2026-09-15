@@ -93,7 +93,8 @@ main {
 }
 
 #turnText,
-#gameText {
+#gameText,
+#errorText {
   font-size: 1.5rem;
   /* font change + style */
 }
@@ -243,12 +244,30 @@ main {
 }
 
 #placeShipModal {
-    background-color: red;
+    background-color: rgb(224, 202, 202);
+    box-shadow: 0 0 10px 4px rgb(156, 7, 7);
+    border-radius: 15px;
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding: clamp(1rem, 20px, 1.5rem);
 }
 
+#placeShipForm{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+/* #placeShipForm div{
+  display: flex;
+  flex-direction: column;
+} */
+
+#placeShipModalButtons{
+  display: flex;
+  gap: 5px;
+}
 
 /* Game Over Overlay */
 #gameOverOverlay {
