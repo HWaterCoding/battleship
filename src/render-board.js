@@ -6,6 +6,9 @@ export function createBoards() {
   const leftPlayerBoard = document.getElementById("leftPlayerBoard");
   const rightPlayerBoard = document.getElementById("rightPlayerBoard");
 
+  leftPlayerBoard.innerHTML = "";
+  rightPlayerBoard.innerHTML = "";
+
   //this condition is to invert the dataset.y property for conversion
   for (let i = 9; i >= 0; i--) {
     const leftRow = document.createElement("div");
