@@ -88,6 +88,8 @@ export default function initApp() {
 
   //BOARD CLICKING EVENT LISTENERS
 
+  const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   //fix bug where I have to click twice to attack
   cpuBoard.addEventListener("click", async (event)=>{
     const tile = event.target.closest(".tile");
@@ -100,6 +102,8 @@ export default function initApp() {
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
+
+      await turnDelay(2000);
 
       const cpuCoords = getCpuAttack(controller.players[0].board);
       controller.playTurn(...cpuCoords);
