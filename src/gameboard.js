@@ -49,7 +49,7 @@ export default class Gameboard {
     const hasBeenPlaced = this.board.some((row) =>
       row.some((tile) => tile.ship === ship),
     );
-    if (hasBeenPlaced) throw new Error("That ship already placed!");
+    if(hasBeenPlaced) throw new Error("That ship already placed!");
 
     row = this.invertRowCoordinate(row);
     //make sure the ship is being placed on an empty square
@@ -66,8 +66,7 @@ export default class Gameboard {
           if (targetColumn > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
-          if (current.ship !== null)
-            throw new Error("There's already a ship here.");
+          if (current.ship !== null) throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row][col + i];
@@ -81,8 +80,7 @@ export default class Gameboard {
           if (targetColumn < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
-          if (current.ship !== null)
-            throw new Error("There's already a ship here.");
+          if (current.ship !== null) throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row][col - i];
@@ -96,8 +94,7 @@ export default class Gameboard {
           if (targetRow < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
-          if (current.ship !== null)
-            throw new Error("There's already a ship here.");
+          if (current.ship !== null) throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row - i][col];
@@ -110,8 +107,7 @@ export default class Gameboard {
           if (targetRow > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
-          if (current.ship !== null)
-            throw new Error("There's already a ship here.");
+          if (current.ship !== null) throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row + i][col];

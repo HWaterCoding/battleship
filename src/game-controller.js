@@ -7,7 +7,7 @@ export default class GameController {
       new Players("CPU", "computer"),
     ];
     this.activePlayer = this.players[0];
-    this.isGameActive = true;
+    this.isGameActive = false;
     this.winner = null;
   }
 
@@ -28,7 +28,7 @@ export default class GameController {
   playTurn(row, col) {
     //if game is not active, you cannot play. Throw error.
     if (this.isGameActive === false) {
-      throw new Error("This game has concluded!");
+      throw new Error("The game is not active!");
     }
 
     //attack the board of the player who is not the active player
@@ -65,8 +65,12 @@ export default class GameController {
     this.players[0].board.resetBoard();
     this.players[1].board.resetBoard();
 
-    this.isGameActive = true;
+    this.isGameActive = false;
     this.activePlayer = this.players[0];
     this.winner = null;
+  }
+
+  startGame(){
+    this.isGameActive = true;
   }
 }

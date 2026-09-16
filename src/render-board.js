@@ -12,10 +12,10 @@ export function createBoards() {
   //this condition is to invert the dataset.y property for conversion
   for (let i = 9; i >= 0; i--) {
     const leftRow = document.createElement("div");
-    leftRow.classList.add("tile", "rows");
+    leftRow.classList.add("rows");
 
     const rightRow = document.createElement("div");
-    rightRow.classList.add("tile", "rows");
+    rightRow.classList.add("rows");
 
     leftPlayerBoard.appendChild(leftRow);
     rightPlayerBoard.appendChild(rightRow);
