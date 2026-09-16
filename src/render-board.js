@@ -1,6 +1,4 @@
 //BOTH INITIAL DOM LOADING AND TURN-GENERATED DOM UPDATES
-import GameController from "./game-controller.js";
-import Players from "./players.js";
 
 export function createBoards() {
   const leftPlayerBoard = document.getElementById("leftPlayerBoard");

@@ -1,4 +1,5 @@
 //imports?
+import getCpuAttack from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
 
@@ -88,40 +89,24 @@ export default function initApp() {
   //BOARD CLICKING EVENT LISTENERS
 
   //fix bug where I have to click twice to attack
-  cpuBoard.addEventListener("click", (event)=>{
+  cpuBoard.addEventListener("click", async (event)=>{
     const tile = event.target.closest(".tile");
     try{
       if(!controller.isGameActive){
         throw new Error("You can't attack yet, the game hasn't started!");
       }
 
-      //MAKE SURE IT'S THE PLAYERS TURN FIRST
-
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
 
-      //Insert logic for getting CPU coordinates here
-      // controller.playTurn(CPUROW, CPUCOL);
-      // updateBoard(controller.players[0], p1Board, true);
+      const cpuCoords = getCpuAttack(controller.players[0].board);
+      controller.playTurn(...cpuCoords);
+      updateBoard(controller.players[0], p1Board, true);
 
     } catch (error){
       gameText.textContent = error;
     }
   })
-
-  //general flow for event listener above:
-  //1. Human clicks a CPU board tile
-  //2. is the activeplayer a human? ---> yes
-  //3. call playTurn() with clicked coordinates from UI
-  //4. render the CPU's board to update the attacked coordinate
-  //5. is the game still active/ is the game over? 
-  //6. if game is over, exit game early and deactivate.
-  //7. if game is still active, activeplayer will switch to CPU
-  //8. call CPU random coordinate generator function
-  //9. call playTurn() with randomly generated coordinates
-  //10. render the Human board to update the attacked coordinate
-
-
 }
