@@ -90,7 +90,6 @@ export default function initApp() {
 
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  //fix bug where I have to click twice to attack
   cpuBoard.addEventListener("click", async (event)=>{
     const tile = event.target.closest(".tile");
     try{
