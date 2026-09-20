@@ -1,5 +1,5 @@
 //pass in opponents gameboard and determine coordinate to attack
-export default function getCpuAttack(humanBoard){
+export function getCpuAttack(humanBoard){
     const row = Math.floor(Math.random() * 10);
     const col = Math.floor(Math.random() * 10);
 
@@ -24,3 +24,19 @@ export default function getCpuAttack(humanBoard){
 //This will prevent them from continually attacking adjacent tiles
 //when there is no more need to do so, after the ship they've found
 //has been sunk
+
+
+export function getCpuShip(cpuboard){
+    const row = Math.floor(Math.random() * 10);
+    const col = Math.floor(Math.random() * 10);
+
+    const directions = ["right", "left", "up", "down"];
+    const direction = directions[Math.floor(Math.random() * directions.length)];
+    
+    //change this to be if(placeShip throws error, then recurse)
+    if(cpuboard.board[row][col].ship !== null){
+        return getCpuShip(cpuboard);
+    } else{
+        return [row, col, direction];
+    }
+}

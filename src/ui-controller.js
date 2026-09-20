@@ -1,10 +1,25 @@
 //imports?
-import getCpuAttack from "./cpu-logic.js";
+import { getCpuAttack, getCpuShip } from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
 
 export default function initApp() {
+  //create new game instance. Change "john" to a username input
   const controller = new GameController("John");
+
+  (function populateCpuBoard(){
+    for(let i = 0; i < controller.players[1].board.ships.length - 1; i++){
+      const newShip = controller.players[1].board.ships[i];
+      const shipPlacements = getCpuShip(controller.players[1].board);
+      controller.players[1].board.placeShip(...shipPlacements, newShip);
+    }
+
+    console.log(controller.players[1].board);
+  })();
+
+
+
+
 
   const turnText = document.getElementById("turnText");
   const gameText = document.getElementById("gameText");
@@ -34,6 +49,8 @@ export default function initApp() {
     createBoards();
     gameText.textContent = "Place your ships...";
   });
+
+
 
 
   //place ship form 
@@ -97,12 +114,16 @@ export default function initApp() {
         throw new Error("You can't attack yet, the game hasn't started!");
       }
 
+      //prevent additional human clicks while it is CPU turn
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
 
+      //check here if the game is over? stuff below code in if()
+
       await turnDelay(2000);
+      //create a rendering function to display during turn delay
 
       const cpuCoords = getCpuAttack(controller.players[0].board);
       controller.playTurn(...cpuCoords);

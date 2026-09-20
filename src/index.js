@@ -25,7 +25,6 @@ import GameController from "./game-controller.js";
 import initApp from "./ui-controller.js";
 
 initApp();
-
 createBoards();
 
 // const controller = new GameController("John");
@@ -64,11 +63,7 @@ createBoards();
 
 
 //IMMEDIATE TO-DO:
-//add mandatory form validation for placing ships 
-//(set limits on ship length, only allow coordinates from 0-9, etc)
-//handle all the error messages correctly for form feedback. consider better ways to display!
-//(REVISIT HANDLING ERRORS LESSON IF NEEDED)
-
+//create placeShip() logic for the CPU upon page-load
 
 
 //wire start game button and reset game button
@@ -76,6 +71,14 @@ createBoards();
 //move on to event delegation for all board tiles .closest()
 
 
+
 //CSS updating::
 //gameOverModal and overlay logic
 //style both placeship modal and gameover modal properly
+//"grey-out" the startGameBtn by default and only make it clickable when the game is ready to be begun. Once the human has placed all of their ships, change the class on the button. Once the game is started, change the class back and revert it to it's "unclickable" state again
+
+
+//add mandatory form validation for placing ships 
+//(set limits on ship length, only allow coordinates from 0-9, etc)
+//handle all the error messages correctly for form feedback. consider better ways to display!
+//(REVISIT HANDLING ERRORS LESSON IF NEEDED)
