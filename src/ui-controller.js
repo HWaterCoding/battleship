@@ -1,5 +1,5 @@
 //imports?
-import { getCpuAttack, getCpuShip } from "./cpu-logic.js";
+import { getCpuAttack, placeCpuShips } from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
 
@@ -7,21 +7,11 @@ export default function initApp() {
   //create new game instance. Change "john" to a username input
   const controller = new GameController("John");
 
-  (function populateCpuBoard(){
-    for(let i = 0; i < controller.players[1].board.ships.length - 1; i++){
-      const newShip = controller.players[1].board.ships[i];
-      const shipPlacements = getCpuShip(controller.players[1].board);
-      controller.players[1].board.placeShip(...shipPlacements, newShip);
-    }
 
-    console.log(controller.players[1].board);
-  })();
-
-
-
-
-
+  //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
+  
+  //should be game instruction/what catches printable errors
   const gameText = document.getElementById("gameText");
   
   const p1Board = document.getElementById("leftPlayerBoard");
@@ -35,12 +25,37 @@ export default function initApp() {
   const resetGameBtn = document.getElementById("resetGameBtn");
 
   //toggle isGameActive on GameController object and start game
-  startGameBtn.addEventListener("click", ()=>{
-    //ask if all ships are placed. If not, throw error. Don't allow start.
-    // if(){}
+  // startGameBtn.addEventListener("click", ()=>{
+  //   if(controller.isGameActive){
+  //     throw new Error("The game is already active!");
+  //   }
 
-    //if all ships are placed, make the game active.
-    controller.startGame();
+  //   placeCpuShips(controller.players[1].board);
+  //   //ask if all human AND CPU ships are placed. If not, throw error.
+  //   // if(){}
+
+  //   //if all ships are placed, make the game active.
+  //   controller.startGame();
+  //   console.log(controller.players[1].board);
+  // });
+
+  startGameBtn.addEventListener("click", ()=>{
+    try{
+      if(controller.isGameActive){
+        throw new Error("The game is already active!");
+      }
+
+      placeCpuShips(controller.players[1].board);
+      //ask is all ships are placed before continuing, if NOT, throw error
+      // if(){
+
+      // }
+
+      controller.startGame();
+      console.log(controller.players[1].board);
+    } catch (error){
+      turnText.textContent = error;
+    }
   });
 
   //reset the game and board structures, then recreate the DOM
@@ -53,7 +68,7 @@ export default function initApp() {
 
 
 
-  //place ship form 
+  //PLACE SHIP FORM ELEMENTS
   const placeShipBtn = document.getElementById("placeShipBtn");
   const placeShipOverlay = document.getElementById("placeShipOverlay");
   const placeShipForm = document.getElementById("placeShipForm");
@@ -65,7 +80,7 @@ export default function initApp() {
   const shipLengthInput = document.getElementById("shipLength");
 
 
-  //place ship form event listeners
+  //PLACE SHIP FORM EVENT LISTENERS
   //open form btn
   placeShipBtn.addEventListener("click", ()=>{
     placeShipForm.reset();
@@ -103,10 +118,11 @@ export default function initApp() {
 
 
 
-  //BOARD CLICKING EVENT LISTENERS
 
+  //BOARD CLICKING/ATTACKING EVENT LISTENERS
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  //Clicking CPU board to play a full turn of both players
   cpuBoard.addEventListener("click", async (event)=>{
     const tile = event.target.closest(".tile");
     try{

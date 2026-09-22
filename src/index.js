@@ -60,10 +60,15 @@ createBoards();
 
 
 
-
-
 //IMMEDIATE TO-DO:
-//create placeShip() logic for the CPU upon page-load
+//1. fix getCpuShip(). Use passed in gameboard object and call placeShip()
+//directly in getCpuShip to ask if valid. If not, recurse
+//2. fix getCpuShip() implementation in populateCpuBoard() function
+//3. change players.board to players.gameboard for clarity: replace everywhere
+//4. Add cool-down to cpuBoard event listener. Prevent numerous clicks. 
+//enforce game over and add conditionals to control turn-based flow
+
+
 
 
 //wire start game button and reset game button

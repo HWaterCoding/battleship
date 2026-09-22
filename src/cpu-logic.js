@@ -26,17 +26,22 @@ export function getCpuAttack(humanBoard){
 //has been sunk
 
 
-export function getCpuShip(cpuboard){
-    const row = Math.floor(Math.random() * 10);
-    const col = Math.floor(Math.random() * 10);
 
+export function placeCpuShips(cpuBoard) {
     const directions = ["right", "left", "up", "down"];
-    const direction = directions[Math.floor(Math.random() * directions.length)];
-    
-    //change this to be if(placeShip throws error, then recurse)
-    if(cpuboard.board[row][col].ship !== null){
-        return getCpuShip(cpuboard);
-    } else{
-        return [row, col, direction];
+    let i = 0;
+
+    while (i < cpuBoard.ships.length) {
+        try {
+            const row = Math.floor(Math.random() * 10);
+            const col = Math.floor(Math.random() * 10);
+            const direction = directions[Math.floor(Math.random() * directions.length)];
+            const newShip = cpuBoard.ships[i];
+
+            cpuBoard.placeShip(row, col, direction, newShip);
+            i++;
+        } catch (error) {
+            console.warn(error);
+        }
     }
 }
