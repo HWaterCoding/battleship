@@ -33,7 +33,7 @@ export default class GameController {
 
     //attack the board of the player who is not the active player
     const opponent = this.getOpponent();
-    opponent.board.receiveAttack(row, col);
+    opponent.gameboard.receiveAttack(row, col);
 
     //if there is a winner, end the game and declare game inactive
     const isWinner = this.checkWinner();
@@ -50,7 +50,7 @@ export default class GameController {
   //check if active player is winner by asking if opponents ships are all sunk
   checkWinner() {
     const opponent = this.getOpponent();
-    const isWinner = opponent.board.isGameOver();
+    const isWinner = opponent.gameboard.isGameOver();
 
     //verify that someone has won the game
     if (isWinner) {
@@ -62,8 +62,8 @@ export default class GameController {
   //reset the gameboard and ship data of both players
   //re-activate game and set active player to player1 again and reset winner
   resetGame() {
-    this.players[0].board.resetBoard();
-    this.players[1].board.resetBoard();
+    this.players[0].gameboard.resetBoard();
+    this.players[1].gameboard.resetBoard();
 
     this.isGameActive = false;
     this.activePlayer = this.players[0];

@@ -31,12 +31,12 @@ export default function initApp() {
       // if(){
 
       // }
-      placeCpuShips(controller.players[1].board);
+      placeCpuShips(controller.players[1].gameboard);
 
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
       gameText.textContent = "Pick a square to attack...";
-      console.log(controller.players[1].board);
+      console.log(controller.players[1].gameboard);
     } catch (error){
       turnText.textContent = error;
     }
@@ -76,8 +76,8 @@ export default function initApp() {
   placeShipForm.addEventListener("submit", (event)=>{
     try{
       event.preventDefault();
-      const ship = controller.players[0].board.ships[shipLengthInput.value - 1];
-      controller.players[0].board.placeShip(
+      const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
+      controller.players[0].gameboard.placeShip(
         Number(rowCoordInput.value),
         Number(columnCoordInput.value),
         shipDirectionSelect.value,
@@ -85,8 +85,8 @@ export default function initApp() {
       );
       updateBoard(controller.players[0], p1Board, true);
       placeShipOverlay.style.display = "none";
-      console.log(controller.players[0].board);
-      console.log(controller.players[1].board);
+      console.log(controller.players[0].gameboard);
+      console.log(controller.players[1].gameboard);
     } catch (error){
       placeShipErrorText.style.color = "red";
       placeShipErrorText.textContent = error;
@@ -120,17 +120,19 @@ export default function initApp() {
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
-      turnText.textContent = "It is the computers move!"; 
+      turnText.textContent = "It is the computers move!";
+      gameText.textContent = "Please wait...";
 
       //check here if the game is over? stuff below code in if()
 
       await turnDelay(2000);
       //create a rendering function to display during turn delay
 
-      const cpuCoords = getCpuAttack(controller.players[0].board);
+      const cpuCoords = getCpuAttack(controller.players[0].gameboard);
       controller.playTurn(...cpuCoords);
       updateBoard(controller.players[0], p1Board, true);
       turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+      gameText.textContent = "Pick a square to attack...";
     } catch (error){
       gameText.textContent = error;
     }

@@ -36,7 +36,7 @@ export function createBoards() {
 }
 
 export function updateBoard(player, boardContainer, visible) {
-  const gameboard = player.board.getBoard();
+  const gameboard = player.gameboard.getBoard();
 
   gameboard.forEach((internalRow, internalRowIndex) => {
     internalRow.forEach((tile, columnIndex) => {

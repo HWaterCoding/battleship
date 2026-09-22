@@ -2,10 +2,17 @@ import "./styles.css";
 
 //entry point file
 
+// feature updates:
+// make it so that when an attack successfully hits a ship, it remains that players move.
+// make CPU targetting smarter by attacking adjacent tiles
+// create ship drag-and-drop logic
+// make the game 2-player possible
+
+
 //------------ general --------------
 //use fire emoji to signify successful hit
 //use red X emoji to signify unsuccessful hit
-//NEED AN ADDITIONAL CLASS FOR WHEN A SHIP IS FULLY SUNK
+//Style fully sunk ships a better way to make it obvious
 //decide how to design boat for player
 //enforce the fact that every player has to play all their ships!
 
@@ -52,7 +59,7 @@ createBoards();
 
 //IMMEDIATE TO-DO:
 //1. ask if all human ships are placed in startGameBtn event
-//2. change players.board to players.gameboard for clarity: replace everywhere
+
 //3. update all text elements properly like turnText and gameText
 //4. Fix cpuBoard event listener
 //5. Add cool-down to cpuBoard event listener. Prevent numerous clicks. 
