@@ -40,8 +40,8 @@ export function placeCpuShips(cpuBoard) {
 
             cpuBoard.placeShip(row, col, direction, newShip);
             i++;
-        } catch (error) {
-            console.warn(error);
+        } catch {
+            //do nothing with error, it's expected.
         }
     }
 }

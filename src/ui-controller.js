@@ -27,20 +27,22 @@ export default function initApp() {
         throw new Error("The game is already active!");
       }
 
-      placeCpuShips(controller.players[1].board);
       //ask is all ships are placed before continuing, if NOT, throw error
       // if(){
 
       // }
+      placeCpuShips(controller.players[1].board);
 
       controller.startGame();
+      turnText.textContent = `It is ${controller.players[0].name}'s move!`;
+      gameText.textContent = "Pick a square to attack...";
       console.log(controller.players[1].board);
     } catch (error){
       turnText.textContent = error;
     }
   });
 
-  
+
   //reset the game and board structures, then recreate the DOM
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
@@ -113,10 +115,12 @@ export default function initApp() {
       }
 
       //prevent additional human clicks while it is CPU turn
+      //do so with creating boolean "canPlay" or something
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
+      turnText.textContent = "It is the computers move!"; 
 
       //check here if the game is over? stuff below code in if()
 
@@ -126,7 +130,7 @@ export default function initApp() {
       const cpuCoords = getCpuAttack(controller.players[0].board);
       controller.playTurn(...cpuCoords);
       updateBoard(controller.players[0], p1Board, true);
-
+      turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
     } catch (error){
       gameText.textContent = error;
     }

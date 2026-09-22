@@ -10,16 +10,6 @@ import "./styles.css";
 //enforce the fact that every player has to play all their ships!
 
 
-//----------- ui-controller --------------
-//All button clicks/user interaction run through this file
-//cannot start game until all ships are placed.
-//cannot attack if not your turn
-//once game has started, cannot click your own board
-//once game has started, cannot place or move ships.
-//once a ship has been placed, cannot place that same ship
-//Need to create logic for CPU placing ships
-//Need to create logic for CPU attacking tiles
-
 import { createBoards, updateBoard } from "./render-board.js";
 import GameController from "./game-controller.js";
 import initApp from "./ui-controller.js";
@@ -61,20 +51,13 @@ createBoards();
 
 
 //IMMEDIATE TO-DO:
-//1. fix getCpuShip(). Use passed in gameboard object and call placeShip()
-//directly in getCpuShip to ask if valid. If not, recurse
-//2. fix getCpuShip() implementation in populateCpuBoard() function
-//3. change players.board to players.gameboard for clarity: replace everywhere
-//4. Add cool-down to cpuBoard event listener. Prevent numerous clicks. 
+//1. ask if all human ships are placed in startGameBtn event
+//2. change players.board to players.gameboard for clarity: replace everywhere
+//3. update all text elements properly like turnText and gameText
+//4. Fix cpuBoard event listener
+//5. Add cool-down to cpuBoard event listener. Prevent numerous clicks. 
 //enforce game over and add conditionals to control turn-based flow
-
-
-
-
-//wire start game button and reset game button
-// ^^ Don't let start game button work until all ships placed
-//move on to event delegation for all board tiles .closest()
-
+//6. disable placeShip() button when game is active (same as startBtn)
 
 
 //CSS updating::
