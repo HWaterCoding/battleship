@@ -10,35 +10,17 @@ export default function initApp() {
 
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
-  
+
   //should be game instruction/what catches printable errors
   const gameText = document.getElementById("gameText");
   
+  //Both physical gameboards
   const p1Board = document.getElementById("leftPlayerBoard");
   const cpuBoard = document.getElementById("rightPlayerBoard");
   
   
-
-
-  //START GAME AND RESET GAME BUTTONS
+  //START GAME BUTTON AND ACTIVATION
   const startGameBtn = document.getElementById("startGameBtn");
-  const resetGameBtn = document.getElementById("resetGameBtn");
-
-  //toggle isGameActive on GameController object and start game
-  // startGameBtn.addEventListener("click", ()=>{
-  //   if(controller.isGameActive){
-  //     throw new Error("The game is already active!");
-  //   }
-
-  //   placeCpuShips(controller.players[1].board);
-  //   //ask if all human AND CPU ships are placed. If not, throw error.
-  //   // if(){}
-
-  //   //if all ships are placed, make the game active.
-  //   controller.startGame();
-  //   console.log(controller.players[1].board);
-  // });
-
   startGameBtn.addEventListener("click", ()=>{
     try{
       if(controller.isGameActive){
@@ -58,14 +40,14 @@ export default function initApp() {
     }
   });
 
+  
   //reset the game and board structures, then recreate the DOM
+  const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
     createBoards();
     gameText.textContent = "Place your ships...";
   });
-
-
 
 
   //PLACE SHIP FORM ELEMENTS
