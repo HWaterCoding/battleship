@@ -117,6 +117,15 @@ export default class Gameboard {
     }
   }
 
+  isFleetPlaced(){
+    const allShipsPlaced = this.ships.every((ship) =>
+        this.board.some((row) =>
+          row.some((tile) => tile.ship === ship)
+        )
+      )
+      if(!allShipsPlaced) throw new Error("You must place ALL your ships!");
+  }
+
   //use coordinates clicked on to "receive" an attack and check if its a miss or hit
   receiveAttack(row, col) {
     row = this.invertRowCoordinate(row);

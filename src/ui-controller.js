@@ -7,7 +7,6 @@ export default function initApp() {
   //create new game instance. Change "john" to a username input
   const controller = new GameController("John");
 
-
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
 
@@ -27,18 +26,16 @@ export default function initApp() {
         throw new Error("The game is already active!");
       }
 
-      //ask is all ships are placed before continuing, if NOT, throw error
-      // if(){
+      controller.players[0].gameboard.isFleetPlaced();
 
-      // }
       placeCpuShips(controller.players[1].gameboard);
 
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
       gameText.textContent = "Pick a square to attack...";
-      console.log(controller.players[1].gameboard);
+      // console.log(controller.players[1].gameboard);
     } catch (error){
-      turnText.textContent = error;
+      gameText.textContent = error;
     }
   });
 
@@ -48,7 +45,8 @@ export default function initApp() {
   resetGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
     createBoards();
-    gameText.textContent = "Place your ships...";
+    turnText.textContent = "Place your ships...";
+    gameText.textContent = "";
   });
 
 
@@ -85,8 +83,10 @@ export default function initApp() {
       );
       updateBoard(controller.players[0], p1Board, true);
       placeShipOverlay.style.display = "none";
-      console.log(controller.players[0].gameboard);
-      console.log(controller.players[1].gameboard);
+
+      gameText.textContent = "";
+      // console.log(controller.players[0].gameboard);
+      // console.log(controller.players[1].gameboard);
     } catch (error){
       placeShipErrorText.style.color = "red";
       placeShipErrorText.textContent = error;
@@ -110,29 +110,48 @@ export default function initApp() {
   cpuBoard.addEventListener("click", async (event)=>{
     const tile = event.target.closest(".tile");
     try{
+      //if the game is not active, ask why (it hasn't started or has ended)
       if(!controller.isGameActive){
-        throw new Error("You can't attack yet, the game hasn't started!");
+        if(controller.winner){
+          throw new Error(`This game is over! ${controller.winner.name} has won!`)
+        } else {
+          throw new Error("You can't attack yet, the game hasn't started!");
+        }
       }
 
       //prevent additional human clicks while it is CPU turn
-      //do so with creating boolean "canPlay" or something
+      if(controller.activePlayer === controller.players[1]){
+        throw new Error("It is not your turn. Please wait.");
+      }
+
+      //generate human players attack move
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
       controller.playTurn(row, col);
       updateBoard(controller.players[1], cpuBoard, false);
-      turnText.textContent = "It is the computers move!";
-      gameText.textContent = "Please wait...";
+      
+      //if the human move doesn't result in winner, let CPU play.
+      if(!controller.winner){
+        turnText.textContent = "It is the computers move!";
+        gameText.textContent = "Please wait...";
 
-      //check here if the game is over? stuff below code in if()
+        await turnDelay(2000);
+        //create a rendering function to display during turn delay, and call it here
 
-      await turnDelay(2000);
-      //create a rendering function to display during turn delay
+        const cpuCoords = getCpuAttack(controller.players[0].gameboard);
+        controller.playTurn(...cpuCoords);
+        updateBoard(controller.players[0], p1Board, true);
 
-      const cpuCoords = getCpuAttack(controller.players[0].gameboard);
-      controller.playTurn(...cpuCoords);
-      updateBoard(controller.players[0], p1Board, true);
-      turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
-      gameText.textContent = "Pick a square to attack...";
+        //check here if CPU move has won the game? Maybe not necessary
+        //because the next click already checks if game is active,
+        //and playTurn() says it isn't if there's a winner.
+
+        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+        gameText.textContent = "Pick a square to attack...";
+      } else {
+        // if human has won, end the game here, don't let CPU play.
+        gameText.textContent = `The winner is ${controller.winner.name}!`
+      }
     } catch (error){
       gameText.textContent = error;
     }

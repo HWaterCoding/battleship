@@ -7,6 +7,8 @@ import "./styles.css";
 // make CPU targetting smarter by attacking adjacent tiles
 // create ship drag-and-drop logic
 // make the game 2-player possible
+// add sound effects to the game (like for hitting a ship, explosion sound)
+
 
 
 //------------ general --------------
@@ -58,8 +60,6 @@ createBoards();
 
 
 //IMMEDIATE TO-DO:
-//1. ask if all human ships are placed in startGameBtn event
-
 //3. update all text elements properly like turnText and gameText
 //4. Fix cpuBoard event listener
 //5. Add cool-down to cpuBoard event listener. Prevent numerous clicks. 
