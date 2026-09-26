@@ -142,10 +142,6 @@ export default function initApp() {
         controller.playTurn(...cpuCoords);
         updateBoard(controller.players[0], p1Board, true);
 
-        //check here if CPU move has won the game? Maybe not necessary
-        //because the next click already checks if game is active,
-        //and playTurn() says it isn't if there's a winner.
-
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
       } else {
