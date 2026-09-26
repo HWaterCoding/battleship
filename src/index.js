@@ -19,8 +19,7 @@ import "./styles.css";
 //enforce the fact that every player has to play all their ships!
 
 
-import { createBoards, updateBoard } from "./render-board.js";
-import GameController from "./game-controller.js";
+import { createBoards } from "./render-board.js";
 import initApp from "./ui-controller.js";
 
 initApp();

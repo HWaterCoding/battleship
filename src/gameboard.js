@@ -149,6 +149,16 @@ export default class Gameboard {
     }
   }
 
+  isAttacked(row, col){
+    row = this.invertRowCoordinate(row);
+  
+    if(this.board[row][col].attacked === "unattacked"){
+      return false;
+    } else{
+      return true;
+    }
+  }
+
   //determine if all ships are sunk after every move
   isGameOver() {
     return this.ships.every((ship) => ship.sunk);

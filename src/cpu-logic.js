@@ -3,7 +3,7 @@ export function getCpuAttack(humanBoard){
     const row = Math.floor(Math.random() * 10);
     const col = Math.floor(Math.random() * 10);
 
-    if(humanBoard.board[row][col].attacked !== "unattacked"){
+    if(humanBoard.isAttacked(row, col)){
         return getCpuAttack(humanBoard);
     } else{
         return [row, col];
