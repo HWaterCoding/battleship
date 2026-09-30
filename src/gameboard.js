@@ -117,6 +117,7 @@ export default class Gameboard {
     }
   }
 
+  //verify the entire pleet has been placed
   isFleetPlaced(){
     const allShipsPlaced = this.ships.every((ship) =>
         this.board.some((row) =>
@@ -149,6 +150,7 @@ export default class Gameboard {
     }
   }
 
+  //pass in a tile and ask if it has already been attacked
   isAttacked(row, col){
     row = this.invertRowCoordinate(row);
   
@@ -158,6 +160,31 @@ export default class Gameboard {
       return true;
     }
   }
+
+  //retrieve information about the last attack for CPU
+  getAttackInfo(row, col){
+    row = this.invertRowCoordinate(row);
+
+    //this tile was a successful hit
+    if(this.board[row][col].attacked === "hit"){
+      if(this.board[row][col].ship.sunk === true){
+        return {
+          hit: true,
+          sunk: true
+        }
+      } else {
+        return {
+          hit: true,
+          sunk: false
+        }
+      }
+    } else{
+      return {
+        hit: false
+      }
+    }
+  }
+
 
   //determine if all ships are sunk after every move
   isGameOver() {

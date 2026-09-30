@@ -1,11 +1,13 @@
 //imports?
-import { getCpuAttack, placeCpuShips } from "./cpu-logic.js";
+import { CPU, placeCpuShips } from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
 
 export default function initApp() {
   //create new game instance. Change "john" to a username input
   const controller = new GameController("John");
+  //create new CPU instance 
+  const computer = CPU();
 
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
@@ -44,6 +46,7 @@ export default function initApp() {
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
+    computer.resetCPU();
     createBoards();
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
@@ -138,7 +141,7 @@ export default function initApp() {
         await turnDelay(2000);
         //create a rendering function to display during turn delay, and call it here
 
-        const cpuCoords = getCpuAttack(controller.players[0].gameboard);
+        const cpuCoords = computer.chooseAttack(controller.players[0].gameboard);
         controller.playTurn(...cpuCoords);
         updateBoard(controller.players[0], p1Board, true);
 

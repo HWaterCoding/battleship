@@ -22,6 +22,22 @@ createBoards();
 // 5. add sound effects to the game (like for hitting a ship, explosion sound)
 
 
+//CURRENT:
+//CPU TARGETTING:
+//if two ships are placed side-by-side, the CPU targetting logic may
+//consider them the same ship while attacking adjacently. Fix thise by either
+//allowing the CPU to suffer the same way a human would in this circumstance,
+//OR, don't allow players to place ships next to each other
+
+
+
+
+
+
+
+
+
+
 //CSS UPDATING:
 //gameOverModal and overlay logic
 //style both placeship modal and gameover modal properly
