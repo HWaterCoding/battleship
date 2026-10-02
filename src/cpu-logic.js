@@ -3,7 +3,6 @@
 export function CPU(){
     let lastAttack = null; //last coordinates attacked, ex: [3, 3]
     let currentHunt = []; //collection of recently hit tiles (before sunk)
-    let attackOrientation = null; //attack direction (horizontal/vertical)
     let currentlyHunting = false; //CHANGE THIS TO REFLECT 3 STATES BELOW
 
     //change currentlyHunting to logic below.
@@ -66,8 +65,6 @@ export function CPU(){
                 currentRow[0] > maxRow[0] ? currentRow : maxRow
             );
             orientedAttacks.push([highestFirst + 1, highestSecond]);
-
-            return orientedAttacks;
         }
 
         if(orientation === "horizontal"){
@@ -80,8 +77,6 @@ export function CPU(){
                 currentCol[1] > maxCol[1] ? currentCol : maxCol
             );
             orientedAttacks.push([highestFirst, highestSecond + 1]);
-
-            return orientedAttacks;
         }
 
         if(orientation === null){
@@ -94,7 +89,7 @@ export function CPU(){
         //filter through 2 returned attacks for outside of board/already attacked
         const validAttacks = orientedAttacks.filter(([row, col]) =>{
             const insideBoard = row >= 0 && row <= 9 && col >= 0 && col <= 9;
-            return insideBoard & !humanBoard.isAttacked(row, col);
+            return insideBoard && !humanBoard.isAttacked(row, col);
         });
 
         return validAttacks[Math.floor(Math.random() * validAttacks.length)]
