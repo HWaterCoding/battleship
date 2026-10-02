@@ -3,24 +3,109 @@
 export function CPU(){
     let lastAttack = null; //last coordinates attacked, ex: [3, 3]
     let currentHunt = []; //collection of recently hit tiles (before sunk)
-    let currentlyHunting = false; //boolean to ask if we attack adjacently
     let attackOrientation = null; //attack direction (horizontal/vertical)
+    let currentlyHunting = false; //CHANGE THIS TO REFLECT 3 STATES BELOW
+
+    //change currentlyHunting to logic below.
+    //SEARCH = no known hits, attacking randomly.
+    //HUNT = one known hit, attacking adjacently
+    //TARGET = two+ known hits, attacking on a known axis (orientation)
+    //once ship is sunk, revert to search mode.
+
+    // function getValidAttacks(attacks, humanBoard){
+    //     const validAttacks = attacks.filter(([row, col]) =>{
+    //         const insideBoard = row >= 0 && row <= 9 && col >= 0 && col <= 9;
+    //         return insideBoard & !humanBoard.isAttacked(row, col);
+    //     })
+    //     return validAttacks;
+    // }
+
+    function getOrientedAttack(humanBoard){
+
+        function getOrientation(){
+            if(currentHunt.length < 2) return null;
+            //loop through currentHunt --> compare values ask which coordinate is changing
+            //if both are changing, then there is no orientation, return to adjacent targetting
+            //if only one is changing, determine if orientation is vertical or horizontal
+
+            const [firstHit] = currentHunt;
+            const baseRow = firstHit[0];
+            const baseCol = firstHit[1];
+
+            let rowChanged = false;
+            let colChanged = false;
+
+            for(let i = 1; i < currentHunt.length; i++){
+                const currentHit = currentHunt[i];
+
+                if(currentHit[0] !== baseRow) rowChanged = true;
+                if(currentHit[1] !== baseCol) colChanged = true;
+            }
+
+            if(rowChanged && colChanged) return null;
+            if(rowChanged) return "vertical";
+            if(colChanged) return "horizontal";
+        }
+
+        const orientedAttacks = [];
+
+        const orientation = getOrientation();
+
+        //compare the values of all row/col coordinates.
+        //find the lowest and highest coordinates stored in the hunt
+        //subtract and add 1 respectively to find the end points
+        //return those two tiles as the next tiles to attack
+
+        if(orientation === "vertical"){
+            const [lowestFirst, lowestSecond] = currentHunt.reduce((minRow, currentRow) => 
+                currentRow[0] < minRow[0] ? currentRow : minRow
+            );
+            orientedAttacks.push([lowestFirst - 1, lowestSecond]);
+            
+            const [highestFirst, highestSecond] = currentHunt.reduce((maxRow, currentRow) => 
+                currentRow[0] > maxRow[0] ? currentRow : maxRow
+            );
+            orientedAttacks.push([highestFirst + 1, highestSecond]);
+
+            return orientedAttacks;
+        }
+
+        if(orientation === "horizontal"){
+            const [lowestFirst, lowestSecond] = currentHunt.reduce((minCol, currentCol) => 
+                currentCol[1] < minCol[1] ? currentCol : minCol
+            );
+            orientedAttacks.push([lowestFirst, lowestSecond - 1]);
+            
+            const [highestFirst, highestSecond] = currentHunt.reduce((maxCol, currentCol) => 
+                currentCol[1] > maxCol[1] ? currentCol : maxCol
+            );
+            orientedAttacks.push([highestFirst, highestSecond + 1]);
+
+            return orientedAttacks;
+        }
+
+        if(orientation === null){
+            currentlyHunting = false;
+            //switch back to adjacent targetting here?
+            //can maybe call getAdjacentAttack() right here, OR, when getOrientedAttack()
+            //is called, ask if it returns null, if it does, switch to getAdjacentAttack()
+        }
+
+        //filter through 2 returned attacks for outside of board/already attacked
+        const validAttacks = orientedAttacks.filter(([row, col]) =>{
+            const insideBoard = row >= 0 && row <= 9 && col >= 0 && col <= 9;
+            return insideBoard & !humanBoard.isAttacked(row, col);
+        });
+
+        return validAttacks[Math.floor(Math.random() * validAttacks.length)]
+    }
 
 
     //generate random adjacent attack based on last tile hit
     function getAdjacentAttack(humanBoard){
-        //NOT DONE, CONSIDER DIRECTIONAL ATTACKING
-        //in order to determine if the ship is horizontal/vertical
-        //compare two or more successful hits, and ask which coordinate
-        //is changing. if the row is changing, the ship is vertical
-        //if the column is changing, the ship is horizontal.
-        //change the attackOrientation to the result, then write a new
-        //algorithm to only change the coordinates along that axis.
 
-
-        //(probably change this simply to the first element in the array)
-        //then compare subsequent elements to determine direction
-        const [row, col] = currentHunt[currentHunt.length - 1]; //MAYBE?
+        //UPDATE:: this and decide WHICH hit to adjacently attack and why/how
+        const [row, col] = currentHunt[currentHunt.length - 1]; 
 
         const potentialAttacks = [
             [row + 1, col],
@@ -37,13 +122,14 @@ export function CPU(){
 
         if(validAttacks.length === 0){
             throw new Error("No valid adjacent tiles to attack.");
-        }; //UNSURE ABOUT THIS ERROR? Should hopefully never happen?
+        };
 
         return validAttacks[Math.floor(Math.random() * validAttacks.length)];
     }
 
 
     //generate random attack on board
+    //UPGRADE:: this to choose only from valid tiles rather than randomly guessing
     function getRandomAttack(){
         let row = Math.floor(Math.random() * 10);
         let col = Math.floor(Math.random() * 10);
@@ -56,26 +142,40 @@ export function CPU(){
     function chooseAttack(humanBoard){
         let attack; //name this result instead?
 
+
+        //FIX THIS TO ACCOMODATE ORIENTED ATTACKS
         if(lastAttack === null) {
             attack = getRandomAttack();
         } else{
             const lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
+            //if last attack was a hit, add it to the hunt
             if(lastAttackInfo.hit === true){
                 currentHunt.push(lastAttack);
+
+                //if sunk, we're no longer hunting. Attack randomly.
                 if(lastAttackInfo.sunk === true){
-                    //if sunk, we're no longer hunting. Attack randomly.
                     currentlyHunting = false;
+                    currentHunt = [];
                     attack = getRandomAttack();
                 } else{
-                    //if not sunk, still hunting, attack adjacently
                     currentlyHunting = true;
-                    attack = getAdjacentAttack(humanBoard);
+                    //attack based on orientation if 2 or more successful hits
+                    if(currentHunt.length >= 2){
+                        attack = getOrientedAttack(humanBoard);
+                    } else {
+                        //if only 1 hit stored, attack adjacently
+                        attack = getAdjacentAttack(humanBoard);
+                    }
                 }
             } else {
                 //last attack was a miss
+                //still hunting a ship despite that miss
                 if(currentlyHunting){
-                    //are we still hunting a ship despite that miss? adjacent
-                    attack = getAdjacentAttack(humanBoard);
+                    if(currentHunt.length >= 2){
+                        attack = getOrientedAttack(humanBoard);
+                    } else{
+                        attack = getAdjacentAttack(humanBoard);
+                    }
                 } else{
                     //last attack was a miss and we aren't hunting? random
                     attack = getRandomAttack();
