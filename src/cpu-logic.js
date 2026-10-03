@@ -2,7 +2,7 @@
 
 export function CPU(){
     let lastAttack = null; //last coordinates attacked, ex: [3, 3]
-    let currentHunt = []; //collection of recently hit tiles (before sunk)
+    let unresolvedHits = []; //collection of hit tiles that are not sunk
     let currentlyHunting = false; //CHANGE THIS TO REFLECT 3 STATES BELOW
 
     //change currentlyHunting to logic below.
@@ -22,20 +22,20 @@ export function CPU(){
     function getOrientedAttack(humanBoard){
 
         function getOrientation(){
-            if(currentHunt.length < 2) return null;
+            if(unresolvedHits.length < 2) return null;
             //loop through currentHunt --> compare values ask which coordinate is changing
             //if both are changing, then there is no orientation, return to adjacent targetting
             //if only one is changing, determine if orientation is vertical or horizontal
 
-            const [firstHit] = currentHunt;
+            const [firstHit] = unresolvedHits;
             const baseRow = firstHit[0];
             const baseCol = firstHit[1];
 
             let rowChanged = false;
             let colChanged = false;
 
-            for(let i = 1; i < currentHunt.length; i++){
-                const currentHit = currentHunt[i];
+            for(let i = 1; i < unresolvedHits.length; i++){
+                const currentHit = unresolvedHits[i];
 
                 if(currentHit[0] !== baseRow) rowChanged = true;
                 if(currentHit[1] !== baseCol) colChanged = true;
@@ -56,24 +56,24 @@ export function CPU(){
         //return those two tiles as the next tiles to attack
 
         if(orientation === "vertical"){
-            const [lowestFirst, lowestSecond] = currentHunt.reduce((minRow, currentRow) => 
+            const [lowestFirst, lowestSecond] = unresolvedHits.reduce((minRow, currentRow) => 
                 currentRow[0] < minRow[0] ? currentRow : minRow
             );
             orientedAttacks.push([lowestFirst - 1, lowestSecond]);
             
-            const [highestFirst, highestSecond] = currentHunt.reduce((maxRow, currentRow) => 
+            const [highestFirst, highestSecond] = unresolvedHits.reduce((maxRow, currentRow) => 
                 currentRow[0] > maxRow[0] ? currentRow : maxRow
             );
             orientedAttacks.push([highestFirst + 1, highestSecond]);
         }
 
         if(orientation === "horizontal"){
-            const [lowestFirst, lowestSecond] = currentHunt.reduce((minCol, currentCol) => 
+            const [lowestFirst, lowestSecond] = unresolvedHits.reduce((minCol, currentCol) => 
                 currentCol[1] < minCol[1] ? currentCol : minCol
             );
             orientedAttacks.push([lowestFirst, lowestSecond - 1]);
             
-            const [highestFirst, highestSecond] = currentHunt.reduce((maxCol, currentCol) => 
+            const [highestFirst, highestSecond] = unresolvedHits.reduce((maxCol, currentCol) => 
                 currentCol[1] > maxCol[1] ? currentCol : maxCol
             );
             orientedAttacks.push([highestFirst, highestSecond + 1]);
@@ -81,9 +81,7 @@ export function CPU(){
 
         if(orientation === null){
             currentlyHunting = false;
-            //switch back to adjacent targetting here?
-            //can maybe call getAdjacentAttack() right here, OR, when getOrientedAttack()
-            //is called, ask if it returns null, if it does, switch to getAdjacentAttack()
+            return null;
         }
 
         //filter through 2 returned attacks for outside of board/already attacked
@@ -92,15 +90,16 @@ export function CPU(){
             return insideBoard && !humanBoard.isAttacked(row, col);
         });
 
-        return validAttacks[Math.floor(Math.random() * validAttacks.length)]
+        return !validAttacks.length === 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
 
 
     //generate random adjacent attack based on last tile hit
     function getAdjacentAttack(humanBoard){
 
-        //UPDATE:: this and decide WHICH hit to adjacently attack and why/how
-        const [row, col] = currentHunt[currentHunt.length - 1]; 
+        if(unresolvedHits.length < 1) return null;
+
+        const [row, col] = unresolvedHits[Math.floor(Math.random() * unresolvedHits.length)]; 
 
         const potentialAttacks = [
             [row + 1, col],
@@ -115,11 +114,7 @@ export function CPU(){
             return insideBoard && !humanBoard.isAttacked(row, col);
         });
 
-        if(validAttacks.length === 0){
-            throw new Error("No valid adjacent tiles to attack.");
-        };
-
-        return validAttacks[Math.floor(Math.random() * validAttacks.length)];
+        return !validAttacks.length === 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
 
 
@@ -133,108 +128,44 @@ export function CPU(){
     }
 
 
-    //choose between random/adjacent attack
+    //choose between the three styles of attacking
     function chooseAttack(humanBoard){
-        let attack; //name this result instead?
+        let result; 
 
-
-        //FIX THIS TO ACCOMODATE ORIENTED ATTACKS
-        if(lastAttack === null) {
-            attack = getRandomAttack();
-        } else{
-            const lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
-            //if last attack was a hit, add it to the hunt
+        if(lastAttack === null){
+            result = getRandomAttack();
+        } else {
+            let lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
             if(lastAttackInfo.hit === true){
-                currentHunt.push(lastAttack);
-
-                //if sunk, we're no longer hunting. Attack randomly.
+                unresolvedHits.push(lastAttack);
                 if(lastAttackInfo.sunk === true){
-                    currentlyHunting = false;
-                    currentHunt = [];
-                    attack = getRandomAttack();
-                } else{
-                    currentlyHunting = true;
-                    //attack based on orientation if 2 or more successful hits
-                    if(currentHunt.length >= 2){
-                        attack = getOrientedAttack(humanBoard);
-                    } else {
-                        //if only 1 hit stored, attack adjacently
-                        attack = getAdjacentAttack(humanBoard);
-                    }
-                }
-            } else {
-                //last attack was a miss
-                //still hunting a ship despite that miss
-                if(currentlyHunting){
-                    if(currentHunt.length >= 2){
-                        attack = getOrientedAttack(humanBoard);
-                    } else{
-                        attack = getAdjacentAttack(humanBoard);
-                    }
-                } else{
-                    //last attack was a miss and we aren't hunting? random
-                    attack = getRandomAttack();
+                    unresolvedHits = [];
                 }
             }
+
+            //attack in decreasing versions of logic to pick best move 
+            result = getOrientedAttack(humanBoard);
+            if(result === null) result = getAdjacentAttack(humanBoard);
+            if(result === null) result = getRandomAttack();
         }
 
-        if(humanBoard.isAttacked(...attack)){
-            return chooseAttack(humanBoard);
-        } else{
-            lastAttack = attack;
-            return attack;
-        }
+        lastAttack = result;
+        return result;
     }
 
 
     //One function to reset the state of the CPU
     function resetCPU(){
         lastAttack = null;
-        currentHunt = [];
+        unresolvedHits = [];
         currentlyHunting = false;
-        attackOrientation = null;
     }
 
     return { resetCPU, chooseAttack }
 }
 
 
-
-
-
-
-//create a variable "lastAttack = null" in getCpuAttack function at top
-//ask if the lastAttack was a hit. (careful of inversion)
-//if last attack was a hit
-//inside if(lastAttack = hit), ask if the ship got sunk.
-//if the ship wasn't sunk, create algorithm to attack adjacently.
-//if the ship was sunk, exit conditional and continue function call
-
-//if last attack wasn't a hit, then get the random row and col coordinates.
-
-//check the final coordinates generated if attacked. 
-//if attacked already, call getCpuAttack() recursively.
-//else, update "lastAttack" to current coordinates and return them
-
-
-
-//Add smarter targetting here
-//When the CPU successfully hits a ship, ensure that it's next attack
-//attacks an adjacent tile to the hit tile. 
-
-//important things to think of:
-//Create a variable to store the last-hit tile. if [1,1] is a hit, 
-//and it tries [0,1], but that's a miss, it should look for adjacent
-//tiles of [1, 1], not [0, 1]. Only update the "lastHit" variable
-//on a hit. (obviously)
-
-//The CPU should also know once a ship that they've hit is sunk. 
-//This will prevent them from continually attacking adjacent tiles
-//when there is no more need to do so, after the ship they've found
-//has been sunk
-
-
-
+//randomized placement of CPU ship objects 
 export function placeCpuShips(cpuBoard) {
     const directions = ["right", "left", "up", "down"];
     let i = 0;
@@ -253,3 +184,63 @@ export function placeCpuShips(cpuBoard) {
         }
     }
 }
+
+
+
+
+
+
+
+
+//choose between random/adjacent/oriented attack
+    // function chooseAttack(humanBoard){
+    //     let attack;
+
+    //     //FIX THIS TO ACCOMODATE ORIENTED ATTACKS
+    //     if(lastAttack === null) {
+    //         attack = getRandomAttack();
+    //     } else{
+    //         const lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
+
+    //         //if last attack was a hit, add it to the hunt
+    //         if(lastAttackInfo.hit === true){
+    //             unresolvedHits.push(lastAttack);
+
+    //             //if sunk, we're no longer hunting. Attack randomly.
+    //             if(lastAttackInfo.sunk === true){
+    //                 currentlyHunting = false; // Only if currentHunt = [];
+    //                 unresolvedHits = []; //this is not correct. Could be other ships
+    //                 attack = getRandomAttack();
+    //             } else{
+    //                 currentlyHunting = true;
+    //                 //attack based on orientation if 2 or more successful hits
+    //                 if(unresolvedHits.length >= 2){
+    //                     attack = getOrientedAttack(humanBoard);
+    //                 } else {
+    //                     //if only 1 hit stored, attack adjacently
+    //                     attack = getAdjacentAttack(humanBoard);
+    //                 }
+    //             }
+    //             //last attack was a miss
+    //         } else {
+    //             //still hunting a ship despite that miss
+    //             if(currentlyHunting){
+    //                 if(unresolvedHits.length >= 2){
+    //                     attack = getOrientedAttack(humanBoard);
+    //                 } else{
+    //                     attack = getAdjacentAttack(humanBoard);
+    //                 }
+    //             } else{
+    //                 //last attack was a miss and we aren't hunting? random
+    //                 attack = getRandomAttack();
+    //             }
+    //         }
+    //     }
+
+    //     if(humanBoard.isAttacked(...attack)){
+    //         return chooseAttack(humanBoard);
+    //     } else{
+    //         lastAttack = attack;
+    //         return attack;
+    //     }
+    // }
