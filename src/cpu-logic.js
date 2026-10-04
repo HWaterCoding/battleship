@@ -67,9 +67,7 @@ export function CPU(){
             orientedAttacks.push([highestFirst, highestSecond + 1]);
         }
 
-        if(orientation === null){
-            return null;
-        }
+        if(orientation === null) return null;
 
         //filter through oriented attacks for outside of board/already attacked
         const validAttacks = orientedAttacks.filter(([row, col]) =>{
@@ -79,7 +77,6 @@ export function CPU(){
 
         return validAttacks.length !== 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
-
 
     //generate random adjacent attack based on last tile hit
     function getAdjacentAttack(humanBoard){
@@ -103,7 +100,6 @@ export function CPU(){
         return validAttacks.length !== 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
 
-
     //generate random attack on board
     function getRandomAttack(humanBoard){
         const validAttacks = [];
@@ -118,7 +114,6 @@ export function CPU(){
         return validAttacks[Math.floor(Math.random() * validAttacks.length)];
     }
 
-
     //Future Update::
     //Current we clear unresolvedHits when one ship in it is sunk, however,
     //there is the possibility that there are unresolvedHits belonging to 
@@ -129,7 +124,7 @@ export function CPU(){
         let result; 
 
         if(lastAttack === null){
-            result = getRandomAttack();
+            result = getRandomAttack(humanBoard);
         } else {
             let lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
             if(lastAttackInfo.hit === true){
@@ -142,13 +137,12 @@ export function CPU(){
             //attack in decreasing versions of logic to pick best move 
             result = getOrientedAttack(humanBoard);
             if(result === null) result = getAdjacentAttack(humanBoard);
-            if(result === null) result = getRandomAttack();
+            if(result === null) result = getRandomAttack(humanBoard);
         }
 
         lastAttack = result;
         return result;
     }
-
 
     //function to reset the state of the CPU
     function resetCPU(){
@@ -179,63 +173,3 @@ export function placeCpuShips(cpuBoard) {
         }
     }
 }
-
-
-
-
-
-
-
-
-//choose between random/adjacent/oriented attack
-    // function chooseAttack(humanBoard){
-    //     let attack;
-
-    //     //FIX THIS TO ACCOMODATE ORIENTED ATTACKS
-    //     if(lastAttack === null) {
-    //         attack = getRandomAttack();
-    //     } else{
-    //         const lastAttackInfo = humanBoard.getAttackInfo(...lastAttack);
-
-    //         //if last attack was a hit, add it to the hunt
-    //         if(lastAttackInfo.hit === true){
-    //             unresolvedHits.push(lastAttack);
-
-    //             //if sunk, we're no longer hunting. Attack randomly.
-    //             if(lastAttackInfo.sunk === true){
-    //                 currentlyHunting = false; // Only if currentHunt = [];
-    //                 unresolvedHits = []; //this is not correct. Could be other ships
-    //                 attack = getRandomAttack();
-    //             } else{
-    //                 currentlyHunting = true;
-    //                 //attack based on orientation if 2 or more successful hits
-    //                 if(unresolvedHits.length >= 2){
-    //                     attack = getOrientedAttack(humanBoard);
-    //                 } else {
-    //                     //if only 1 hit stored, attack adjacently
-    //                     attack = getAdjacentAttack(humanBoard);
-    //                 }
-    //             }
-    //             //last attack was a miss
-    //         } else {
-    //             //still hunting a ship despite that miss
-    //             if(currentlyHunting){
-    //                 if(unresolvedHits.length >= 2){
-    //                     attack = getOrientedAttack(humanBoard);
-    //                 } else{
-    //                     attack = getAdjacentAttack(humanBoard);
-    //                 }
-    //             } else{
-    //                 //last attack was a miss and we aren't hunting? random
-    //                 attack = getRandomAttack();
-    //             }
-    //         }
-    //     }
-
-        // if(humanBoard.isAttacked(...attack)){
-        //     return chooseAttack(humanBoard);
-        // } else{
-        //     lastAttack = attack;
-        //     return attack;
-        // }
-    // }
