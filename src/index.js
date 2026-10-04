@@ -26,7 +26,8 @@ createBoards();
 //1. hitting a ship (explosion sound)
 //2. sinking a ship (sunken ship noises)
 //3, missed attack (Water sound)
-//4. game over 
+//4. victory sound
+//5. defeat sound
 
 
 
