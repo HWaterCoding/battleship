@@ -1,29 +1,17 @@
-//CPU COORDINATE TARGETTING + SHIP PLACEMENT LOGIC
-
 export function CPU(){
-    let lastAttack = null; //last coordinates attacked, ex: [3, 3]
+    let lastAttack = null; //last coordinate attacked
     let unresolvedHits = []; //collection of hit tiles that are not sunk
-    let currentlyHunting = false; //CHANGE THIS TO REFLECT 3 STATES BELOW
 
-    //change currentlyHunting to logic below.
-    //SEARCH = no known hits, attacking randomly.
-    //HUNT = one known hit, attacking adjacently
-    //TARGET = two+ known hits, attacking on a known axis (orientation)
-    //once ship is sunk, revert to search mode.
+    //Future Update::
+    //right now, a limitation to this function is that it cannot distinguish
+    //1 contiguous ship from 2 separate ships along the same axis.
+    //ex: [1,3], [2,3] ---> [4,3], [5,3], [6,3] ([3,3] separates)
 
-    // function getValidAttacks(attacks, humanBoard){
-    //     const validAttacks = attacks.filter(([row, col]) =>{
-    //         const insideBoard = row >= 0 && row <= 9 && col >= 0 && col <= 9;
-    //         return insideBoard & !humanBoard.isAttacked(row, col);
-    //     })
-    //     return validAttacks;
-    // }
-
+    //get an orientedAttack based on unresolvedHits
     function getOrientedAttack(humanBoard){
-
         function getOrientation(){
             if(unresolvedHits.length < 2) return null;
-            //loop through currentHunt --> compare values ask which coordinate is changing
+            //loop through unresolvedHits --> compare values ask which coordinate is changing
             //if both are changing, then there is no orientation, return to adjacent targetting
             //if only one is changing, determine if orientation is vertical or horizontal
 
@@ -80,23 +68,21 @@ export function CPU(){
         }
 
         if(orientation === null){
-            currentlyHunting = false;
             return null;
         }
 
-        //filter through 2 returned attacks for outside of board/already attacked
+        //filter through oriented attacks for outside of board/already attacked
         const validAttacks = orientedAttacks.filter(([row, col]) =>{
             const insideBoard = row >= 0 && row <= 9 && col >= 0 && col <= 9;
             return insideBoard && !humanBoard.isAttacked(row, col);
         });
 
-        return !validAttacks.length === 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
+        return validAttacks.length !== 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
 
 
     //generate random adjacent attack based on last tile hit
     function getAdjacentAttack(humanBoard){
-
         if(unresolvedHits.length < 1) return null;
 
         const [row, col] = unresolvedHits[Math.floor(Math.random() * unresolvedHits.length)]; 
@@ -114,19 +100,29 @@ export function CPU(){
             return insideBoard && !humanBoard.isAttacked(row, col);
         });
 
-        return !validAttacks.length === 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
+        return validAttacks.length !== 0 ? validAttacks[Math.floor(Math.random() * validAttacks.length)] : null;
     }
 
 
     //generate random attack on board
-    //UPGRADE:: this to choose only from valid tiles rather than randomly guessing
-    function getRandomAttack(){
-        let row = Math.floor(Math.random() * 10);
-        let col = Math.floor(Math.random() * 10);
-
-        return [row, col];
+    function getRandomAttack(humanBoard){
+        const validAttacks = [];
+        for(let i = 0; i <= 9; i++){
+            for(let j = 0; j <= 9; j++){
+                const attack = [i, j]
+                if(!humanBoard.isAttacked(...attack)){
+                    validAttacks.push(attack)
+                }
+            }
+        }
+        return validAttacks[Math.floor(Math.random() * validAttacks.length)];
     }
 
+
+    //Future Update::
+    //Current we clear unresolvedHits when one ship in it is sunk, however,
+    //there is the possibility that there are unresolvedHits belonging to 
+    //2 or more ships. Fix this by deciding how to remove the correct ship.
 
     //choose between the three styles of attacking
     function chooseAttack(humanBoard){
@@ -154,11 +150,10 @@ export function CPU(){
     }
 
 
-    //One function to reset the state of the CPU
+    //function to reset the state of the CPU
     function resetCPU(){
         lastAttack = null;
         unresolvedHits = [];
-        currentlyHunting = false;
     }
 
     return { resetCPU, chooseAttack }
@@ -237,10 +232,10 @@ export function placeCpuShips(cpuBoard) {
     //         }
     //     }
 
-    //     if(humanBoard.isAttacked(...attack)){
-    //         return chooseAttack(humanBoard);
-    //     } else{
-    //         lastAttack = attack;
-    //         return attack;
-    //     }
+        // if(humanBoard.isAttacked(...attack)){
+        //     return chooseAttack(humanBoard);
+        // } else{
+        //     lastAttack = attack;
+        //     return attack;
+        // }
     // }
