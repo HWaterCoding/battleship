@@ -35,7 +35,6 @@ export function CPU(){
         }
 
         const orientedAttacks = [];
-
         const orientation = getOrientation();
 
         //compare the values of all row/col coordinates.
@@ -82,14 +81,18 @@ export function CPU(){
     function getAdjacentAttack(humanBoard){
         if(unresolvedHits.length < 1) return null;
 
-        const [row, col] = unresolvedHits[Math.floor(Math.random() * unresolvedHits.length)]; 
+        const potentialAttacks = [];
 
-        const potentialAttacks = [
-            [row + 1, col],
-            [row - 1, col],
-            [row, col + 1],
-            [row, col - 1]
-        ];
+        for(const unresolvedHit of unresolvedHits){
+            const [row, col] = unresolvedHit;
+            const adjacentAttacks = [
+                [row + 1, col],
+                [row - 1, col],
+                [row, col + 1],
+                [row, col - 1]
+            ]
+            potentialAttacks.push(...adjacentAttacks);
+        }
 
         //return only tiles on the board that haven't been attacked already
         const validAttacks = potentialAttacks.filter(([row, col]) =>{
@@ -115,7 +118,7 @@ export function CPU(){
     }
 
     //Future Update::
-    //Current we clear unresolvedHits when one ship in it is sunk, however,
+    //Currently we clear unresolvedHits when one ship in it is sunk, however,
     //there is the possibility that there are unresolvedHits belonging to 
     //2 or more ships. Fix this by deciding how to remove the correct ship.
 
@@ -158,7 +161,6 @@ export function CPU(){
 export function placeCpuShips(cpuBoard) {
     const directions = ["right", "left", "up", "down"];
     let i = 0;
-
     while (i < cpuBoard.ships.length) {
         try {
             const row = Math.floor(Math.random() * 10);

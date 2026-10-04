@@ -16,25 +16,17 @@ createBoards();
 
 //FEATURES TO IMPLEMENT:
 // 1. make it so that when an attack successfully hits a ship, it remains that players move.
-// 2. make CPU targetting smarter by attacking adjacent tiles
 // 3. create ship drag-and-drop logic
 // 4. make the game 2-player possible
 // 5. add sound effects to the game (like for hitting a ship, explosion sound)
 
 
 //CURRENT:
-//CPU TARGETTING:
-//if two ships are placed side-by-side, the CPU targetting logic may
-//consider them the same ship while attacking adjacently. Fix thise by either
-//allowing the CPU to suffer the same way a human would in this circumstance,
-//OR, don't allow players to place ships next to each other
-
-
-
-
-
-
-
+//add sound effects to the game:
+//1. hitting a ship (explosion sound)
+//2. sinking a ship (sunken ship noises)
+//3, missed attack (Water sound)
+//4. game over 
 
 
 
