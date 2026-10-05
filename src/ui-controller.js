@@ -36,7 +36,6 @@ export default function initApp() {
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
       gameText.textContent = "Pick a square to attack...";
-      // console.log(controller.players[1].gameboard);
     } catch (error){
       gameText.textContent = error;
     }
