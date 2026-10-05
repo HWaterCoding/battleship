@@ -1,6 +1,6 @@
 import hitShipSound from "../audio-files/explosion.mp3";
 import missAttackSound from "../audio-files/miss-attack-sound.mp3";
-import sunkShipSound from "../audio-files/sunk-ship.mp3";
+import sunkShipSound from "../audio-files/sunken-ship.mp3";
 import winGameSound from "../audio-files/victory.mp3";
 import loseGameSound from "../audio-files/loss.mp3";
 import placeShipSound from "../audio-files/place-ship-sound.mp3";
