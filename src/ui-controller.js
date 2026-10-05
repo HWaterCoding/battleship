@@ -71,6 +71,7 @@ export default function initApp() {
     placeShipForm.reset();
     placeShipErrorText.textContent = "Place your ship!";
     placeShipOverlay.style.display = "flex";
+    shipLengthInput.focus();
   })
 
   //place ship form submission
@@ -130,9 +131,7 @@ export default function initApp() {
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
       const attackResult = controller.playTurn(row, col);
-      if(attackResult.sunk) playSound("sunk");
-
-
+      playSound(chooseSound(attackResult));
       updateBoard(controller.players[1], cpuBoard, false);
       
       //if the human move doesn't result in winner, let CPU play.
@@ -144,7 +143,8 @@ export default function initApp() {
         //create a rendering function to display during turn delay, and call it here
 
         const cpuCoords = computer.chooseAttack(controller.players[0].gameboard);
-        controller.playTurn(...cpuCoords);
+        const attackResult = controller.playTurn(...cpuCoords);
+        playSound(chooseSound(attackResult));
         updateBoard(controller.players[0], p1Board, true);
 
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
@@ -161,4 +161,14 @@ export default function initApp() {
       gameText.textContent = error;
     }
   })
+
+  //helper function to choose which audio to play after an attack
+  function chooseSound(attackResult){
+    if(attackResult.attack === "hit"){
+      if(attackResult.sunk) return "sunk";
+      return "hit";
+    } else {
+      return "miss";
+    } 
+  }
 }

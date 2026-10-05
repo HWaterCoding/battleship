@@ -18,17 +18,12 @@ createBoards();
 // 1. make it so that when an attack successfully hits a ship, it remains that players move.
 // 3. create ship drag-and-drop logic
 // 4. make the game 2-player possible
-// 5. add sound effects to the game (like for hitting a ship, explosion sound)
-
+// 4. Add a button to the header that allows people to toggle sfx
 
 //CURRENT:
-//add sound effects to the game:
-//1. hitting a ship (explosion sound)
-//2. sinking a ship (sunken ship noises)
-//3, missed attack (Water sound)
-//4. victory sound
-//5. defeat sound
-
+//fix sound effect audio length of file
+//fix that if an sfx is already playing, the new one doesnt.
+//fix clicking a tile and dragging (switch from click to mousedown?)
 
 
 //CSS UPDATING:
