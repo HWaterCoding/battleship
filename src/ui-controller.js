@@ -86,7 +86,6 @@ export default function initApp() {
         ship
       );
       updateBoard(controller.players[0], p1Board, true);
-      //placeship sound here
       playSound("placeShip");
       placeShipOverlay.style.display = "none";
 
@@ -131,7 +130,10 @@ export default function initApp() {
       //generate human players attack move
       const row = Number(tile.dataset.y);
       const col = Number(tile.dataset.x);
-      controller.playTurn(row, col);
+      const attackResult = controller.playTurn(row, col);
+      if(attackResult.sunk) playSound("sunk");
+
+
       updateBoard(controller.players[1], cpuBoard, false);
       
       //if the human move doesn't result in winner, let CPU play.
@@ -148,9 +150,13 @@ export default function initApp() {
 
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
+
+        //ask if CPU won to play losing sound
+        if(controller.winner) playSound("loss");
       } else {
-        // if human has won, end the game here, don't let CPU play.
         gameText.textContent = `The winner is ${controller.winner.name}!`
+        //if human has won, play winning sound
+        playSound("win");
       }
     } catch (error){
       gameText.textContent = error;
