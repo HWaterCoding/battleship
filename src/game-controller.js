@@ -33,18 +33,19 @@ export default class GameController {
 
     //attack the board of the player who is not the active player
     const opponent = this.getOpponent();
-    opponent.gameboard.receiveAttack(row, col);
+    const attackResult = opponent.gameboard.receiveAttack(row, col);
 
     //if there is a winner, end the game and declare game inactive
     const isWinner = this.checkWinner();
     if (isWinner) {
       this.winner = this.activePlayer;
       this.isGameActive = false;
-      return;
+      return attackResult;
     }
 
     //if there is no winner, then switch the player.
     this.switchPlayers();
+    return attackResult;
   }
 
   //check if active player is winner by asking if opponents ships are all sunk

@@ -2,6 +2,7 @@
 import { CPU, placeCpuShips } from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
+import playSound from "./audio.js";
 
 export default function initApp() {
   //create new game instance. Change "john" to a username input
@@ -85,11 +86,11 @@ export default function initApp() {
         ship
       );
       updateBoard(controller.players[0], p1Board, true);
+      //placeship sound here
+      playSound("placeShip");
       placeShipOverlay.style.display = "none";
 
       gameText.textContent = "";
-      // console.log(controller.players[0].gameboard);
-      // console.log(controller.players[1].gameboard);
     } catch (error){
       placeShipErrorText.style.color = "red";
       placeShipErrorText.textContent = error;

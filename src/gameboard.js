@@ -148,6 +148,11 @@ export default class Gameboard {
       case "miss":
         throw new Error("You've already guessed this tile!");
     }
+
+    return {
+      sunk: tile.ship !== null ? tile.ship.sunk : false,
+      attack: tile.attacked
+    };
   }
 
   //pass in a tile and ask if it has already been attacked
