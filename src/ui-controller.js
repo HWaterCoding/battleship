@@ -110,7 +110,7 @@ export default function initApp() {
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   //Clicking CPU board to play a full turn of both players
-  cpuBoard.addEventListener("click", async (event)=>{
+  cpuBoard.addEventListener("mousedown", async (event)=>{
     const tile = event.target.closest(".tile");
     try{
       //if the game is not active, ask why (it hasn't started or has ended)

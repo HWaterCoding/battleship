@@ -8,7 +8,7 @@ createBoards();
 
 
 
-//IMMEDIATE TO-DO:
+// Small future updates:
 //1. disable placeShip() button when game is active (same as startBtn) (make it so while isGameActive === true, these cannot be clicked)
 //2. Write protection on tile click listener so it has to be a tile
 //3. fix getBoard() function to not be a shallow copy
@@ -17,16 +17,37 @@ createBoards();
 //FEATURES TO IMPLEMENT:
 // 1. make it so that when an attack successfully hits a ship, it remains that players move.
 // 3. create ship drag-and-drop logic
-// 4. make the game 2-player possible
-// 4. Add a button to the header that allows people to toggle sfx
 
-//CURRENT:
-//fix sound effect audio length of file
-//fix that if an sfx is already playing, the new one doesnt.
-//fix clicking a tile and dragging (switch from click to mousedown?)
+
+
+
+//CURRENT: Make the game 2-player possible
+//THREE MAIN THINGS TO ADDRESS:
+//1: Game mode selection (modal CPU vs 2-player mode)
+//2: Game set up (Both players need to place their ships one at a time)
+//3: Game flow (player1 attacks --> privacy --> player2 attacks --> privacy)
+
+//1:
+//load page with a modal open: "CPU" or "2-Player"
+//have user choose between vs. CPU or 2-player mode.
+//initialize a game based on which the option the user chose
+//if 2 player is selected:
+
+//2:
+//player 1 places ships --> pass the screen to player 2
+//player 2 places ships --> pass the screen to player 1
+
+//3:
+//player 1 attacks --> show result (5 sec) --> hide both boards / show tranisition screen
+//player 2 clicks "ready" on transition screen
+//player 2 attacks --> show result (5 sec) --> hide both boards / show tranisition screen
+//repeat...
+
+
 
 
 //CSS UPDATING:
+//Add a volume icon button to the header that allows people to toggle sfx
 //gameOverModal and overlay logic
 //style both placeship modal and gameover modal properly
 //"grey-out" the startGameBtn by default and only make it clickable when the game is ready to be begun. Once the human has placed all of their ships, change the class on the button. Once the game is started, change the class back and revert it to it's "unclickable" state again
