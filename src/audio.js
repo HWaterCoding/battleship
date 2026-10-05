@@ -15,10 +15,18 @@ const sounds = {
     placeShip: new Audio(placeShipSound),
 }
 
-export default function playSound(sound){
-    const audio = sounds[sound];    
+let currentAudio = null;
 
-    audio.play().catch(error => {
+export default function playSound(sound){
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+
+    currentAudio = sounds[sound];
+    currentAudio.currentTime = 0;   
+
+    currentAudio.play().catch(error => {
         console.error("Playback failed:", error);
     });
 }

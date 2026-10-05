@@ -151,9 +151,12 @@ export default function initApp() {
         gameText.textContent = "Pick a square to attack...";
 
         //ask if CPU won to play losing sound
-        if(controller.winner) playSound("loss");
+        if(controller.winner){
+          gameText.textContent = `The winner is ${controller.winner.name}!`;
+          playSound("loss");
+        }
       } else {
-        gameText.textContent = `The winner is ${controller.winner.name}!`
+        gameText.textContent = `The winner is ${controller.winner.name}!`;
         //if human has won, play winning sound
         playSound("win");
       }
