@@ -125,10 +125,10 @@ main {
 }
 
 .boardSection {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    grid-template-rows: 1fr auto auto auto;
-    gap: 8px;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  grid-template-rows: 1fr auto auto auto;
+  gap: 8px;
 }
 
 #leftPlayerBoard,
@@ -291,6 +291,27 @@ main {
 }
 
 
+/* Single-Player Vs CPU Modal */
+/* Switch this to start as display: none */
+#playerVsCpuModal{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 550px;
+  background-color: rgba(247, 62, 62, 0.75);
+  padding: 20px;
+}
+
+#playerVsCpuModal label{
+  font-size: 2.4rem;
+  text-align: center;
+  font-weight: 800;
+}
+
+
+
 /* Two Player Mode Modal */
 /* Switch this to start as display: none */
 #twoPlayerModal{
@@ -310,7 +331,8 @@ main {
   margin: 20px;
 }
 
-#twoPlayerModal input{
+#twoPlayerModal input,
+#playerVsCpuModal input{
   padding: 10px 5px;
   font-size: 1.4rem;
   text-align: center;
@@ -337,13 +359,6 @@ main {
   transform: scale(1.1);
 }
 
-
-
-/* Single-Player Vs CPU Modal */
-/* Switch this to start as display: none */
-#playerVsCpuModal{
-  display: none;
-}
 
 /* Place Ship Modal Form */
 #placeShipModal {
@@ -378,6 +393,7 @@ main {
 #gameOverModal{
   display: none;
 }
+
 
 
 

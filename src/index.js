@@ -6,13 +6,10 @@ import initApp from "./ui-controller.js";
 initApp();
 createBoards();
 
-
-
 // Small future updates:
 //1. disable placeShip() button when game is active (same as startBtn) (make it so while isGameActive === true, these cannot be clicked)
 //2. Write protection on tile click listener so it has to be a tile
 //3. fix getBoard() function to not be a shallow copy
-
 
 //FEATURES TO IMPLEMENT:
 // 1. make it so that when an attack successfully hits a ship, it remains that players move.

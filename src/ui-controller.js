@@ -18,9 +18,12 @@ export default function initApp() {
   //should be game instruction/what catches printable errors
   const gameText = document.getElementById("gameText");
   
-  //Both physical gameboards
-  const p1Board = document.getElementById("leftPlayerBoard");
-  const cpuBoard = document.getElementById("rightPlayerBoard");
+  //Both physical gameboards and titles
+  const playerOneBoard = document.getElementById("leftPlayerBoard");
+  const playerOneName = document.getElementById("playerOneName");
+
+  const playerTwoBoard = document.getElementById("rightPlayerBoard");
+  const playerTwoName = document.getElementById("playerTwoName");
 
   //Overlays and Modals logics
   //overlay for all modals
@@ -49,10 +52,25 @@ export default function initApp() {
   //Player Vs. CPU mode logic
   const singlePlayerUsername = document.getElementById("singlePlayerUsername");
 
+
+  //call gameController instance passing in two objects.
+  //object one is humanplayer with a username and a type=human
+  //object two is a CPU, who's name is "Computer" and type=computer
+  //create CPU instance 
   const playCpuBtn = document.getElementById("playCpuBtn");
   playCpuBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     playerVsCpuModal.style.display = "none";
+    
+    playerOneName.textContent = singlePlayerUsername.value ? 
+      `${singlePlayerUsername.value}'s Board` : "Player 1's Board";
+    playerTwoName.textContent = "CPU's Board";
+
+    const controller = new GameController(
+      singlePlayerUsername.value, "Human"
+      //add second player (CPU) here, once refactored GameController constructor
+    );
+
   });
 
 
@@ -61,10 +79,18 @@ export default function initApp() {
   const playerOneUsername = document.getElementById("playerOneUsername");
   const playerTwoUsername = document.getElementById("playerTwoUsername");
 
+  //call gameController instance passing in two objects.
+  //object one is humanplayer with a username and a type=human
+  //object two is humanplayer with a username and a type=human
   const twoPlayerPlayBtn = document.getElementById("twoPlayerPlayBtn");
   twoPlayerPlayBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     twoPlayerModal.style.display = "none";
+
+    playerOneName.textContent = playerOneUsername.value ? 
+      `${playerOneUsername.value}'s Board` : "Player 1's Board";
+    playerTwoName.textContent = playerTwoUsername.value ? 
+      `${playerTwoUsername.value}'s Board` : "Player 2's Board";
   });
 
 
@@ -105,7 +131,7 @@ export default function initApp() {
         shipDirectionSelect.value,
         ship
       );
-      updateBoard(controller.players[0], p1Board, true);
+      updateBoard(controller.players[0], playerOneBoard, true);
       playSound("placeShip");
       modalOverlay.style.display = "none";
 
@@ -168,7 +194,7 @@ export default function initApp() {
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   //Clicking CPU board to play a full turn of both players
-  cpuBoard.addEventListener("mousedown", async (event)=>{
+  playerTwoBoard.addEventListener("mousedown", async (event)=>{
     const tile = event.target.closest(".tile");
     try{
       //if the game is not active, ask why (it hasn't started or has ended)
@@ -190,7 +216,7 @@ export default function initApp() {
       const col = Number(tile.dataset.x);
       const attackResult = controller.playTurn(row, col);
       playSound(chooseSound(attackResult));
-      updateBoard(controller.players[1], cpuBoard, false);
+      updateBoard(controller.players[1], playerTwoBoard, false);
       
       //if the human move doesn't result in winner, let CPU play.
       if(!controller.winner){
@@ -203,7 +229,7 @@ export default function initApp() {
         const cpuCoords = computer.chooseAttack(controller.players[0].gameboard);
         const attackResult = controller.playTurn(...cpuCoords);
         playSound(chooseSound(attackResult));
-        updateBoard(controller.players[0], p1Board, true);
+        updateBoard(controller.players[0], playerOneBoard, true);
 
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
