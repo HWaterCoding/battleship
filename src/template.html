@@ -17,7 +17,42 @@
     </header>
 
     <main>
-        <div id="placeShipOverlay">
+        <div id="modalOverlay">
+
+            <!-- Modal to chose between 2 player and CPU mode -->
+            <div id="gameSelectModal">
+                <h1>Select a gamemode!</h1>
+                <div>
+                    <h2>Player vs. CPU</h2>
+                    <button id="cpuBtn"><img src="/assets/images/player-vs-cpu.webp" alt="Can you beat a computer?"></button>
+                </div>
+                <div>
+                    <h2>2 - Player Mode</h2>
+                    <button id="twoPlayerBtn"><img src="/assets/images/player-avatar.png" alt="Play with a friend!"></button>
+                </div>
+            </div>
+
+            <!-- Modal display for two player mode -->
+            <div id="twoPlayerModal">
+                <div>
+                    <label for="player1">Player 1 Name:</label>
+                    <input type="text" id="player1" placeholder="Choose a name!">
+                </div>
+                <div>
+                    <label for="player2">Player 2 Name:</label>
+                    <input type="text" id="player2" placeholder="Choose a name!">
+                </div>
+                <button id="twoPlayerPlayBtn" class="playBtn">Let's Play!</button>
+            </div>
+    
+            <!-- Modal display for Player Vs. CPU mode -->
+            <div id="playerVsCpuModal">
+                <label for="usernameInput">Your Name:</label>
+                <input type="text" id="usernameInput" required>
+                <button id="playCpuBtn" class="playBtn">Let's Play!</button>
+            </div>
+
+            <!-- placing ships modal -->
             <div id="placeShipModal">
                 <form id="placeShipForm">
                     <h3 id="placeShipErrorText">Place your ship!</h3>
@@ -50,8 +85,17 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Modal to display at the end of a game with result -->
+            <div id="gameOverModal">
+                <h2>Game Over!</h2>
+                <h1 id="gameResultText"></h1>
+                <h3 id="winningText">The winner is ...!</h2>
+                <button id="restartGame">Restart Game</button>
+            </div>
         </div>
 
+        <!-- Buttons that start and reset the game  -->
         <div id="gameButtons">
             <button id="startGameBtn">Start Game!</button>
             <button id="resetGameBtn">Reset Game</button>
@@ -136,14 +180,6 @@
                     </div>
                     <h3 class="x-label">x</h3>
                 </div>
-            </div>
-        </div>
-
-        <div id="gameOverOverlay">
-            <div id="gameOverModal">
-                <h2>Game Over!</h2>
-                <h3 id="winningText">The winner is ...!</h2>
-                <button id="restartGame">Restart Game</button>
             </div>
         </div>
     </main>

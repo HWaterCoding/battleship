@@ -1,9 +1,9 @@
-import hitShipSound from "../audio-files/explosion.mp3";
-import missAttackSound from "../audio-files/miss-attack-sound.mp3";
-import sunkShipSound from "../audio-files/sunken-ship.mp3";
-import winGameSound from "../audio-files/victory.mp3";
-import loseGameSound from "../audio-files/loss.mp3";
-import placeShipSound from "../audio-files/place-ship-sound.mp3";
+import hitShipSound from "../assets/audio-files/explosion.mp3";
+import missAttackSound from "../assets/audio-files/miss-attack-sound.mp3";
+import sunkShipSound from "../assets/audio-files/sunken-ship.mp3";
+import winGameSound from "../assets/audio-files/victory.mp3";
+import loseGameSound from "../assets/audio-files/loss.mp3";
+import placeShipSound from "../assets/audio-files/place-ship-sound.mp3";
 
 //all game sounds
 const sounds = {

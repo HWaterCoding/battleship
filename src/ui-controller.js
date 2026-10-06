@@ -5,10 +5,12 @@ import { updateBoard, createBoards } from "./render-board.js";
 import playSound from "./audio.js";
 
 export default function initApp() {
+  
   //create new game instance. Change "john" to a username input
   const controller = new GameController("John");
-  //create new CPU instance 
+  //create new CPU instance (shift this into game selection logic)
   const computer = CPU();
+
 
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
@@ -19,6 +21,78 @@ export default function initApp() {
   //Both physical gameboards
   const p1Board = document.getElementById("leftPlayerBoard");
   const cpuBoard = document.getElementById("rightPlayerBoard");
+
+  //Overlays and Modals logics
+  //overlay for all modals
+  const modalOverlay = document.getElementById("modalOverlay");
+
+  //Game Selection Modal and logic
+  const gameSelectModal = document.getElementById("gameSelectModal");
+  const twoPlayerBtn = document.getElementById("twoPlayerBtn");
+  const cpuBtn = document.getElementById("cpuBtn");
+
+  twoPlayerBtn.addEventListener("click", ()=>{
+    modalOverlay.style.display = "none";
+    gameSelectModal.style.display = "none";
+  });
+
+  cpuBtn.addEventListener("click", ()=>{
+    modalOverlay.style.display = "none";
+    gameSelectModal.style.display = "none";
+  });
+
+
+  //PLACE SHIP FORM ELEMENTS
+  const placeShipBtn = document.getElementById("placeShipBtn");
+  const placeShipModal = document.getElementById("placeShipModal");
+  const placeShipForm = document.getElementById("placeShipForm");
+  const cancelShipBtn = document.getElementById("cancelShipBtn");
+  const placeShipErrorText = document.getElementById("placeShipErrorText");
+  const rowCoordInput = document.getElementById("rowCoord");
+  const columnCoordInput = document.getElementById("columnCoord");
+  const shipDirectionSelect = document.getElementById("shipDirection");
+  const shipLengthInput = document.getElementById("shipLength");
+
+  //PLACE SHIP FORM EVENT LISTENERS
+  //open form btn
+  placeShipBtn.addEventListener("click", ()=>{
+    placeShipForm.reset();
+    placeShipErrorText.textContent = "Place your ship!";
+    modalOverlay.style.display = "flex";
+    placeShipModal.style.display = "flex";
+    shipLengthInput.focus();
+  })
+
+  //place ship form submission
+  placeShipForm.addEventListener("submit", (event)=>{
+    try{
+      event.preventDefault();
+      const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
+      controller.players[0].gameboard.placeShip(
+        Number(rowCoordInput.value),
+        Number(columnCoordInput.value),
+        shipDirectionSelect.value,
+        ship
+      );
+      updateBoard(controller.players[0], p1Board, true);
+      playSound("placeShip");
+      modalOverlay.style.display = "none";
+
+      gameText.textContent = "";
+    } catch (error){
+      placeShipErrorText.style.color = "red";
+      placeShipErrorText.textContent = error;
+    }
+  })
+
+  //close place ship form 
+  cancelShipBtn.addEventListener("click", (event)=>{
+    event.preventDefault();
+    modalOverlay.style.display = "none";
+  })
+
+
+
   
   
   //START GAME BUTTON AND ACTIVATION
@@ -53,54 +127,7 @@ export default function initApp() {
   });
 
 
-  //PLACE SHIP FORM ELEMENTS
-  const placeShipBtn = document.getElementById("placeShipBtn");
-  const placeShipOverlay = document.getElementById("placeShipOverlay");
-  const placeShipForm = document.getElementById("placeShipForm");
-  const cancelShipBtn = document.getElementById("cancelShipBtn");
-  const placeShipErrorText = document.getElementById("placeShipErrorText");
-  const rowCoordInput = document.getElementById("rowCoord");
-  const columnCoordInput = document.getElementById("columnCoord");
-  const shipDirectionSelect = document.getElementById("shipDirection");
-  const shipLengthInput = document.getElementById("shipLength");
-
-
-  //PLACE SHIP FORM EVENT LISTENERS
-  //open form btn
-  placeShipBtn.addEventListener("click", ()=>{
-    placeShipForm.reset();
-    placeShipErrorText.textContent = "Place your ship!";
-    placeShipOverlay.style.display = "flex";
-    shipLengthInput.focus();
-  })
-
-  //place ship form submission
-  placeShipForm.addEventListener("submit", (event)=>{
-    try{
-      event.preventDefault();
-      const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
-      controller.players[0].gameboard.placeShip(
-        Number(rowCoordInput.value),
-        Number(columnCoordInput.value),
-        shipDirectionSelect.value,
-        ship
-      );
-      updateBoard(controller.players[0], p1Board, true);
-      playSound("placeShip");
-      placeShipOverlay.style.display = "none";
-
-      gameText.textContent = "";
-    } catch (error){
-      placeShipErrorText.style.color = "red";
-      placeShipErrorText.textContent = error;
-    }
-  })
-
-  //close place ship form 
-  cancelShipBtn.addEventListener("click", (event)=>{
-    event.preventDefault();
-    placeShipOverlay.style.display = "none";
-  })
+ 
 
 
 

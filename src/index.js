@@ -48,6 +48,7 @@ createBoards();
 
 //CSS UPDATING:
 //Add a volume icon button to the header that allows people to toggle sfx
+//Add winner/loser screen once game ends
 //gameOverModal and overlay logic
 //style both placeship modal and gameover modal properly
 //"grey-out" the startGameBtn by default and only make it clickable when the game is ready to be begun. Once the human has placed all of their ships, change the class on the button. Once the game is started, change the class back and revert it to it's "unclickable" state again
