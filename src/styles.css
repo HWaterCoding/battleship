@@ -241,14 +241,109 @@ main {
   background-color: rgba(160, 221, 221, 50%);
   height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
 }
 
 
 /* Game-mode Selection Modal */
+/* Start the game with this set as grid */
 #gameSelectModal{
-  display: flex;
+    display: grid;
+    /* display: none; */
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    background-color: rgba(231, 129, 129, 75%);
 }
 
+#gameSelectModal h1{
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 36px;
+}
+
+#gameSelectModal h2{
+  text-align: center;
+  font-size: 28px;
+}
+
+#gameSelectModal div{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: clamp(1rem, 24px, 2rem);
+}
+
+#gameSelectModal div button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#gameSelectModal div button:hover{
+  transform: scale(1.1);
+}
+
+#gameSelectModal img{
+  width: 200px;
+  border-radius: 50%;
+}
+
+
+/* Two Player Mode Modal */
+/* Switch this to start as display: none */
+#twoPlayerModal{
+  display: none;
+  /* display: grid; */
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background-color: rgba(247, 62, 62, 0.75); 
+}
+
+#twoPlayerModal div{
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  margin: 20px;
+}
+
+#twoPlayerModal input{
+  padding: 10px 5px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+#twoPlayerModal div p,
+#twoPlayerModal div label{
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.playBtn{
+  grid-column: 1/-1;
+  justify-self: center;
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.playBtn:hover{
+  transform: scale(1.1);
+}
+
+
+
+/* Single-Player Vs CPU Modal */
+/* Switch this to start as display: none */
+#playerVsCpuModal{
+  display: none;
+}
 
 /* Place Ship Modal Form */
 #placeShipModal {

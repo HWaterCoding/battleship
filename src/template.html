@@ -27,29 +27,29 @@
                     <button id="cpuBtn"><img src="/assets/images/player-vs-cpu.webp" alt="Can you beat a computer?"></button>
                 </div>
                 <div>
-                    <h2>2 - Player Mode</h2>
+                    <h2>Two Player Mode</h2>
                     <button id="twoPlayerBtn"><img src="/assets/images/player-avatar.png" alt="Play with a friend!"></button>
                 </div>
+            </div>
+
+             <!-- Modal display for Player Vs. CPU mode -->
+            <div id="playerVsCpuModal">
+                <label for="singlePlayerUsername">Your Name:</label>
+                <input type="text" id="singlePlayerUsername" placeholder="Choose a name!">
+                <button id="playCpuBtn" class="playBtn">Let's Play!</button>
             </div>
 
             <!-- Modal display for two player mode -->
             <div id="twoPlayerModal">
                 <div>
-                    <label for="player1">Player 1 Name:</label>
-                    <input type="text" id="player1" placeholder="Choose a name!">
+                    <label for="playerOneUsername">Player 1 Name:</label>
+                    <input type="text" id="playerOneUsername" placeholder="Choose a name!">
                 </div>
                 <div>
-                    <label for="player2">Player 2 Name:</label>
-                    <input type="text" id="player2" placeholder="Choose a name!">
+                    <label for="playerTwoUsername">Player 2 Name:</label>
+                    <input type="text" id="playerTwoUsername" placeholder="Choose a name!">
                 </div>
                 <button id="twoPlayerPlayBtn" class="playBtn">Let's Play!</button>
-            </div>
-    
-            <!-- Modal display for Player Vs. CPU mode -->
-            <div id="playerVsCpuModal">
-                <label for="usernameInput">Your Name:</label>
-                <input type="text" id="usernameInput" required>
-                <button id="playCpuBtn" class="playBtn">Let's Play!</button>
             </div>
 
             <!-- placing ships modal -->

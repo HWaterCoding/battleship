@@ -28,18 +28,49 @@ export default function initApp() {
 
   //Game Selection Modal and logic
   const gameSelectModal = document.getElementById("gameSelectModal");
-  const twoPlayerBtn = document.getElementById("twoPlayerBtn");
   const cpuBtn = document.getElementById("cpuBtn");
-
-  twoPlayerBtn.addEventListener("click", ()=>{
-    modalOverlay.style.display = "none";
-    gameSelectModal.style.display = "none";
-  });
+  const playerVsCpuModal = document.getElementById("playerVsCpuModal");
+  const twoPlayerBtn = document.getElementById("twoPlayerBtn");
+  const twoPlayerModal = document.getElementById("twoPlayerModal");
 
   cpuBtn.addEventListener("click", ()=>{
-    modalOverlay.style.display = "none";
     gameSelectModal.style.display = "none";
+    playerVsCpuModal.style.display = "grid";
   });
+  
+  twoPlayerBtn.addEventListener("click", ()=>{
+    gameSelectModal.style.display = "none";
+    twoPlayerModal.style.display = "grid";
+  });
+
+ 
+
+
+  //Player Vs. CPU mode logic
+  const singlePlayerUsername = document.getElementById("singlePlayerUsername");
+
+  const playCpuBtn = document.getElementById("playCpuBtn");
+  playCpuBtn.addEventListener("click", ()=>{
+    modalOverlay.style.display = "none";
+    playerVsCpuModal.style.display = "none";
+  });
+
+
+
+  //Two-Player mode logic
+  const playerOneUsername = document.getElementById("playerOneUsername");
+  const playerTwoUsername = document.getElementById("playerTwoUsername");
+
+  const twoPlayerPlayBtn = document.getElementById("twoPlayerPlayBtn");
+  twoPlayerPlayBtn.addEventListener("click", ()=>{
+    modalOverlay.style.display = "none";
+    twoPlayerModal.style.display = "none";
+  });
+
+
+
+  
+
 
 
   //PLACE SHIP FORM ELEMENTS
