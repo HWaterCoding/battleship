@@ -1,11 +1,10 @@
 import Players from "./players.js";
 
 export default class GameController {
-  constructor(playername) {
-    this.players = [
-      new Players(playername, "human"), //change "human" to type variable"
-      new Players("CPU", "computer"), //change "computer" to type variable
-    ];
+  constructor(playerDataArray) {
+    this.players = playerDataArray.map(player =>
+      new Players(player.name, player.type)
+    )
     this.activePlayer = this.players[0];
     this.isGameActive = false;
     this.winner = null;
@@ -60,8 +59,7 @@ export default class GameController {
     return false;
   }
 
-  //reset the gameboard and ship data of both players
-  //re-activate game and set active player to player1 again and reset winner
+  //reset the data of both players and the game state
   resetGame() {
     this.players[0].gameboard.resetBoard();
     this.players[1].gameboard.resetBoard();

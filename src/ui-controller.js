@@ -6,10 +6,9 @@ import playSound from "./audio.js";
 
 export default function initApp() {
   
-  //create new game instance. Change "john" to a username input
-  const controller = new GameController("John");
-  //create new CPU instance (shift this into game selection logic)
-  const computer = CPU();
+  //variables for GameController and CPU instances
+  let controller;
+  let computer;
 
 
   //should ONLY be who's turn it is. That's it.
@@ -49,48 +48,69 @@ export default function initApp() {
  
 
 
-  //Player Vs. CPU mode logic
-  const singlePlayerUsername = document.getElementById("singlePlayerUsername");
-
+ 
 
   //call gameController instance passing in two objects.
   //object one is humanplayer with a username and a type=human
   //object two is a CPU, who's name is "Computer" and type=computer
   //create CPU instance 
+
+  //Player Vs. CPU mode logic
+  const singlePlayerUsername = document.getElementById("singlePlayerUsername");
   const playCpuBtn = document.getElementById("playCpuBtn");
+
   playCpuBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     playerVsCpuModal.style.display = "none";
-    
+
     playerOneName.textContent = singlePlayerUsername.value ? 
       `${singlePlayerUsername.value}'s Board` : "Player 1's Board";
     playerTwoName.textContent = "CPU's Board";
 
-    const controller = new GameController(
-      singlePlayerUsername.value, "Human"
-      //add second player (CPU) here, once refactored GameController constructor
-    );
+    controller = new GameController([
+      { 
+        name: singlePlayerUsername.value ? singlePlayerUsername.value : "Player 1", 
+        type: "human" 
+      },
+      { 
+        name: "CPU", 
+        type: "computer"
+      }
+    ]);
 
-  });
+    computer = CPU();
+  }); 
 
 
 
-  //Two-Player mode logic
-  const playerOneUsername = document.getElementById("playerOneUsername");
-  const playerTwoUsername = document.getElementById("playerTwoUsername");
+  
 
   //call gameController instance passing in two objects.
   //object one is humanplayer with a username and a type=human
   //object two is humanplayer with a username and a type=human
+
+  //Two-Player mode logic
+  const playerOneUsername = document.getElementById("playerOneUsername");
+  const playerTwoUsername = document.getElementById("playerTwoUsername");
   const twoPlayerPlayBtn = document.getElementById("twoPlayerPlayBtn");
+
   twoPlayerPlayBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     twoPlayerModal.style.display = "none";
 
-    playerOneName.textContent = playerOneUsername.value ? 
-      `${playerOneUsername.value}'s Board` : "Player 1's Board";
-    playerTwoName.textContent = playerTwoUsername.value ? 
-      `${playerTwoUsername.value}'s Board` : "Player 2's Board";
+    controller = new GameController([
+      { 
+        name: playerOneUsername.value ? playerOneUsername.value : "Player 1", 
+        type: "human" 
+      },
+      { 
+        name: playerTwoUsername.value ? playerTwoUsername.value : "Player 2", 
+        type: "human" 
+      }
+    ]);
+
+    playerOneName.textContent = `${controller.players[0].name}'s Board`;
+    playerTwoName.textContent = `${controller.players[1].name}'s Board`;
   });
 
 
@@ -160,9 +180,13 @@ export default function initApp() {
         throw new Error("The game is already active!");
       }
 
-      controller.players[0].gameboard.isFleetPlaced();
+      // controller.players[0].gameboard.isFleetPlaced();
+      // controller.players[1].gameboard.isFleetPlaced();
 
-      placeCpuShips(controller.players[1].gameboard);
+      //make sure this only runs if CPU game mode
+      if(controller.players[1].type === "computer"){
+        placeCpuShips(controller.players[1].gameboard);
+      }
 
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
@@ -190,7 +214,54 @@ export default function initApp() {
 
 
 
+  //UPGRADE: Keep this largely the same but refactor for 2 player mode
+  //simply ask before getting to the CPU's logic, if the player type of player 2
+  //is a CPU. If it is, then execute the CPU logic, if it isn't, then exit early
+  //Under this, create an additional event listener on player 1's board to handle
+  //player 2's clicks and how they will attack themselves. 
+  //make sure neither human player can click the others board if not their turn
+
   //BOARD CLICKING/ATTACKING EVENT LISTENERS
+
+
+  // function handleBoardClick(event){
+    
+  // }
+
+
+
+
+
+  playerOneBoard.addEventListener("mousedown", (event)=>{
+    const tile = event.target.closest(".tile");
+    try{
+      //if the game is not active, ask why (it hasn't started or has ended)
+      if(!controller.isGameActive){
+        if(controller.winner){
+          throw new Error(`This game is over! ${controller.winner.name} has won!`)
+        } else {
+          throw new Error("You can't attack yet, the game hasn't started!");
+        }
+      }
+
+      if(controller.activePlayer === controller.players[0]){
+        throw new Error("It is not your turn. Please wait.");
+      }
+
+      const row = Number(tile.dataset.y);
+      const col = Number(tile.dataset.x);
+      const attackResult = controller.playTurn(row, col);
+      playSound(chooseSound(attackResult));
+      updateBoard(controller.players[0], playerOneBoard, false);
+      //put up a privacy barrier here! (opaque overlay)
+    } catch(error) {
+      gameText.textContent = error;
+    }
+  });
+
+
+
+
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   //Clicking CPU board to play a full turn of both players
@@ -218,8 +289,8 @@ export default function initApp() {
       playSound(chooseSound(attackResult));
       updateBoard(controller.players[1], playerTwoBoard, false);
       
-      //if the human move doesn't result in winner, let CPU play.
-      if(!controller.winner){
+      //If player 1 didn't win and player 2 is a CPU, generate CPU attack
+      if(!controller.winner && controller.players[1].type === "computer"){
         turnText.textContent = "It is the computers move!";
         gameText.textContent = "Please wait...";
 
@@ -239,10 +310,15 @@ export default function initApp() {
           gameText.textContent = `The winner is ${controller.winner.name}!`;
           playSound("loss");
         }
-      } else {
+      } else if (!controller.winner && controller.players[1].type === "human"){
+        //switch over to player 2 attack and do nothing
+        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+        gameText.textContent = "Pick a square to attack...";
+        //put up a privacy barrier here! (opaque overlay)
+      } else if(controller.winner && controller.players[1].type === "human") {
+        //Ask if there's a winner and display the correct winner
         gameText.textContent = `The winner is ${controller.winner.name}!`;
-        //if human has won, play winning sound
-        playSound("win");
+        playSound("win"); //should I play a win/lose sound if 2 player?
       }
     } catch (error){
       gameText.textContent = error;
