@@ -180,10 +180,11 @@ export default function initApp() {
         throw new Error("The game is already active!");
       }
 
+      //ensure both players have placed all of their ships
       // controller.players[0].gameboard.isFleetPlaced();
       // controller.players[1].gameboard.isFleetPlaced();
 
-      //make sure this only runs if CPU game mode
+      //if CPU mode, generate ship placements for the computer
       if(controller.players[1].type === "computer"){
         placeCpuShips(controller.players[1].gameboard);
       }
@@ -201,7 +202,7 @@ export default function initApp() {
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
-    computer.resetCPU();
+    if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
@@ -224,36 +225,51 @@ export default function initApp() {
   //BOARD CLICKING/ATTACKING EVENT LISTENERS
 
 
-  // function handleBoardClick(event){
-    
-  // }
+  function handleBoardClick(event){
+    //if the game is not active, ask why (it hasn't started or has ended)
+    if(!controller.isGameActive){
+      if(controller.winner){
+        throw new Error(`This game is over! ${controller.winner.name} has won!`)
+      } else {
+        throw new Error("You can't attack yet, the game hasn't started!");
+      }
+    }
+
+    //generate the coordinates for the players attack and return the result
+    const tile = event.target.closest(".tile");
+    const row = Number(tile.dataset.y);
+    const col = Number(tile.dataset.x);
+    const attackResult = controller.playTurn(row, col);
+    playSound(chooseSound(attackResult));
+  }
 
 
 
 
 
   playerOneBoard.addEventListener("mousedown", (event)=>{
-    const tile = event.target.closest(".tile");
     try{
-      //if the game is not active, ask why (it hasn't started or has ended)
-      if(!controller.isGameActive){
-        if(controller.winner){
-          throw new Error(`This game is over! ${controller.winner.name} has won!`)
-        } else {
-          throw new Error("You can't attack yet, the game hasn't started!");
-        }
-      }
+      if(controller.players[1].type === "computer") return;
 
+      //prevent board clicks when it is not the players turn
       if(controller.activePlayer === controller.players[0]){
         throw new Error("It is not your turn. Please wait.");
       }
 
-      const row = Number(tile.dataset.y);
-      const col = Number(tile.dataset.x);
-      const attackResult = controller.playTurn(row, col);
-      playSound(chooseSound(attackResult));
+      //process the attack and update the board accordingly
+      handleBoardClick(event);
       updateBoard(controller.players[0], playerOneBoard, false);
-      //put up a privacy barrier here! (opaque overlay)
+
+      //ask if the attack was a winning move.
+      if(controller.winner){
+        gameText.textContent = `The winner is ${controller.winner.name}!`;
+        playSound("win"); //should I play a win/lose sound if 2 player?
+        //display game over modal
+      } else{
+        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+        gameText.textContent = "Pick a square to attack...";
+        //put up a privacy barrier here! (opaque overlay)
+      }
     } catch(error) {
       gameText.textContent = error;
     }
@@ -266,27 +282,14 @@ export default function initApp() {
 
   //Clicking CPU board to play a full turn of both players
   playerTwoBoard.addEventListener("mousedown", async (event)=>{
-    const tile = event.target.closest(".tile");
     try{
-      //if the game is not active, ask why (it hasn't started or has ended)
-      if(!controller.isGameActive){
-        if(controller.winner){
-          throw new Error(`This game is over! ${controller.winner.name} has won!`)
-        } else {
-          throw new Error("You can't attack yet, the game hasn't started!");
-        }
-      }
-
-      //prevent additional human clicks while it is CPU turn
+      //prevent board clicks when it is not the players turn
       if(controller.activePlayer === controller.players[1]){
         throw new Error("It is not your turn. Please wait.");
       }
 
-      //generate human players attack move
-      const row = Number(tile.dataset.y);
-      const col = Number(tile.dataset.x);
-      const attackResult = controller.playTurn(row, col);
-      playSound(chooseSound(attackResult));
+      //process the attack and update the board accordingly
+      handleBoardClick(event);
       updateBoard(controller.players[1], playerTwoBoard, false);
       
       //If player 1 didn't win and player 2 is a CPU, generate CPU attack
@@ -295,7 +298,6 @@ export default function initApp() {
         gameText.textContent = "Please wait...";
 
         await turnDelay(2000);
-        //create a rendering function to display during turn delay, and call it here
 
         const cpuCoords = computer.chooseAttack(controller.players[0].gameboard);
         const attackResult = controller.playTurn(...cpuCoords);
@@ -319,6 +321,7 @@ export default function initApp() {
         //Ask if there's a winner and display the correct winner
         gameText.textContent = `The winner is ${controller.winner.name}!`;
         playSound("win"); //should I play a win/lose sound if 2 player?
+        //display game over modal
       }
     } catch (error){
       gameText.textContent = error;
