@@ -25,7 +25,7 @@ export default function initApp() {
   const playerTwoName = document.getElementById("playerTwoName");
 
   //Overlays and Modals logics
-  //overlay for all modals
+  //overlay for all modals (except privacy screening)
   const modalOverlay = document.getElementById("modalOverlay");
 
   //Game Selection Modal and logic
@@ -34,6 +34,9 @@ export default function initApp() {
   const playerVsCpuModal = document.getElementById("playerVsCpuModal");
   const twoPlayerBtn = document.getElementById("twoPlayerBtn");
   const twoPlayerModal = document.getElementById("twoPlayerModal");
+  const gameOverModal = document.getElementById("gameOverModal");
+  const gameResultText = document.getElementById("gameResultText");
+
 
   cpuBtn.addEventListener("click", ()=>{
     gameSelectModal.style.display = "none";
@@ -44,9 +47,6 @@ export default function initApp() {
     gameSelectModal.style.display = "none";
     twoPlayerModal.style.display = "grid";
   });
-
- 
-
 
  
 
@@ -154,7 +154,7 @@ export default function initApp() {
       updateBoard(controller.players[0], playerOneBoard, true);
       playSound("placeShip");
       modalOverlay.style.display = "none";
-
+      placeShipModal.style.display = "none";
       gameText.textContent = "";
     } catch (error){
       placeShipErrorText.style.color = "red";
@@ -181,7 +181,7 @@ export default function initApp() {
       }
 
       //ensure both players have placed all of their ships
-      // controller.players[0].gameboard.isFleetPlaced();
+      controller.players[0].gameboard.isFleetPlaced();
       // controller.players[1].gameboard.isFleetPlaced();
 
       //if CPU mode, generate ship placements for the computer
@@ -198,7 +198,7 @@ export default function initApp() {
   });
 
 
-  //reset the game and board structures, then recreate the DOM
+  //reset the game to current game mode (for middle of game if needed)
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
@@ -209,8 +209,16 @@ export default function initApp() {
   });
 
 
- 
-
+  //restart the game from the winning screen modal and re-select game mode
+  const restartGameBtn = document.getElementById("restartGameBtn");
+  restartGameBtn.addEventListener("click", ()=>{
+    controller.resetGame();
+    if(controller.players[1].type === "computer") computer.resetCPU();
+    createBoards();
+    //allow player to re-select game mode at this point
+    gameOverModal.style.display = "none";
+    gameSelectModal.style.display = "grid";
+  });
 
 
 
@@ -265,6 +273,9 @@ export default function initApp() {
         gameText.textContent = `The winner is ${controller.winner.name}!`;
         playSound("win"); //should I play a win/lose sound if 2 player?
         //display game over modal
+        modalOverlay.style.display = "flex";
+        gameOverModal.style.display = "flex";
+        gameResultText.textContent = `${controller.winner.name}`;
       } else{
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
@@ -311,6 +322,10 @@ export default function initApp() {
         if(controller.winner){
           gameText.textContent = `The winner is ${controller.winner.name}!`;
           playSound("loss");
+          //display game over modal
+          modalOverlay.style.display = "flex";
+          gameOverModal.style.display = "flex";
+          gameResultText.textContent = `${controller.winner.name}`;
         }
       } else if (!controller.winner && controller.players[1].type === "human"){
         //switch over to player 2 attack and do nothing
@@ -322,6 +337,9 @@ export default function initApp() {
         gameText.textContent = `The winner is ${controller.winner.name}!`;
         playSound("win"); //should I play a win/lose sound if 2 player?
         //display game over modal
+        modalOverlay.style.display = "flex";
+        gameOverModal.style.display = "flex";
+        gameResultText.textContent = `${controller.winner.name}`;
       }
     } catch (error){
       gameText.textContent = error;
@@ -335,6 +353,6 @@ export default function initApp() {
       return "hit";
     } else {
       return "miss";
-    } 
-  }
+    }
+  }  
 }

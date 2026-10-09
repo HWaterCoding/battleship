@@ -190,7 +190,6 @@ export default class Gameboard {
     }
   }
 
-
   //determine if all ships are sunk after every move
   isGameOver() {
     return this.ships.every((ship) => ship.sunk);
