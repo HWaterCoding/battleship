@@ -6,10 +6,9 @@ import playSound from "./audio.js";
 
 export default function initApp() {
   
-  //variables for GameController and CPU instances
+  //variables for GameController, CPU instances, and turn delays
   let controller;
   let computer;
-
 
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
@@ -34,8 +33,6 @@ export default function initApp() {
   const playerVsCpuModal = document.getElementById("playerVsCpuModal");
   const twoPlayerBtn = document.getElementById("twoPlayerBtn");
   const twoPlayerModal = document.getElementById("twoPlayerModal");
-  const gameOverModal = document.getElementById("gameOverModal");
-  const gameResultText = document.getElementById("gameResultText");
 
 
   cpuBtn.addEventListener("click", ()=>{
@@ -48,12 +45,6 @@ export default function initApp() {
     twoPlayerModal.style.display = "grid";
   });
 
- 
-
-  //call gameController instance passing in two objects.
-  //object one is humanplayer with a username and a type=human
-  //object two is a CPU, who's name is "Computer" and type=computer
-  //create CPU instance 
 
   //Player Vs. CPU mode logic
   const singlePlayerUsername = document.getElementById("singlePlayerUsername");
@@ -82,13 +73,6 @@ export default function initApp() {
   }); 
 
 
-
-  
-
-  //call gameController instance passing in two objects.
-  //object one is humanplayer with a username and a type=human
-  //object two is humanplayer with a username and a type=human
-
   //Two-Player mode logic
   const playerOneUsername = document.getElementById("playerOneUsername");
   const playerTwoUsername = document.getElementById("playerTwoUsername");
@@ -114,9 +98,17 @@ export default function initApp() {
   });
 
 
-
-  
-
+  //Privacy screen between turns
+  const privacyOverlay = document.getElementById("privacyOverlay");
+  const privacyScreen = document.getElementById("privacyScreen");
+  const privacyTextOne = document.getElementById("privacyText1");
+  const privacyTextTwo = document.getElementById("privacyText2");
+  const privacyBtn = document.getElementById("privacyBtn");
+  privacyBtn.addEventListener("click", ()=>{
+    renderPerspective();
+    privacyOverlay.style.display = "none";
+    privacyScreen.style.display = "none";
+  });
 
 
   //PLACE SHIP FORM ELEMENTS
@@ -168,9 +160,6 @@ export default function initApp() {
     modalOverlay.style.display = "none";
   })
 
-
-
-  
   
   //START GAME BUTTON AND ACTIVATION
   const startGameBtn = document.getElementById("startGameBtn");
@@ -181,7 +170,7 @@ export default function initApp() {
       }
 
       //ensure both players have placed all of their ships
-      controller.players[0].gameboard.isFleetPlaced();
+      // controller.players[0].gameboard.isFleetPlaced();
       // controller.players[1].gameboard.isFleetPlaced();
 
       //if CPU mode, generate ship placements for the computer
@@ -210,6 +199,8 @@ export default function initApp() {
 
 
   //restart the game from the winning screen modal and re-select game mode
+  const gameOverModal = document.getElementById("gameOverModal");
+  const gameResultText = document.getElementById("gameResultText");
   const restartGameBtn = document.getElementById("restartGameBtn");
   restartGameBtn.addEventListener("click", ()=>{
     controller.resetGame();
@@ -221,19 +212,8 @@ export default function initApp() {
   });
 
 
-
-
-  //UPGRADE: Keep this largely the same but refactor for 2 player mode
-  //simply ask before getting to the CPU's logic, if the player type of player 2
-  //is a CPU. If it is, then execute the CPU logic, if it isn't, then exit early
-  //Under this, create an additional event listener on player 1's board to handle
-  //player 2's clicks and how they will attack themselves. 
-  //make sure neither human player can click the others board if not their turn
-
   //BOARD CLICKING/ATTACKING EVENT LISTENERS
-
-
-  function handleBoardClick(event){
+  async function handleBoardClick(event){
     //if the game is not active, ask why (it hasn't started or has ended)
     if(!controller.isGameActive){
       if(controller.winner){
@@ -249,13 +229,23 @@ export default function initApp() {
     const col = Number(tile.dataset.x);
     const attackResult = controller.playTurn(row, col);
     playSound(chooseSound(attackResult));
+
+    await turnDelay(2000);
+
+    //if this is two-player mode, then display privacy after each attack
+    if(controller.players[1].type !== "computer" && !controller.winner){
+      privacyOverlay.style.display = "flex";
+      privacyScreen.style.display = "flex";
+      privacyTextOne.textContent = `Please pass the screen to ${controller.activePlayer.name}`;
+      privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
+    }
+
+    return attackResult;
   }
 
 
-
-
-
-  playerOneBoard.addEventListener("mousedown", (event)=>{
+  //Player 1's board (Player 2's attacks)
+  playerOneBoard.addEventListener("mousedown", async (event)=>{
     try{
       if(controller.players[1].type === "computer") return;
 
@@ -270,16 +260,13 @@ export default function initApp() {
 
       //ask if the attack was a winning move.
       if(controller.winner){
-        gameText.textContent = `The winner is ${controller.winner.name}!`;
-        playSound("win"); //should I play a win/lose sound if 2 player?
-        //display game over modal
+        playSound("win");
         modalOverlay.style.display = "flex";
         gameOverModal.style.display = "flex";
-        gameResultText.textContent = `${controller.winner.name}`;
+        gameResultText.textContent = `The winner is ${controller.winner.name}!`;
       } else{
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
-        //put up a privacy barrier here! (opaque overlay)
       }
     } catch(error) {
       gameText.textContent = error;
@@ -287,11 +274,10 @@ export default function initApp() {
   });
 
 
-
-
+  //Turn delay function for CPU turn
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  //Clicking CPU board to play a full turn of both players
+  //Player 1's attacks on Player 2's board, and CPU attacks against Player 1
   playerTwoBoard.addEventListener("mousedown", async (event)=>{
     try{
       //prevent board clicks when it is not the players turn
@@ -300,7 +286,7 @@ export default function initApp() {
       }
 
       //process the attack and update the board accordingly
-      handleBoardClick(event);
+      handleBoardClick(event);      
       updateBoard(controller.players[1], playerTwoBoard, false);
       
       //If player 1 didn't win and player 2 is a CPU, generate CPU attack
@@ -313,33 +299,28 @@ export default function initApp() {
         const cpuCoords = computer.chooseAttack(controller.players[0].gameboard);
         const attackResult = controller.playTurn(...cpuCoords);
         playSound(chooseSound(attackResult));
-        updateBoard(controller.players[0], playerOneBoard, true);
+        renderPerspective();
 
-        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
-        gameText.textContent = "Pick a square to attack...";
-
-        //ask if CPU won to play losing sound
+        //ask if CPU won
         if(controller.winner){
-          gameText.textContent = `The winner is ${controller.winner.name}!`;
           playSound("loss");
-          //display game over modal
           modalOverlay.style.display = "flex";
           gameOverModal.style.display = "flex";
-          gameResultText.textContent = `${controller.winner.name}`;
+          gameResultText.textContent = `The winner is ${controller.winner.name}!`;
+        } else{
+          turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+          gameText.textContent = "Pick a square to attack...";
         }
       } else if (!controller.winner && controller.players[1].type === "human"){
         //switch over to player 2 attack and do nothing
         turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
-        //put up a privacy barrier here! (opaque overlay)
-      } else if(controller.winner && controller.players[1].type === "human") {
+      } else if(controller.winner){
         //Ask if there's a winner and display the correct winner
-        gameText.textContent = `The winner is ${controller.winner.name}!`;
-        playSound("win"); //should I play a win/lose sound if 2 player?
-        //display game over modal
+        playSound("win");
         modalOverlay.style.display = "flex";
         gameOverModal.style.display = "flex";
-        gameResultText.textContent = `${controller.winner.name}`;
+        gameResultText.textContent = `The winner is ${controller.winner.name}!`;
       }
     } catch (error){
       gameText.textContent = error;
@@ -354,5 +335,36 @@ export default function initApp() {
     } else {
       return "miss";
     }
-  }  
+  }
+
+  //helper function to choose which board should be visible and which is hidden
+  function renderPerspective(){
+    if(controller.activePlayer === controller.players[0] ||
+       controller.players[1].type === "computer"
+    ){
+      //render board visibility 
+      updateBoard(controller.players[0], playerOneBoard, true); //<--- p1 board visible
+      updateBoard(controller.players[1], playerTwoBoard, false); //<--- p2 board invisible
+    } else {
+      //render board visibility 
+      updateBoard(controller.players[0], playerOneBoard, false); //<--- p1 board invisible
+      updateBoard(controller.players[1], playerTwoBoard, true); //<--- p2 board visible
+    }
+  }
 }
+
+
+//for ship placement sequence in 2 player mode:
+//Create a second button next to the place ship button that asks if ready
+//After selecting 2 player mode, the privacy screen comes up, prompting player 1 to place ships
+//Player 1 places all 5 ships, then confirms that they are ready.
+//the privacy screen comes up once again, and player2 is handed the screen
+//player 2 then also places all of their ships and confirms that they are ready
+//After player 2's confirmation, privacy comes back up, and player 1 does first attack
+
+//board visibility needs to alternate with every instance of the privacy screen
+//IMPORTANT: (Change the visibility of the board based off the ready button, not off who's turn it is)
+
+
+//use stop propagation to prevent clicks going through modals/overlays?
+//create variable isTransitioning(?) and if true, disable board clicks
