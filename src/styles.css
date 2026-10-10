@@ -243,6 +243,7 @@ main {
   position: fixed;
   height: 100%;
   width: 100%;
+  z-index: 5;
 }
 
 #privacyScreen{
@@ -286,11 +287,11 @@ main {
 /* Game-mode Selection Modal */
 /* Start the game with this set as grid */
 #gameSelectModal{
-    display: grid;
-    /* display: none; */
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    background-color: rgba(231, 129, 129, 75%);
+  display: grid;
+  /* display: none; */
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background-color: rgba(231, 129, 129, 75%);
 }
 
 #gameSelectModal h1{
@@ -401,14 +402,14 @@ main {
 
 /* Place Ship Modal Form */
 #placeShipModal {
-    display: none;
-    /* display: flex; */
-    background-color: rgb(224, 202, 202);
-    box-shadow: 0 0 10px 4px rgb(156, 7, 7);
-    border-radius: 15px;
-    justify-content: center;
-    align-items: center;
-    padding: clamp(1rem, 20px, 1.5rem);
+  display: none;
+  /* display: flex; */
+  background-color: rgb(224, 202, 202);
+  box-shadow: 0 0 10px 4px rgb(156, 7, 7);
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1rem, 20px, 1.5rem);
 }
 
 #placeShipForm{

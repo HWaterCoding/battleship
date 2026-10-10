@@ -6,9 +6,10 @@ import playSound from "./audio.js";
 
 export default function initApp() {
   
-  //variables for GameController, CPU instances, and turn delays
+  //variables for GameController, CPU instances, and transition phase
   let controller;
   let computer;
+  let isTransitioning = false;
 
   //should ONLY be who's turn it is. That's it.
   const turnText = document.getElementById("turnText");
@@ -17,13 +18,13 @@ export default function initApp() {
   const gameText = document.getElementById("gameText");
   
   //Both physical gameboards and titles
-  const playerOneBoard = document.getElementById("leftPlayerBoard");
   const playerOneName = document.getElementById("playerOneName");
+  const playerOneBoard = document.getElementById("leftPlayerBoard");
 
-  const playerTwoBoard = document.getElementById("rightPlayerBoard");
   const playerTwoName = document.getElementById("playerTwoName");
+  const playerTwoBoard = document.getElementById("rightPlayerBoard");
 
-  //Overlays and Modals logics
+  //Overlays and Modals logic
   //overlay for all modals (except privacy screening)
   const modalOverlay = document.getElementById("modalOverlay");
 
@@ -33,7 +34,6 @@ export default function initApp() {
   const playerVsCpuModal = document.getElementById("playerVsCpuModal");
   const twoPlayerBtn = document.getElementById("twoPlayerBtn");
   const twoPlayerModal = document.getElementById("twoPlayerModal");
-
 
   cpuBtn.addEventListener("click", ()=>{
     gameSelectModal.style.display = "none";
@@ -49,7 +49,6 @@ export default function initApp() {
   //Player Vs. CPU mode logic
   const singlePlayerUsername = document.getElementById("singlePlayerUsername");
   const playCpuBtn = document.getElementById("playCpuBtn");
-
   playCpuBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     playerVsCpuModal.style.display = "none";
@@ -77,7 +76,6 @@ export default function initApp() {
   const playerOneUsername = document.getElementById("playerOneUsername");
   const playerTwoUsername = document.getElementById("playerTwoUsername");
   const twoPlayerPlayBtn = document.getElementById("twoPlayerPlayBtn");
-
   twoPlayerPlayBtn.addEventListener("click", ()=>{
     modalOverlay.style.display = "none";
     twoPlayerModal.style.display = "none";
@@ -108,6 +106,7 @@ export default function initApp() {
     renderPerspective();
     privacyOverlay.style.display = "none";
     privacyScreen.style.display = "none";
+    isTransitioning = false;
   });
 
 
@@ -214,6 +213,8 @@ export default function initApp() {
 
   //BOARD CLICKING/ATTACKING EVENT LISTENERS
   async function handleBoardClick(event){
+    if(isTransitioning) return; //if in transition phase, do nothing.
+
     //if the game is not active, ask why (it hasn't started or has ended)
     if(!controller.isGameActive){
       if(controller.winner){
@@ -229,6 +230,7 @@ export default function initApp() {
     const col = Number(tile.dataset.x);
     const attackResult = controller.playTurn(row, col);
     playSound(chooseSound(attackResult));
+    isTransitioning = true;
 
     await turnDelay(2000);
 
@@ -342,28 +344,14 @@ export default function initApp() {
     if(controller.activePlayer === controller.players[0] ||
        controller.players[1].type === "computer"
     ){
-      //render board visibility 
       updateBoard(controller.players[0], playerOneBoard, true); //<--- p1 board visible
       updateBoard(controller.players[1], playerTwoBoard, false); //<--- p2 board invisible
     } else {
-      //render board visibility 
       updateBoard(controller.players[0], playerOneBoard, false); //<--- p1 board invisible
       updateBoard(controller.players[1], playerTwoBoard, true); //<--- p2 board visible
     }
   }
 }
-
-
-//for ship placement sequence in 2 player mode:
-//Create a second button next to the place ship button that asks if ready
-//After selecting 2 player mode, the privacy screen comes up, prompting player 1 to place ships
-//Player 1 places all 5 ships, then confirms that they are ready.
-//the privacy screen comes up once again, and player2 is handed the screen
-//player 2 then also places all of their ships and confirms that they are ready
-//After player 2's confirmation, privacy comes back up, and player 1 does first attack
-
-//board visibility needs to alternate with every instance of the privacy screen
-//IMPORTANT: (Change the visibility of the board based off the ready button, not off who's turn it is)
 
 
 //use stop propagation to prevent clicks going through modals/overlays?
