@@ -9,7 +9,7 @@ export default function initApp() {
   //variables for GameController, CPU instances, and transition phase
   let controller;
   let computer;
-  let placementStage = "Player 1";
+  let placementStage;
   let isTransitioning = false;
 
   //should ONLY be who's turn it is. That's it.
@@ -99,6 +99,8 @@ export default function initApp() {
     playerOneName.textContent = `${controller.players[0].name}'s Board`;
     playerTwoName.textContent = `${controller.players[1].name}'s Board`;
 
+    placementStage = "Player 1";
+
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
   });
@@ -174,19 +176,23 @@ export default function initApp() {
   confirmShipsBtn.addEventListener("click", ()=>{
     try{
       controller.activePlayer.gameboard.isFleetPlaced();
-      if(placementStage === "Player 1"){
+
+      if(placementStage === "Player 1" && controller.players[1].type === "human"){
         placementStage = "Player 2";
-      } else if (placementStage === "Player 2"){
-        placeShipBtn.disabled = true;
-        placeShipBtn.style.cursor = "not-allowed";
-        placeShipBtn.title = "You've already placed your ships.";
-        confirmShipsBtn.disabled = true;
-        confirmShipsBtn.style.cursor = "not-allowed";
-        confirmShipsBtn.title = "You've already confirmed your ship placements.";
+      } else if (placementStage === "Player 2" || controller.players[1].type === "computer"){
+        placementStage = "complete";
+        disableButtons(
+          [placeShipBtn, confirmShipsBtn],
+          [
+            "You've already placed your ships.",
+            "You've already confirmed your ship placements."
+          ]
+        );
         turnText.textContent = `Both players are ready. Click "Start Game!" to begin.`;
         gameText.textContent = "";
-        placementStage = "complete";
       }
+      if(controller.players[1].type === "computer") return;
+
       controller.switchPlayers();
       displayPrivacy();
     } catch (error) {
@@ -202,7 +208,9 @@ export default function initApp() {
       if(controller.isGameActive){
         throw new Error("The game is already active!");
       }
-      if(placementStage !== "complete") throw new Error("All ships must be placed and confirmed");
+      if(placementStage !== "complete" ){
+        throw new Error("All ships must be placed and confirmed")
+      }
 
       //ensure both players have placed all of their ships
       controller.players[0].gameboard.isFleetPlaced();
@@ -211,6 +219,8 @@ export default function initApp() {
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
       gameText.textContent = "Pick a square to attack...";
+
+      disableButtons(startGameBtn, "The game has already been started.");
     } catch (error){
       gameText.textContent = error;
     }
@@ -226,7 +236,26 @@ export default function initApp() {
     placementStage = "Player 1";
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
+
+    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
   });
+
+
+  //Button end/reset everything and change the current gamemode
+  const changeGameBtn = document.getElementById("changeGameBtn");
+  changeGameBtn.addEventListener("click", ()=>{
+    //reset all game state (similar to resetGameBtn)
+    controller.resetGame();
+    if(controller.players[1].type === "computer") computer.resetCPU();
+    createBoards();
+    //Open up the game selection modal.
+    modalOverlay.style.display = "flex";
+    gameSelectModal.style.display = "grid";
+    //reset all global variables, etc.
+
+    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
+  });
+
 
 
   //restart the game from the winning screen modal and re-select game mode
@@ -239,6 +268,8 @@ export default function initApp() {
     createBoards();
     gameOverModal.style.display = "none";
     gameSelectModal.style.display = "grid";
+
+    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
   });
 
 
@@ -382,11 +413,45 @@ export default function initApp() {
       updateBoard(controller.players[1], playerTwoBoard, true); //<--- p2 board visible
     }
   }
+
+  //helper function to disable buttons when not offerable to user
+  function disableButtons(buttons, messages = []){
+    const buttonArray = Array.isArray(buttons) ? buttons : [buttons];
+    const messageArray = Array.isArray(messages) ? messages : [messages];
+
+    buttonArray.forEach((button, index)=>{
+      const message = messageArray[index] !== undefined ? 
+        messageArray[index] : (messageArray[0] || "");
+
+      button.disabled = true;
+      button.style.cursor = "not-allowed";
+      button.title = message;
+    });
+  }
+
+  //helper function to enable buttons so the user can use them
+  function enableButtons(buttons, messages = []){
+    //convert whatever is passed in to an array, even if single element
+    const buttonArray = Array.isArray(buttons) ? buttons : [buttons];
+    const messageArray = Array.isArray(messages) ? messages : [messages];
+  
+    buttonArray.forEach((button, index)=>{
+      //use correct message or default to empty string
+      const message = messageArray[index] !== undefined ? 
+        messageArray[index] : (messageArray[0] || "");
+    
+      button.disabled = false;
+      button.style.cursor = "pointer";
+      button.title = message;
+    });
+  }
 }
 
 
 
-
+//Write two functions called "disableButton" and "enableButton"
+//both functions take an endless array of buttons that can be passed in
+//this will help with code duplication
 
 
 
