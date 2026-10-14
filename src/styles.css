@@ -60,7 +60,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: rgb(134, 129, 123);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 
@@ -78,6 +78,7 @@ main {
   flex-direction: column;
   align-items: center;
   flex: 1;
+  position: relative;
 }
 
 
@@ -142,50 +143,69 @@ main {
 }
 
 .y-label{
-    grid-column: 1/2;
-    grid-row: 1/2;
-    text-align: center;
-    align-self: center;
-    margin-right: 20px;
+  grid-column: 1/2;
+  grid-row: 1/2;
+  text-align: center;
+  align-self: center;
+  margin-right: 20px;
 }
 
 .y-coords {
-    display: grid;
-    grid-template-rows: repeat(10, 1fr);
-    grid-column: 2/3;
-    grid-row: 1/2;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-column: 2/3;
+  grid-row: 1/2;
 }
 
 .x-label{
-    grid-column: 3/4;
-    grid-row: 3/4;
-    text-align: center;
+  grid-column: 3/4;
+  grid-row: 3/4;
+  text-align: center;
 }
 
 .x-coords {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-column: 3/4;
-    grid-row: 2/3;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-column: 3/4;
+  grid-row: 2/3;
 }
 
 .y-coords p,
 .x-coords p {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#placeShipBtn{
+
+/* Ship Placement Section */
+
+#shipBtns{
+  padding: clamp(.5rem, 12px, 1rem);
+}
+
+#shipBtns button{
+  cursor: pointer;
   padding: 10px;
   margin: 5px;
   border-radius: 10px;
-  background-color: rgb(187, 175, 175);
-  grid-row: 4/5;
-  grid-column: 3/4;
-  place-self: center;
-  cursor: pointer;
+}
+
+#placeShipBtn{
+  background-color: rgb(253, 164, 164);
+}
+
+#placeShipBtn:hover{
+  background-color: rgb(233, 130, 130);
+}
+
+#confirmShipsBtn{
+  background-color: rgb(155, 247, 171);
+}
+
+#confirmShipsBtn:hover{
+  background-color: rgb(120, 235, 139);
 }
 
 
@@ -240,9 +260,8 @@ main {
   background-color: #7a7d80;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  inset: 0;
   z-index: 5;
 }
 

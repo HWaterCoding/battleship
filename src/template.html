@@ -110,7 +110,7 @@
         </div>
     
         <!-- This changes to "it's (players) turn!"" when game starts -->
-        <p id="turnText">Place your ships...</p> <!--Update this dynamically to state who's turn it is-->
+        <p id="turnText"></p> <!--Update this dynamically to state who's turn it is-->
         <p id="gameText"></p> <!--Update this dynamically to post the result of the last turn, and eventually, who the winner is-->
 
         <div id="boardContainer">
@@ -147,8 +147,6 @@
                         <p>9</p>
                     </div>
                     <h3 class="x-label">x</h3>
-
-                    <button id="placeShipBtn">Place A Ship</button>
                 </div>
             </div>
 
@@ -189,6 +187,11 @@
                     <h3 class="x-label">x</h3>
                 </div>
             </div>
+        </div>
+
+        <div id="shipBtns">
+            <button id="placeShipBtn">Place A Ship</button>
+            <button id="confirmShipsBtn">Confirm Ships</button>
         </div>
     </main>
 

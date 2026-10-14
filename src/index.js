@@ -18,29 +18,6 @@ createBoards();
 
 
 
-//CURRENT: Make the game 2-player possible
-//THREE MAIN THINGS TO ADDRESS:
-//1: Game mode selection (modal CPU vs 2-player mode)
-//2: Game set up (Both players need to place their ships one at a time)
-//3: Game flow (player1 attacks --> privacy --> player2 attacks --> privacy)
-
-//1:
-//load page with a modal open: "CPU" or "2-Player"
-//have user choose between vs. CPU or 2-player mode.
-//initialize a game based on which the option the user chose
-//if 2 player is selected:
-
-//2:
-//player 1 places ships --> pass the screen to player 2
-//player 2 places ships --> pass the screen to player 1
-
-//3:
-//player 1 attacks --> show result (5 sec) --> hide both boards / show tranisition screen
-//player 2 clicks "ready" on transition screen
-//player 2 attacks --> show result (5 sec) --> hide both boards / show tranisition screen
-//repeat...
-
-
 
 
 //CSS UPDATING:
@@ -61,3 +38,36 @@ createBoards();
 //(set limits on ship length, only allow coordinates from 0-9, etc)
 //handle all the error messages correctly for form feedback. consider better ways to display!
 //(REVISIT HANDLING ERRORS LESSON IF NEEDED)
+
+
+
+//use a two shared buttons for ship placements nad confirmations
+//Extend displayPrivacy() conditional. Current conditional only needs to appear when players are attacking
+//create an else if() statement that appears between players placing ships, as well.
+
+
+
+//Change and update all texts/errors on screen during ship placement process
+//ones to fix later:
+//Player 1 clicking his own board says "its not your turn"
+//make sure gameText and turnText reset properly after resetting/restarting game
+//
+
+
+// IMPORTANT FIX:::
+//reset/restart game logic:
+//Update it to fully reset all game logic:
+//Re-enable placement buttons
+//Reset isTransitioning
+//set the activePlayer to player 1
+//re-disable the startGameBtn
+
+
+//placementStage starts as Player 1
+//when Player 1 has confirmed their ships, it updates to Player 2
+//when Player 2 confirms their ships, it updates to "complete"
+//only allow "start game" to be pressed when placementStage = "complete"
+//disable the "start game" button when the app first initializes (do in css)
+//When placementStage = "complete", activate the start button.
+//After the start button is pressed, re-deactivate it.
+//when the reset button is pressed, reset placementStage = "player 1"

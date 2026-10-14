@@ -9,6 +9,7 @@ export default function initApp() {
   //variables for GameController, CPU instances, and transition phase
   let controller;
   let computer;
+  let placementStage = "Player 1";
   let isTransitioning = false;
 
   //should ONLY be who's turn it is. That's it.
@@ -69,6 +70,10 @@ export default function initApp() {
     ]);
 
     computer = CPU();
+    placeCpuShips(controller.players[1].gameboard);
+
+    turnText.textContent = "Place your ships...";
+    gameText.textContent = "";
   }); 
 
 
@@ -93,6 +98,9 @@ export default function initApp() {
 
     playerOneName.textContent = `${controller.players[0].name}'s Board`;
     playerTwoName.textContent = `${controller.players[1].name}'s Board`;
+
+    turnText.textContent = "Place your ships...";
+    gameText.textContent = "";
   });
 
 
@@ -112,6 +120,7 @@ export default function initApp() {
 
   //PLACE SHIP FORM ELEMENTS
   const placeShipBtn = document.getElementById("placeShipBtn");
+  const confirmShipsBtn = document.getElementById("confirmShipsBtn");
   const placeShipModal = document.getElementById("placeShipModal");
   const placeShipForm = document.getElementById("placeShipForm");
   const cancelShipBtn = document.getElementById("cancelShipBtn");
@@ -131,23 +140,24 @@ export default function initApp() {
     shipLengthInput.focus();
   })
 
-  //place ship form submission
+  //place ship listener that will work with both player boards
   placeShipForm.addEventListener("submit", (event)=>{
+    event.preventDefault();
     try{
-      event.preventDefault();
-      const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
-      controller.players[0].gameboard.placeShip(
+      const ship = controller.activePlayer.gameboard.ships[shipLengthInput.value - 1];
+      controller.activePlayer.gameboard.placeShip(
         Number(rowCoordInput.value),
         Number(columnCoordInput.value),
         shipDirectionSelect.value,
         ship
-      );
-      updateBoard(controller.players[0], playerOneBoard, true);
+      )
+      const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
+      updateBoard(controller.activePlayer, playerBoard, true);
       playSound("placeShip");
       modalOverlay.style.display = "none";
       placeShipModal.style.display = "none";
       gameText.textContent = "";
-    } catch (error){
+    }catch (error){
       placeShipErrorText.style.color = "red";
       placeShipErrorText.textContent = error;
     }
@@ -157,7 +167,32 @@ export default function initApp() {
   cancelShipBtn.addEventListener("click", (event)=>{
     event.preventDefault();
     modalOverlay.style.display = "none";
+    placeShipModal.style.display = "none";
   })
+
+  //button to confirm ship placements
+  confirmShipsBtn.addEventListener("click", ()=>{
+    try{
+      controller.activePlayer.gameboard.isFleetPlaced();
+      if(placementStage === "Player 1"){
+        placementStage = "Player 2";
+      } else if (placementStage === "Player 2"){
+        placeShipBtn.disabled = true;
+        placeShipBtn.style.cursor = "not-allowed";
+        placeShipBtn.title = "You've already placed your ships."
+        confirmShipsBtn.disabled = true;
+        confirmShipsBtn.style.cursor = "not-allowed";
+        confirmShipsBtn.title = "You've already confirmed your ship placements."
+        turnText.textContent = `Both players are ready.`
+        gameText.textContent = ` Click "Start Game!" to begin.`
+        placementStage = "complete";
+      }
+      controller.switchPlayers();
+      displayPrivacy();
+    } catch (error) {
+      gameText.textContent = error;
+    }
+  });
 
   
   //START GAME BUTTON AND ACTIVATION
@@ -167,15 +202,11 @@ export default function initApp() {
       if(controller.isGameActive){
         throw new Error("The game is already active!");
       }
+      if(placementStage !== "complete") throw new Error("All ships must be placed and confirmed");
 
       //ensure both players have placed all of their ships
-      // controller.players[0].gameboard.isFleetPlaced();
-      // controller.players[1].gameboard.isFleetPlaced();
-
-      //if CPU mode, generate ship placements for the computer
-      if(controller.players[1].type === "computer"){
-        placeCpuShips(controller.players[1].gameboard);
-      }
+      controller.players[0].gameboard.isFleetPlaced();
+      controller.players[1].gameboard.isFleetPlaced();
 
       controller.startGame();
       turnText.textContent = `It is ${controller.players[0].name}'s move!`;
@@ -205,16 +236,13 @@ export default function initApp() {
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
-    //allow player to re-select game mode at this point
     gameOverModal.style.display = "none";
     gameSelectModal.style.display = "grid";
   });
 
 
   //BOARD CLICKING/ATTACKING EVENT LISTENERS
-  async function handleBoardClick(event){
-    if(isTransitioning) return; //if in transition phase, do nothing.
-
+  function handleBoardClick(event){
     //if the game is not active, ask why (it hasn't started or has ended)
     if(!controller.isGameActive){
       if(controller.winner){
@@ -230,26 +258,31 @@ export default function initApp() {
     const col = Number(tile.dataset.x);
     const attackResult = controller.playTurn(row, col);
     playSound(chooseSound(attackResult));
-    isTransitioning = true;
-
-    await turnDelay(2000);
-
-    //if this is two-player mode, then display privacy after each attack
-    if(controller.players[1].type !== "computer" && !controller.winner){
-      privacyOverlay.style.display = "flex";
-      privacyScreen.style.display = "flex";
-      privacyTextOne.textContent = `Please pass the screen to ${controller.activePlayer.name}`;
-      privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
-    }
 
     return attackResult;
+  }
+
+
+  async function displayPrivacy(){
+    isTransitioning = true;
+
+    if(controller.isGameActive){
+      await turnDelay(2000);
+      turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+    }
+
+    privacyOverlay.style.display = "flex";
+    privacyScreen.style.display = "flex";
+    privacyTextOne.textContent = `Please pass the screen to ${controller.activePlayer.name}`;
+    privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
   }
 
 
   //Player 1's board (Player 2's attacks)
   playerOneBoard.addEventListener("mousedown", async (event)=>{
     try{
-      if(controller.players[1].type === "computer") return;
+      //if in transition phase, or is CPU game, do nothing.
+      if(controller.players[1].type === "computer" || isTransitioning) return;
 
       //prevent board clicks when it is not the players turn
       if(controller.activePlayer === controller.players[0]){
@@ -259,7 +292,7 @@ export default function initApp() {
       //process the attack and update the board accordingly
       handleBoardClick(event);
       updateBoard(controller.players[0], playerOneBoard, false);
-
+      
       //ask if the attack was a winning move.
       if(controller.winner){
         playSound("win");
@@ -267,8 +300,8 @@ export default function initApp() {
         gameOverModal.style.display = "flex";
         gameResultText.textContent = `The winner is ${controller.winner.name}!`;
       } else{
-        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
+        displayPrivacy();
       }
     } catch(error) {
       gameText.textContent = error;
@@ -282,13 +315,14 @@ export default function initApp() {
   //Player 1's attacks on Player 2's board, and CPU attacks against Player 1
   playerTwoBoard.addEventListener("mousedown", async (event)=>{
     try{
+      if(isTransitioning) return;
       //prevent board clicks when it is not the players turn
       if(controller.activePlayer === controller.players[1]){
         throw new Error("It is not your turn. Please wait.");
       }
 
       //process the attack and update the board accordingly
-      handleBoardClick(event);      
+      handleBoardClick(event);    
       updateBoard(controller.players[1], playerTwoBoard, false);
       
       //If player 1 didn't win and player 2 is a CPU, generate CPU attack
@@ -314,9 +348,8 @@ export default function initApp() {
           gameText.textContent = "Pick a square to attack...";
         }
       } else if (!controller.winner && controller.players[1].type === "human"){
-        //switch over to player 2 attack and do nothing
-        turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
         gameText.textContent = "Pick a square to attack...";
+        displayPrivacy();
       } else if(controller.winner){
         //Ask if there's a winner and display the correct winner
         playSound("win");
@@ -354,5 +387,32 @@ export default function initApp() {
 }
 
 
-//use stop propagation to prevent clicks going through modals/overlays?
-//create variable isTransitioning(?) and if true, disable board clicks
+
+
+
+
+
+
+
+
+//place ship form submission
+  // placeShipForm.addEventListener("submit", (event)=>{
+  //   try{
+  //     event.preventDefault();
+  //     const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
+  //     controller.players[0].gameboard.placeShip(
+  //       Number(rowCoordInput.value),
+  //       Number(columnCoordInput.value),
+  //       shipDirectionSelect.value,
+  //       ship
+  //     );
+  //     updateBoard(controller.players[0], playerOneBoard, true);
+  //     playSound("placeShip");
+  //     modalOverlay.style.display = "none";
+  //     placeShipModal.style.display = "none";
+  //     gameText.textContent = "";
+  //   } catch (error){
+  //     placeShipErrorText.style.color = "red";
+  //     placeShipErrorText.textContent = error;
+  //   }
+  // })
