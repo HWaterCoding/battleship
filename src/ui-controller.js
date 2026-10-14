@@ -179,12 +179,12 @@ export default function initApp() {
       } else if (placementStage === "Player 2"){
         placeShipBtn.disabled = true;
         placeShipBtn.style.cursor = "not-allowed";
-        placeShipBtn.title = "You've already placed your ships."
+        placeShipBtn.title = "You've already placed your ships.";
         confirmShipsBtn.disabled = true;
         confirmShipsBtn.style.cursor = "not-allowed";
-        confirmShipsBtn.title = "You've already confirmed your ship placements."
-        turnText.textContent = `Both players are ready.`
-        gameText.textContent = ` Click "Start Game!" to begin.`
+        confirmShipsBtn.title = "You've already confirmed your ship placements.";
+        turnText.textContent = `Both players are ready. Click "Start Game!" to begin.`;
+        gameText.textContent = "";
         placementStage = "complete";
       }
       controller.switchPlayers();
@@ -223,6 +223,7 @@ export default function initApp() {
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
+    placementStage = "Player 1";
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
   });
@@ -284,10 +285,8 @@ export default function initApp() {
       //if in transition phase, or is CPU game, do nothing.
       if(controller.players[1].type === "computer" || isTransitioning) return;
 
-      //prevent board clicks when it is not the players turn
-      if(controller.activePlayer === controller.players[0]){
-        throw new Error("It is not your turn. Please wait.");
-      }
+      //Prevent clicking your own board
+      if(controller.activePlayer === controller.players[0])return;
 
       //process the attack and update the board accordingly
       handleBoardClick(event);
@@ -316,10 +315,9 @@ export default function initApp() {
   playerTwoBoard.addEventListener("mousedown", async (event)=>{
     try{
       if(isTransitioning) return;
-      //prevent board clicks when it is not the players turn
-      if(controller.activePlayer === controller.players[1]){
-        throw new Error("It is not your turn. Please wait.");
-      }
+
+      //Prevent clicking your own board
+      if(controller.activePlayer === controller.players[1]) return;
 
       //process the attack and update the board accordingly
       handleBoardClick(event);    

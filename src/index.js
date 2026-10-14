@@ -13,9 +13,8 @@ createBoards();
 
 //FEATURES TO IMPLEMENT:
 // 1. make it so that when an attack successfully hits a ship, it remains that players move.
-// 3. create ship drag-and-drop logic
-
-
+// 2. create ship drag-and-drop logic
+// 3. Add a "changeGameMode" button next to start and reset game (easy)
 
 
 
@@ -38,20 +37,6 @@ createBoards();
 //(set limits on ship length, only allow coordinates from 0-9, etc)
 //handle all the error messages correctly for form feedback. consider better ways to display!
 //(REVISIT HANDLING ERRORS LESSON IF NEEDED)
-
-
-
-//use a two shared buttons for ship placements nad confirmations
-//Extend displayPrivacy() conditional. Current conditional only needs to appear when players are attacking
-//create an else if() statement that appears between players placing ships, as well.
-
-
-
-//Change and update all texts/errors on screen during ship placement process
-//ones to fix later:
-//Player 1 clicking his own board says "its not your turn"
-//make sure gameText and turnText reset properly after resetting/restarting game
-//
 
 
 // IMPORTANT FIX:::
