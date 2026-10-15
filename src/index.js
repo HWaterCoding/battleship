@@ -6,53 +6,33 @@ import initApp from "./ui-controller.js";
 initApp();
 createBoards();
 
-// Small future updates:
-//1. disable placeShip() button when game is active (same as startBtn) (make it so while isGameActive === true, these cannot be clicked)
-//2. Write protection on tile click listener so it has to be a tile
-//3. fix getBoard() function to not be a shallow copy
 
-//FEATURES TO IMPLEMENT:
-// 1. make it so that when an attack successfully hits a ship, it remains that players move.
-// 2. create ship drag-and-drop logic
-// 3. Add a "changeGameMode" button next to start and reset game (easy)
-
+//things to implement in order:
+// 1. ship drag-and-drop placement logic
+// 2. Make it so that when an attack is successful, it remains that players turn
+// 3. Add a volume icon button to the header that allows people to toggle sfx
+// 4. use fire emoji to signify successful hit
+// 5. use red X emoji to signify unsuccessful hit
+// 6. Style fully sunk ships a better way to make it obvious
 
 
+// Drag-and-drop:
+// Create a shared ship-selection area beneath the place/confirm ships btns
+// Each ship should be a container with same tiles as board * shipLength
 
-//CSS UPDATING:
-//Add a volume icon button to the header that allows people to toggle sfx
-//Add winner/loser screen once game ends
-//gameOverModal and overlay logic
-//style both placeship modal and gameover modal properly
-//"grey-out" the startGameBtn by default and only make it clickable when the game is ready to be begun. Once the human has placed all of their ships, change the class on the button. Once the game is started, change the class back and revert it to it's "unclickable" state again
+// create a rotate button nearby somewhere to change ship orientation
+// (rotate the ships by simply changing the flex-direction of the container)
 
-//use fire emoji to signify successful hit
-//use red X emoji to signify unsuccessful hit
-//Style fully sunk ships a better way to make it obvious
-//decide how to design boat for player
+// When a ship is dragged onto the board, just change those tiles properties and render
 
 
-//OTHER:
-//add mandatory form validation for placing ships 
-//(set limits on ship length, only allow coordinates from 0-9, etc)
-//handle all the error messages correctly for form feedback. consider better ways to display!
-//(REVISIT HANDLING ERRORS LESSON IF NEEDED)
+
+// hide this section by default (it only needs to be visible during placement)
+// make them visible during the placement phase, then hide after game start
 
 
-// IMPORTANT FIX:::
-//reset/restart game logic:
-//Update it to fully reset all game logic:
-//Re-enable placement buttons
-//Reset isTransitioning
-//set the activePlayer to player 1
-//re-disable the startGameBtn
-
-
-//placementStage starts as Player 1
-//when Player 1 has confirmed their ships, it updates to Player 2
-//when Player 2 confirms their ships, it updates to "complete"
-//only allow "start game" to be pressed when placementStage = "complete"
-//disable the "start game" button when the app first initializes (do in css)
-//When placementStage = "complete", activate the start button.
-//After the start button is pressed, re-deactivate it.
-//when the reset button is pressed, reset placementStage = "player 1"
+//control drag logic with event listeners on ship and board accordingly:
+// "dragstart" (ship) --> dataTransfer.setData
+// "dragover" (board)
+// "dragleave" (board)
+// "drop" (board) --> dataTransfer.getData
