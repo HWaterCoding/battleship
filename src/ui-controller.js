@@ -6,16 +6,14 @@ import playSound from "./audio.js";
 
 export default function initApp() {
   
-  //variables for GameController, CPU instances, and transition phase
+  //Variables for GameController, CPU instances, and transition phase
   let controller;
   let computer;
   let placementStage;
   let isTransitioning = false;
 
-  //should ONLY be who's turn it is. That's it.
+  //Readable text elements to update game status 
   const turnText = document.getElementById("turnText");
-
-  //should be game instruction/what catches printable errors
   const gameText = document.getElementById("gameText");
   
   //Both physical gameboards and titles
@@ -25,29 +23,26 @@ export default function initApp() {
   const playerTwoName = document.getElementById("playerTwoName");
   const playerTwoBoard = document.getElementById("rightPlayerBoard");
 
-  //Overlays and Modals logic
-  //overlay for all modals (except privacy screening)
+
+  //OVERLAYS AND MODALS LOGIC:
+  //Overlay for all modals (except privacy screening)
   const modalOverlay = document.getElementById("modalOverlay");
 
-  //Game Selection Modal and logic
+  //GAME-MODE SELECTION LOGIC:
+  //Game-select modal:
   const gameSelectModal = document.getElementById("gameSelectModal");
   const cpuBtn = document.getElementById("cpuBtn");
   const playerVsCpuModal = document.getElementById("playerVsCpuModal");
   const twoPlayerBtn = document.getElementById("twoPlayerBtn");
   const twoPlayerModal = document.getElementById("twoPlayerModal");
 
+  //select human vs. CPU
   cpuBtn.addEventListener("click", ()=>{
     gameSelectModal.style.display = "none";
     playerVsCpuModal.style.display = "grid";
   });
-  
-  twoPlayerBtn.addEventListener("click", ()=>{
-    gameSelectModal.style.display = "none";
-    twoPlayerModal.style.display = "grid";
-  });
 
-
-  //Player Vs. CPU mode logic
+  //Player Vs. CPU mode creation
   const singlePlayerUsername = document.getElementById("singlePlayerUsername");
   const playCpuBtn = document.getElementById("playCpuBtn");
   playCpuBtn.addEventListener("click", ()=>{
@@ -76,8 +71,13 @@ export default function initApp() {
     gameText.textContent = "";
   }); 
 
+  //select two-player mode
+  twoPlayerBtn.addEventListener("click", ()=>{
+    gameSelectModal.style.display = "none";
+    twoPlayerModal.style.display = "grid";
+  });
 
-  //Two-Player mode logic
+  //Two-Player mode creation
   const playerOneUsername = document.getElementById("playerOneUsername");
   const playerTwoUsername = document.getElementById("playerTwoUsername");
   const twoPlayerPlayBtn = document.getElementById("twoPlayerPlayBtn");
@@ -131,6 +131,7 @@ export default function initApp() {
   const columnCoordInput = document.getElementById("columnCoord");
   const shipDirectionSelect = document.getElementById("shipDirection");
   const shipLengthInput = document.getElementById("shipLength");
+
 
   //PLACE SHIP FORM EVENT LISTENERS
   //open form btn
@@ -200,8 +201,9 @@ export default function initApp() {
     }
   });
 
-  
-  //START GAME BUTTON AND ACTIVATION
+
+  //START, RESET, RESTART, AND CHANGE MODE BUTTONS:
+  //Button to officially start the attacking phase of the game
   const startGameBtn = document.getElementById("startGameBtn");
   startGameBtn.addEventListener("click", ()=>{
     try{
@@ -226,7 +228,6 @@ export default function initApp() {
     }
   });
 
-
   //reset the game to current game mode (for middle of game if needed)
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
@@ -236,27 +237,19 @@ export default function initApp() {
     placementStage = "Player 1";
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
-
-    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
+    enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
   });
-
 
   //Button end/reset everything and change the current gamemode
   const changeGameBtn = document.getElementById("changeGameBtn");
   changeGameBtn.addEventListener("click", ()=>{
-    //reset all game state (similar to resetGameBtn)
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
-    //Open up the game selection modal.
     modalOverlay.style.display = "flex";
     gameSelectModal.style.display = "grid";
-    //reset all global variables, etc.
-
-    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
+    enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
   });
-
-
 
   //restart the game from the winning screen modal and re-select game mode
   const gameOverModal = document.getElementById("gameOverModal");
@@ -268,8 +261,7 @@ export default function initApp() {
     createBoards();
     gameOverModal.style.display = "none";
     gameSelectModal.style.display = "grid";
-
-    //RESET THE PLACE SHIP AND CONFIRMATION BUTTONS TO ACTIVE HERE
+    enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
   });
 
 
@@ -292,21 +284,6 @@ export default function initApp() {
     playSound(chooseSound(attackResult));
 
     return attackResult;
-  }
-
-
-  async function displayPrivacy(){
-    isTransitioning = true;
-
-    if(controller.isGameActive){
-      await turnDelay(2000);
-      turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
-    }
-
-    privacyOverlay.style.display = "flex";
-    privacyScreen.style.display = "flex";
-    privacyTextOne.textContent = `Please pass the screen to ${controller.activePlayer.name}`;
-    privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
   }
 
 
@@ -338,9 +315,6 @@ export default function initApp() {
     }
   });
 
-
-  //Turn delay function for CPU turn
-  const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   //Player 1's attacks on Player 2's board, and CPU attacks against Player 1
   playerTwoBoard.addEventListener("mousedown", async (event)=>{
@@ -390,6 +364,28 @@ export default function initApp() {
       gameText.textContent = error;
     }
   })
+
+
+
+  //Helper functions for event listeners:
+
+  //Turn delay function for CPU turn
+  const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  //function to display privacy interface
+  async function displayPrivacy(){
+    isTransitioning = true;
+
+    if(controller.isGameActive){
+      await turnDelay(2000);
+      turnText.textContent = `It is ${controller.activePlayer.name}'s move!`; 
+    }
+
+    privacyOverlay.style.display = "flex";
+    privacyScreen.style.display = "flex";
+    privacyTextOne.textContent = `Please pass the screen to ${controller.activePlayer.name}`;
+    privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
+  }
 
   //helper function to choose which audio to play after an attack
   function chooseSound(attackResult){
@@ -446,36 +442,3 @@ export default function initApp() {
     });
   }
 }
-
-
-
-//Write two functions called "disableButton" and "enableButton"
-//both functions take an endless array of buttons that can be passed in
-//this will help with code duplication
-
-
-
-
-
-
-//place ship form submission
-  // placeShipForm.addEventListener("submit", (event)=>{
-  //   try{
-  //     event.preventDefault();
-  //     const ship = controller.players[0].gameboard.ships[shipLengthInput.value - 1];
-  //     controller.players[0].gameboard.placeShip(
-  //       Number(rowCoordInput.value),
-  //       Number(columnCoordInput.value),
-  //       shipDirectionSelect.value,
-  //       ship
-  //     );
-  //     updateBoard(controller.players[0], playerOneBoard, true);
-  //     playSound("placeShip");
-  //     modalOverlay.style.display = "none";
-  //     placeShipModal.style.display = "none";
-  //     gameText.textContent = "";
-  //   } catch (error){
-  //     placeShipErrorText.style.color = "red";
-  //     placeShipErrorText.textContent = error;
-  //   }
-  // })
