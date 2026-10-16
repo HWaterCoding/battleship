@@ -1,10 +1,26 @@
-/* default styles */
+/* Root + Media Queries */
 :root {
   --tile-size: 65px;
   --board-secondary: #c9c2c2;
   --board-outline: rgb(136, 130, 130);
 }
 
+@media (max-width: 900px) {
+  :root {
+    --tile-size: clamp(28px, 6vw, 45px);
+  }
+}
+
+@media (max-width: 750px) {
+  :root {
+    --tile-size: clamp(25px, 8vw, 40px);
+  }
+}
+
+
+
+
+/* Default Styles */
 *,
 *::before,
 *::after {
@@ -106,7 +122,14 @@ main {
 /* Player Boards Section */
 #boardContainer {
   display: flex;
+  flex-direction: row;
   gap: clamp(4rem, 100px, 8rem);
+}
+
+@media (max-width: 1650px){
+  #boardContainer{
+    flex-direction: column;
+  }
 }
 
 #boardDivider{
@@ -263,7 +286,6 @@ main {
   gap: clamp(10px, 1rem, 24px);
   padding: clamp(10px, 1rem, 20px);
   margin: clamp(10px, 1rem, 20px);
-  height: calc(var(--tile-size) * 7);
   border-radius: 8px;
 }
 
@@ -301,7 +323,7 @@ main {
 }
 
 #rotateShipBtn i{
-  font-size: calc(var(--tile-size));
+  font-size: var(--tile-size);
 }
 
 
