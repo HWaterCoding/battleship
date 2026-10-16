@@ -1,5 +1,6 @@
 /* default styles */
 :root {
+  --tile-size: 65px;
   --board-secondary: #c9c2c2;
   --board-outline: rgb(136, 130, 130);
 }
@@ -136,8 +137,8 @@ main {
 #rightPlayerBoard {
   display: flex;
   flex-direction: column;
-  height: 650px; 
-  width: 650px;
+  width: calc(var(--tile-size) * 10);
+  height: calc(var(--tile-size) * 10);
   grid-column: 3/4;
   grid-row: 1/2;
 }
@@ -179,6 +180,49 @@ main {
 }
 
 
+/* Tile Styling */
+.tile {
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--board-secondary);
+  border-left: 2px solid var(--board-secondary);
+  border-right: 2px solid var(--board-secondary);
+  cursor: pointer;
+}
+
+.rows {
+  display: flex;
+  flex: 1;
+}
+
+.columns {
+  flex: 1;
+}
+
+/* Tile State Stylings */
+.waterTile {
+  background: linear-gradient(135deg, #0077be, #00a8cc);
+}
+
+.shipTile {
+  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
+}
+
+.missTile {
+  background: linear-gradient(135deg, #d61c1c, #a80505);
+}
+
+.hitTile {
+  background: linear-gradient(135deg, #189e39, #10fa30);
+}
+
+.sunkTile {
+  background: linear-gradient(135deg, #171817, #323533);
+}
+
+
+
 /* Ship Placement Section */
 
 #shipBtns{
@@ -209,46 +253,55 @@ main {
 }
 
 
-/* Generic Tile Styling */
-.tile {
+/* Ship Drag-and-Drop Section */
+#shipArea{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #164b68; /*change this*/
+  gap: clamp(10px, 1rem, 24px);
+  padding: clamp(10px, 1rem, 20px);
+  margin: clamp(10px, 1rem, 20px);
+  height: calc(var(--tile-size) * 7);
+  border-radius: 8px;
+}
+
+.draggableShip{
+  display: flex;
+  /* flex-direction: column; */
+  flex-direction: row;
+  cursor: grab;
+}
+
+.shipSquare {
+  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
   box-shadow:
     inset 0 0 20px rgba(255, 255, 255, 0.5),
     0 10px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--board-secondary);
   border-left: 2px solid var(--board-secondary);
   border-right: 2px solid var(--board-secondary);
+  width: var(--tile-size);
+  height: var(--tile-size);
+}
+
+#rotateShipBtn{
   cursor: pointer;
-}
-
-.rows {
   display: flex;
-  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-color: #7a7d80;
 }
 
-.columns {
-  flex: 1;
+#rotateShipBtn:hover{
+  background-color: #a9adb1;
 }
 
-
-/* Tile State Stylings */
-.waterTile {
-  background: linear-gradient(135deg, #0077be, #00a8cc);
-}
-
-.shipTile {
-  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
-}
-
-.missTile {
-  background: linear-gradient(135deg, #d61c1c, #a80505);
-}
-
-.hitTile {
-  background: linear-gradient(135deg, #189e39, #10fa30);
-}
-
-.sunkTile {
-  background: linear-gradient(135deg, #171817, #323533);
+#rotateShipBtn i{
+  font-size: calc(var(--tile-size));
 }
 
 

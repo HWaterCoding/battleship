@@ -19,6 +19,7 @@ createBoards();
 // Drag-and-drop:
 // Create a shared ship-selection area beneath the place/confirm ships btns
 // Each ship should be a container with same tiles as board * shipLength
+// Set draggable="true" property for ship container
 
 // create a rotate button nearby somewhere to change ship orientation
 // (rotate the ships by simply changing the flex-direction of the container)
@@ -36,3 +37,10 @@ createBoards();
 // "dragover" (board)
 // "dragleave" (board)
 // "drop" (board) --> dataTransfer.getData
+
+
+//1. Render five ships as groups of coloured tiles
+//2. Drag a ship onto a board tile and identify the destination
+//3. Call Gameboard.placeShip() and re-render the board
+//4. Allow horizontal and vertical orientations
+//5. Highlight valid or invalid positions while hovering
