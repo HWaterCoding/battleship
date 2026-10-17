@@ -202,6 +202,89 @@ export default function initApp() {
   });
 
 
+
+  //Drag-and-drop ship logic:
+
+
+  //Identify from which tile the ship is being dragged
+  let grabbedSegmentIndex = 0;
+  shipArea.addEventListener("pointerdown", (event) => {
+    const square = event.target.closest(".shipSquare");
+    if (!square) return;
+
+    const ship = square.closest(".draggableShip");
+    if (!ship) return;
+
+    grabbedSegmentIndex = [...ship.children].indexOf(square);
+  });
+
+  //Identify which ship is being dragged onto the board
+  const shipArea = document.getElementById("shipArea");
+  shipArea.addEventListener("dragstart", (event)=>{
+    const ship = event.target.closest(".draggableShip");
+    if (!ship) return;
+
+    const shipLength = ship.dataset.length;
+    event.dataTransfer.setData("text/plain", shipLength);
+  });
+
+
+  //formula for properly placing ships:
+  //Determine orientation (horizontal vs vertical)
+  //determine ship length
+  //retrieve grabbedSegmentIndex
+  //The column to start ship placement at is the dropColumn - grabbedSegmentIndex
+
+  //EX:
+  //shipLength = 3
+  //Horizontal ship
+  //Grabbed at segmentIndex 1
+  //Dropped onto tile [3, 3]
+
+  //Start column = [3, 3 - grabbedSegmentIndex] = [3, 2]
+  //Tiles for ship = [3, 2], [3, 3], [3, 4]
+
+
+  //Drag events attachs to both player boards
+  [playerOneBoard, playerTwoBoard].forEach(board =>{
+    //Allow the ship to be dropped
+    board.addEventListener("dragover", (event)=>{
+      event.preventDefault();
+      //do more stuff? Placement previews?
+    });
+
+    //Clean up for things like hover: styling 
+    board.addEventListener("dragleave", ()=>{
+      //?
+    });
+
+    //Attempt placement of the ship that's being dragged
+    board.addEventListener("drop", (event)=>{
+      event.preventDefault();
+
+      const tile = event.target.closest(".tile");
+      if(!tile) return;
+
+      const shipLength = Number(
+        event.dataTransfer.getData("text/plain")
+      );
+
+      const row = Number(tile.dataset.y);
+      const column = Number(tile.dataset.x);
+
+      console.log({ shipLength, row, column });
+    });
+  });
+
+  
+
+  
+
+
+
+
+
+
   //START, RESET, RESTART, AND CHANGE MODE BUTTONS:
   //Button to officially start the attacking phase of the game
   const startGameBtn = document.getElementById("startGameBtn");

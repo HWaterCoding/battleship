@@ -283,9 +283,9 @@ main {
   justify-content: center;
   flex-wrap: wrap;
   background-color: #164b68; /*change this*/
-  gap: clamp(10px, 1rem, 24px);
-  padding: clamp(10px, 1rem, 20px);
-  margin: clamp(10px, 1rem, 20px);
+  gap: clamp(10px, 2vw, 24px);
+  padding: clamp(10px, 2vw, 20px);
+  margin: clamp(10px, 2vw, 24px);
   border-radius: 8px;
 }
 
@@ -323,7 +323,7 @@ main {
 }
 
 #rotateShipBtn i{
-  font-size: var(--tile-size);
+  font-size: calc(var(--tile-size) * 0.5);
 }
 
 

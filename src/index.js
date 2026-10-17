@@ -44,3 +44,12 @@ createBoards();
 //3. Call Gameboard.placeShip() and re-render the board
 //4. Allow horizontal and vertical orientations
 //5. Highlight valid or invalid positions while hovering
+
+
+//visual component:
+//1. Update the actual Gameboard using placeShip().
+//2. Re-render the board to display the ship.
+//3. Hide the corresponding draggable ship using display: none.
+//      (create CSS class called .placed for ships to hide them)
+//4. Restore all five ships when Player 2 begins placement.
+//5. Hide the entire staging area after both players confirm.
