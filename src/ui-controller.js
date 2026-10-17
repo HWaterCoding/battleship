@@ -69,6 +69,7 @@ export default function initApp() {
 
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
+    shipArea.style.display = "flex";
   }); 
 
   //select two-player mode
@@ -103,6 +104,7 @@ export default function initApp() {
 
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
+    shipArea.style.display = "flex";
   });
 
 
@@ -205,7 +207,6 @@ export default function initApp() {
 
   //Drag-and-drop ship logic:
 
-
   //Identify from which tile the ship is being dragged
   let grabbedSegmentIndex = 0;
   let orientation = "horizontal";
@@ -241,30 +242,6 @@ export default function initApp() {
     event.dataTransfer.setData("text/plain", shipLength);
   });
 
-
-  //formula for properly placing ships:
-  //Determine orientation (horizontal vs vertical)
-  //determine ship length
-  //retrieve grabbedSegmentIndex
-  //The column to start ship placement at is the dropColumn - grabbedSegmentIndex
-
-  //EX:
-  //shipLength = 3
-  //Horizontal ship
-  //Grabbed at segmentIndex 1
-  //Dropped onto tile [3, 3]
-
-  //Start column = (3 - grabbedSegmentIndex) = 2
-  //Start row = 3
-  //Start cordinates = [3, 2]
-  //Tiles for ship = [3, 2], [3, 3], [3, 4]
-
-  //horizontal ship, row doesn't change. veritcal ship, col doesn't change
-
-  //Call placeShip() with the start coordinates:
-  //gameboard.placeShip(2, 3, ?, ship)
-
-
   //Drag events attachs to both player boards
   [playerOneBoard, playerTwoBoard].forEach(board =>{
     //Allow the ship to be dropped
@@ -285,24 +262,21 @@ export default function initApp() {
         const tile = event.target.closest(".tile");
         if(!tile) return;
 
-        const row = Number(tile.dataset.y);
-        const column = Number(tile.dataset.x);
-
-        //get orientation somehow
-        const orientation = "direction";
+        let row = Number(tile.dataset.y);
+        let column = Number(tile.dataset.x);
         let direction;
-
-        if(orientation === "horizontal"){
-          const column = column - grabbedSegmentIndex; 
-          direction = "right";
-        } else if (orientation === "vertical"){
-          const row = row - grabbedSegmentIndex; 
-          direction = "up";
-        }
-
         const shipLength = Number(
           event.dataTransfer.getData("text/plain")
         );
+
+        if(orientation === "horizontal"){
+          column = column - grabbedSegmentIndex; 
+          direction = "right";
+        } else if (orientation === "vertical"){
+          row = row - (shipLength - 1 - grabbedSegmentIndex); 
+          direction = "up";
+        }
+
         const ship = controller.activePlayer.gameboard.ships[shipLength - 1];
         controller.activePlayer.gameboard.placeShip(
           row,
@@ -310,6 +284,11 @@ export default function initApp() {
           direction,
           ship
         )
+
+        const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
+        updateBoard(controller.activePlayer, playerBoard, true);
+        playSound("placeShip");
+
         console.log({ shipLength, row, column });
       } catch (error){
         console.warn(error);
@@ -318,12 +297,6 @@ export default function initApp() {
   });
 
   
-
-  
-
-
-
-
 
 
   //START, RESET, RESTART, AND CHANGE MODE BUTTONS:
@@ -347,6 +320,7 @@ export default function initApp() {
       gameText.textContent = "Pick a square to attack...";
 
       disableButtons(startGameBtn, "The game has already been started.");
+      shipArea.style.display = "none";
     } catch (error){
       gameText.textContent = error;
     }
@@ -362,6 +336,7 @@ export default function initApp() {
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
+    shipArea.style.display = "flex";
   });
 
   //Button end/reset everything and change the current gamemode
@@ -386,6 +361,7 @@ export default function initApp() {
     gameOverModal.style.display = "none";
     gameSelectModal.style.display = "grid";
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
+    shipArea.style.display = "flex";
   });
 
 
