@@ -208,6 +208,20 @@ export default function initApp() {
 
   //Identify from which tile the ship is being dragged
   let grabbedSegmentIndex = 0;
+  let orientation = "horizontal";
+
+  const rotateShipBtn = document.getElementById("rotateShipBtn");
+  rotateShipBtn.addEventListener("click", ()=>{
+      orientation = orientation === "horizontal" ? "vertical" : "horizontal";
+
+      const ships = document.querySelectorAll(".draggableShip");
+
+      ships.forEach((ship) =>{
+        ship.style.flexDirection = orientation === "horizontal" ? "row" : 'column';
+      })
+  });
+  
+  const shipArea = document.getElementById("shipArea");
   shipArea.addEventListener("pointerdown", (event) => {
     const square = event.target.closest(".shipSquare");
     if (!square) return;
@@ -219,7 +233,6 @@ export default function initApp() {
   });
 
   //Identify which ship is being dragged onto the board
-  const shipArea = document.getElementById("shipArea");
   shipArea.addEventListener("dragstart", (event)=>{
     const ship = event.target.closest(".draggableShip");
     if (!ship) return;
@@ -241,8 +254,15 @@ export default function initApp() {
   //Grabbed at segmentIndex 1
   //Dropped onto tile [3, 3]
 
-  //Start column = [3, 3 - grabbedSegmentIndex] = [3, 2]
+  //Start column = (3 - grabbedSegmentIndex) = 2
+  //Start row = 3
+  //Start cordinates = [3, 2]
   //Tiles for ship = [3, 2], [3, 3], [3, 4]
+
+  //horizontal ship, row doesn't change. veritcal ship, col doesn't change
+
+  //Call placeShip() with the start coordinates:
+  //gameboard.placeShip(2, 3, ?, ship)
 
 
   //Drag events attachs to both player boards
@@ -261,18 +281,39 @@ export default function initApp() {
     //Attempt placement of the ship that's being dragged
     board.addEventListener("drop", (event)=>{
       event.preventDefault();
+      try{
+        const tile = event.target.closest(".tile");
+        if(!tile) return;
 
-      const tile = event.target.closest(".tile");
-      if(!tile) return;
+        const row = Number(tile.dataset.y);
+        const column = Number(tile.dataset.x);
 
-      const shipLength = Number(
-        event.dataTransfer.getData("text/plain")
-      );
+        //get orientation somehow
+        const orientation = "direction";
+        let direction;
 
-      const row = Number(tile.dataset.y);
-      const column = Number(tile.dataset.x);
+        if(orientation === "horizontal"){
+          const column = column - grabbedSegmentIndex; 
+          direction = "right";
+        } else if (orientation === "vertical"){
+          const row = row - grabbedSegmentIndex; 
+          direction = "up";
+        }
 
-      console.log({ shipLength, row, column });
+        const shipLength = Number(
+          event.dataTransfer.getData("text/plain")
+        );
+        const ship = controller.activePlayer.gameboard.ships[shipLength - 1];
+        controller.activePlayer.gameboard.placeShip(
+          row,
+          column,
+          direction,
+          ship
+        )
+        console.log({ shipLength, row, column });
+      } catch (error){
+        console.warn(error);
+      }
     });
   });
 
