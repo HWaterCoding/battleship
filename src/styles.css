@@ -126,6 +126,12 @@ main {
   gap: clamp(4rem, 100px, 8rem);
 }
 
+@media (max-width: 1650px){
+  #boardContainer{
+    grid-template-columns: 1fr;
+  }
+}
+
 #boardContainer.placing-player-one{
   #playerOneSection {
     grid-column: 1;
@@ -162,15 +168,6 @@ main {
   }
 }
 
-@media (max-width: 1650px){
-  #boardContainer{
-    flex-direction: column;
-  }
-}
-
-#boardDivider{
-  border: 2px red solid;
-}
 
 #leftPlayer,
 #rightPlayer,
@@ -332,9 +329,12 @@ main {
 
 .draggableShip{
   display: flex;
-  /* flex-direction: column; */
   flex-direction: row;
   cursor: grab;
+}
+
+.draggableShip.placed {
+  display: none;
 }
 
 .shipSquare {

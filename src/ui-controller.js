@@ -16,6 +16,9 @@ export default function initApp() {
   const turnText = document.getElementById("turnText");
   const gameText = document.getElementById("gameText");
   
+  // Cotainer that holds both player boards + ship marina
+  const boardContainer = document.getElementById("boardContainer");
+  
   //Both physical gameboards and titles
   const playerOneName = document.getElementById("playerOneName");
   const playerOneBoard = document.getElementById("leftPlayerBoard");
@@ -308,6 +311,12 @@ export default function initApp() {
           ship
         )
 
+        const stagedShip = shipArea.querySelector(
+          `.draggableShip[data-length="${shipLength}"]`
+        );
+
+        stagedShip?.classList.add("placed");
+
         const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
         updateBoard(controller.activePlayer, playerBoard, true);
         playSound("placeShip");
@@ -351,14 +360,24 @@ export default function initApp() {
   //reset the game to current game mode (for middle of game if needed)
   const resetGameBtn = document.getElementById("resetGameBtn");
   resetGameBtn.addEventListener("click", ()=>{
+    //reset the game state, cpu state, and the board state
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
+
     placementStage = "Player 1";
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
+
+    //re-enable disabled buttons
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
+    
+    //restore ship marina
     shipArea.style.display = "flex";
+    const ships = shipArea.querySelectorAll(".draggableShip");
+    ships.forEach(ship =>{
+      ship.classList.remove("placed");
+    })
   });
 
   //Button end/reset everything and change the current gamemode

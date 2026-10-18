@@ -14,42 +14,16 @@ createBoards();
 // 4. use fire emoji to signify successful hit
 // 5. use red X emoji to signify unsuccessful hit
 // 6. Style fully sunk ships a better way to make it obvious
-
-
-// Drag-and-drop:
-// Create a shared ship-selection area beneath the place/confirm ships btns
-// Each ship should be a container with same tiles as board * shipLength
-// Set draggable="true" property for ship container
-
-// create a rotate button nearby somewhere to change ship orientation
-// (rotate the ships by simply changing the flex-direction of the container)
-
-// When a ship is dragged onto the board, just change those tiles properties and render
+//7. Add info screen to teach players the rules
 
 
 
-// hide this section by default (it only needs to be visible during placement)
-// make them visible during the placement phase, then hide after game start
 
-
-//control drag logic with event listeners on ship and board accordingly:
-// "dragstart" (ship) --> dataTransfer.setData
-// "dragover" (board)
-// "dragleave" (board)
-// "drop" (board) --> dataTransfer.getData
-
-
-//1. Render five ships as groups of coloured tiles
-//2. Drag a ship onto a board tile and identify the destination
-//3. Call Gameboard.placeShip() and re-render the board
-//4. Allow horizontal and vertical orientations
-//5. Highlight valid or invalid positions while hovering
-
-
-//visual component:
-//1. Update the actual Gameboard using placeShip().
-//2. Re-render the board to display the ship.
-//3. Hide the corresponding draggable ship using display: none.
-//      (create CSS class called .placed for ships to hide them)
-//4. Restore all five ships when Player 2 begins placement.
-//5. Hide the entire staging area after both players confirm.
+//Drag and Drop current:
+//Find when to apply classes. 
+//Upon page load, Player 2 board should be hidden. Player 1 + marina visible
+//Player 1 places all ships and confirms. 
+//if CPU mode: hide marina, display player 2 board, start game.
+//if two-player mode: classList.add(placing-player-two)
+//Player 2 places all ships and confirms. 
+//classList.add(battle-phase)

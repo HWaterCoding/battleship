@@ -110,11 +110,13 @@
             <button id="changeGameBtn">Change Game</button>
         </div>
     
-        <!-- This changes to "it's (players) turn!"" when game starts -->
-        <p id="turnText"></p> <!--Update this dynamically to state who's turn it is-->
-        <p id="gameText"></p> <!--Update this dynamically to post the result of the last turn, and eventually, who the winner is-->
+        <!-- Text updates through the game to reflect current state -->
+        <p id="turnText"></p> 
+        <p id="gameText"></p>  
 
+        <!-- Player 1 Board, Player 2 Board, and Ship Marina Area -->
         <div id="boardContainer">
+            <!-- Player 1 board -->
             <div id="leftPlayer">
                 <h2 id="playerOneName"></h2>
                 <div class="boardSection">
@@ -150,6 +152,7 @@
                 </div>
             </div>
 
+            <!-- Player 2 board -->
             <div id="rightPlayer">
                 <h2 id="playerTwoName"></h2>
                 <div class="boardSection">
@@ -185,6 +188,7 @@
                 </div>
             </div>
 
+            <!-- Ship Placement Marina for drag-and-drop -->
             <div id="shipPlacementArea">
                 <h2>Ship Marina</h2>
                 <div id="shipArea">
@@ -223,37 +227,6 @@
             <button id="placeShipBtn">Place A Ship</button>
             <button id="confirmShipsBtn">Confirm Ships</button>
         </div>
-
-
-        <!-- <div id="shipArea">
-            <div class="draggableShip" data-length="1" draggable="true">
-                <div class="shipSquare"></div>
-            </div>
-            <div class="draggableShip" data-length="2" draggable="true">
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-            </div>
-            <div class="draggableShip" data-length="3" draggable="true">
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-            </div>
-            <div class="draggableShip" data-length="4" draggable="true">
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-            </div>
-            <div class="draggableShip" data-length="5" draggable="true">
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-                <div class="shipSquare"></div>
-            </div>
-            
-            <button id="rotateShipBtn" title="Rotate Ships"><i class="fa-solid fa-rotate"></i></button>
-        </div> -->
 
     </main>
 
