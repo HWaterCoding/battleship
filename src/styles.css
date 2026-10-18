@@ -120,51 +120,51 @@ main {
 
 
 /* Player Boards Section */
+
+/* General board Container and game-phase classes + media query */
 #boardContainer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(4rem, 100px, 8rem);
 }
 
-@media (max-width: 1650px){
-  #boardContainer{
-    grid-template-columns: 1fr;
-  }
-}
-
 #boardContainer.placing-player-one{
-  #playerOneSection {
-    grid-column: 1;
-  }
-  #playerTwoSection {
+  #rightPlayer {
     display: none;
-  }
-  #shipArea {
-    grid-column: 2;
   }
 }
 
 #boardContainer.placing-player-two{
-  #playerOneSection {
+  #leftPlayer {
     display: none;
   }
-  #playerTwoSection {
-    grid-column: 2;
-  }
-  #shipArea {
+
+  #shipPlacementArea{
     grid-column: 1;
+    grid-row: 1;
+  }
+
+  #rightPlayer {
+    grid-column: 2;
+    grid-row: 1;
   }
 }
 
 #boardContainer.battle-phase{
-  #playerOneSection {
-    grid-column: 1;
-  }
-  #playerTwoSection {
-    grid-column: 2;
-  }
-  #shipArea {
+  #shipPlacementArea {
     display: none;
+  }
+}
+
+@media (max-width: 1650px){
+  #boardContainer{
+    grid-template-columns: 1fr;
+  }
+
+  #boardContainer.placing-player-two #shipPlacementArea,
+  #boardContainer.placing-player-two #rightPlayer {
+    grid-column: 1;
+    grid-row: auto;
   }
 }
 

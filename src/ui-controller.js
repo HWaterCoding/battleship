@@ -185,6 +185,11 @@ export default function initApp() {
 
       if(placementStage === "Player 1" && controller.players[1].type === "human"){
         placementStage = "Player 2";
+        //re-populate shipArea
+        const ships = shipArea.querySelectorAll(".draggableShip");
+        ships.forEach(ship =>{
+          ship.classList.remove("placed");
+        });
       } else if (placementStage === "Player 2" || controller.players[1].type === "computer"){
         placementStage = "complete";
         disableButtons(
@@ -194,6 +199,8 @@ export default function initApp() {
             "You've already confirmed your ship placements."
           ]
         );
+        boardContainer.className = "";
+        boardContainer.classList.add("battle-phase");
         turnText.textContent = `Both players are ready. Click "Start Game!" to begin.`;
         gameText.textContent = "";
       }
@@ -351,7 +358,6 @@ export default function initApp() {
       gameText.textContent = "Pick a square to attack...";
 
       disableButtons(startGameBtn, "The game has already been started.");
-      shipArea.style.display = "none";
     } catch (error){
       gameText.textContent = error;
     }
@@ -549,6 +555,15 @@ export default function initApp() {
       updateBoard(controller.players[0], playerOneBoard, false); //<--- p1 board invisible
       updateBoard(controller.players[1], playerTwoBoard, true); //<--- p2 board visible
     }
+  }
+
+  function setBoardLayout(phase){
+    boardContainer.classList.remove(
+      "placing-player-one",
+      "placing-player-two",
+      "battle-phase"
+    );
+    boardContainer.classList.add(phase);
   }
 
   //helper function to disable buttons when not offerable to user
