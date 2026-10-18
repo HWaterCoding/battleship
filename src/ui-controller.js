@@ -9,7 +9,7 @@ export default function initApp() {
   //Variables for GameController, CPU instances, and transition phase
   let controller;
   let computer;
-  let placementStage;
+  let placementStage = "Player 1";
   let isTransitioning = false;
 
   //Readable text elements to update game status 
@@ -205,6 +205,15 @@ export default function initApp() {
 
 
 
+  //Things to fix:
+  //1. Hide inactive players board and replace it with shipArea during placement phase
+  //Things to consider:
+  //Put the listener for this on the confirmation button itself rather than privacy screen so that the CPU mode can reuse this logic, too
+  
+
+  //2. Reset orientation (variable and flex-direction) to horizontal for each players placement phase
+
+
   //Drag-and-drop ship logic:
 
   //Identify from which tile the ship is being dragged
@@ -235,11 +244,20 @@ export default function initApp() {
 
   //Identify which ship is being dragged onto the board
   shipArea.addEventListener("dragstart", (event)=>{
-    const ship = event.target.closest(".draggableShip");
-    if (!ship) return;
+    try {
+      if (controller.isGameActive || isTransitioning) {
+        event.preventDefault();
+        return;
+      }
 
-    const shipLength = ship.dataset.length;
-    event.dataTransfer.setData("text/plain", shipLength);
+      const ship = event.target.closest(".draggableShip");
+      if (!ship) return;
+
+      const shipLength = ship.dataset.length;
+      event.dataTransfer.setData("text/plain", shipLength);
+    } catch (error){
+      gameText.textContent = error;
+    }
   });
 
   //Drag events attachs to both player boards
@@ -259,6 +277,11 @@ export default function initApp() {
     board.addEventListener("drop", (event)=>{
       event.preventDefault();
       try{
+        //prevent play from dropping a ship onto the enemies board
+        const activeBoard = controller.activePlayer === controller.players[0] ? 
+          playerOneBoard : playerTwoBoard;
+        if (board !== activeBoard) return;
+
         const tile = event.target.closest(".tile");
         if(!tile) return;
 
@@ -296,7 +319,6 @@ export default function initApp() {
     });
   });
 
-  
 
 
   //START, RESET, RESTART, AND CHANGE MODE BUTTONS:

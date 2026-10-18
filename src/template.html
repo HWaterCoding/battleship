@@ -116,7 +116,6 @@
 
         <div id="boardContainer">
             <div id="leftPlayer">
-                <!-- populate p1text with Players.name -->
                 <h2 id="playerOneName"></h2>
                 <div class="boardSection">
                     <h3 class="y-label">y</h3>
@@ -151,10 +150,7 @@
                 </div>
             </div>
 
-            <div id="boardDivider"></div>
-
             <div id="rightPlayer">
-                <!-- populate p2text with Players.name -->
                 <h2 id="playerTwoName"></h2>
                 <div class="boardSection">
                     <h3 class="y-label">y</h3>
@@ -188,6 +184,39 @@
                     <h3 class="x-label">x</h3>
                 </div>
             </div>
+
+            <div id="shipPlacementArea">
+                <h2>Ship Marina</h2>
+                <div id="shipArea">
+                    <div class="draggableShip" data-length="1" draggable="true">
+                        <div class="shipSquare"></div>
+                    </div>
+                    <div class="draggableShip" data-length="2" draggable="true">
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                    </div>
+                    <div class="draggableShip" data-length="3" draggable="true">
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                    </div>
+                    <div class="draggableShip" data-length="4" draggable="true">
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                    </div>
+                    <div class="draggableShip" data-length="5" draggable="true">
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                        <div class="shipSquare"></div>
+                    </div>
+                    
+                    <button id="rotateShipBtn" title="Rotate Ships"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+            </div>
         </div>
 
         <div id="shipBtns">
@@ -196,8 +225,7 @@
         </div>
 
 
-        <!-- Add dataset to ship(n) to represent ship obj -->
-        <div id="shipArea">
+        <!-- <div id="shipArea">
             <div class="draggableShip" data-length="1" draggable="true">
                 <div class="shipSquare"></div>
             </div>
@@ -225,7 +253,7 @@
             </div>
             
             <button id="rotateShipBtn" title="Rotate Ships"><i class="fa-solid fa-rotate"></i></button>
-        </div>
+        </div> -->
 
     </main>
 
