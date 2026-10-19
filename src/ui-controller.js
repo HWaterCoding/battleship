@@ -221,6 +221,7 @@ export default function initApp() {
   //Identify from which tile the ship is being dragged
   let grabbedSegmentIndex = 0;
   let orientation = "horizontal";
+  let draggedShipLength = null;
 
   const rotateShipBtn = document.getElementById("rotateShipBtn");
   rotateShipBtn.addEventListener("click", ()=>{
@@ -254,8 +255,9 @@ export default function initApp() {
       const ship = event.target.closest(".draggableShip");
       if (!ship) return;
 
-      const shipLength = ship.dataset.length;
-      event.dataTransfer.setData("text/plain", shipLength);
+      draggedShipLength = Number(ship.dataset.length);
+
+      event.dataTransfer.setData("text/plain", ship.dataset.length);
     } catch (error){
       gameText.textContent = error;
     }
@@ -267,15 +269,13 @@ export default function initApp() {
     board.addEventListener("dragover", (event)=>{
       event.preventDefault();
 
-      
         //Identify the tile currently under the cursor
         const tile = event.target.closest(".tile");
         if(!tile) return;
 
         //Retrieve the ship's length and grabbed segment index
-        const shipLength = Number(
-          event.dataTransfer.getData("text/plain")
-        );
+        const shipLength = draggedShipLength;
+        if (!shipLength) return;
 
         //Calculate the ship's starting coordinate
         const row = tile.dataset.y;
@@ -283,15 +283,41 @@ export default function initApp() {
         const placement = calculateShipPlacement(row, column, shipLength);
 
         //Determine all coordinates the ship would occupy
-        const placementTiles = 
+        const placementTiles = [];
+
+        if(placement.direction === "right"){
+          //its the column thats changing
+          for(let i = 0; i < shipLength; i++){
+            // const previewTile = [placement.row, placement.column + i];
+            const tileInDOM = board.querySelector(
+              `[data-y="${placement.row}"][data-x="${placement.column + i}"]`,
+            );
+            placementTiles.push(tileInDOM);
+          }
+        } else if (placement.direction === "up"){
+          //its the row thats changing
+          for(let i = 0; i < shipLength; i++){
+            // const previewTile = [placement.row + i, placement.column];
+            const tileInDOM = board.querySelector(
+              `[data-y="${placement.row + i}"][data-x="${placement.column}"]`,
+            );
+            placementTiles.push(tileInDOM);
+          }
+        }
 
         //Remove the previous preview
         clearPreview(board);
 
-        //Add preview classes to the corresponding board tiles
-        // tiles.classList.add("placement-preview");
-
-        //decide whether placement is invalid or valid somehow ?
+        // Add preview classes to the corresponding board tiles
+        // if(controller.activePlayer.gameboard.canBePlaced()){
+          placementTiles.forEach(tile => {
+            tile.classList.add('placement-preview');
+          });
+        // } else{
+        //   placementTiles.forEach(tile => {
+        //     tile.classList.add('invalid-preview');
+        //   });
+        // }
     });
 
     //Clean up for things like hover: styling 
