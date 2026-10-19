@@ -263,6 +263,14 @@ export default function initApp() {
     }
   });
 
+  //Clean up for things like hover: styling 
+  shipArea.addEventListener("dragend", ()=>{
+    draggedShipLength = null;
+
+    clearPreview(playerOneBoard);
+    clearPreview(playerTwoBoard);
+  });
+
   //Drag events attachs to both player boards
   [playerOneBoard, playerTwoBoard].forEach(board =>{
     //Allow the ship to be dropped
@@ -305,24 +313,25 @@ export default function initApp() {
         //Remove the previous preview
         clearPreview(board);
 
+        const ship = controller.activePlayer.gameboard.ships[shipLength - 1];
+
+        const canBePlaced = controller.activePlayer.gameboard.canBePlaced(
+          placement.row, 
+          placement.column,
+          placement.direction,
+          ship
+        );
         // Add preview classes to the corresponding board tiles
-        if(controller.activePlayer.gameboard.canBePlaced()){
+        if(canBePlaced){
           placementTiles.forEach(tile => {
             tile.classList.add('placement-preview');
           });
         } else{
+          clearPreview(board);
           placementTiles.forEach(tile => {
             tile.classList.add('invalid-preview');
           });
         }
-    });
-
-    //Clean up for things like hover: styling 
-    board.addEventListener("dragend", ()=>{
-      draggedShipLength = null;
-
-      clearPreview(playerOneBoard);
-      clearPreview(playerTwoBoard);
     });
 
     //Attempt placement of the ship that's being dragged
@@ -370,7 +379,6 @@ export default function initApp() {
         const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
         updateBoard(controller.activePlayer, playerBoard, true);
         playSound("placeShip");
-        // clearPreview(board);
       } catch (error){
         console.warn(error);
       }

@@ -117,6 +117,30 @@ export default class Gameboard {
     }
   }
 
+  //function to ask if a ship placement is valid during drag-and-drop placement
+  canBePlaced(row, col, direction, ship){
+    row = this.invertRowCoordinate(row);
+
+    if(direction === "right"){
+      for (let i = 0; i < ship.length; i++) {
+        const targetColumn = col + i;
+        if (targetColumn < 0 || targetColumn > 9) return false;
+
+        const current = this.board[row][targetColumn];
+        if (current.ship !== null) return false;
+      }
+    } else if(direction === "up"){
+      for (let i = 0; i < ship.length; i++) {
+        const targetRow = row - i;
+        if (targetRow < 0 || targetRow > 9) return false;
+
+        const current = this.board[targetRow][col];
+        if (current.ship !== null) return false;
+      }
+    }
+    return true;
+  }
+
   //verify the entire pleet has been placed
   isFleetPlaced(){
     const allShipsPlaced = this.ships.every((ship) =>
