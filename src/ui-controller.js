@@ -327,6 +327,20 @@ export default function initApp() {
     };
   };
 
+  //Helper to clear previously highlighted placement preview tiles
+  function clearPreview(board) {
+    const previewTiles = board.querySelectorAll(
+      ".placement-preview, .invalid-preview"
+    );
+
+    previewTiles.forEach(tile => {
+      tile.classList.remove(
+        "placement-preview",
+        "invalid-preview"
+      );
+    });
+  }
+
 
 
   //START, RESET, RESTART, AND CHANGE MODE BUTTONS:
