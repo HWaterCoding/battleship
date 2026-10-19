@@ -157,6 +157,12 @@ export default function initApp() {
       const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
       updateBoard(controller.activePlayer, playerBoard, true);
       playSound("placeShip");
+
+      const stagedShip = shipArea.querySelector(
+        `.draggableShip[data-length="${shipLengthInput.value}"]`
+      );
+      stagedShip?.classList.add("placed");
+
       modalOverlay.style.display = "none";
       placeShipModal.style.display = "none";
       gameText.textContent = "";
@@ -260,7 +266,32 @@ export default function initApp() {
     //Allow the ship to be dropped
     board.addEventListener("dragover", (event)=>{
       event.preventDefault();
-      //do more stuff? Placement previews?
+
+      
+        //Identify the tile currently under the cursor
+        const tile = event.target.closest(".tile");
+        if(!tile) return;
+
+        //Retrieve the ship's length and grabbed segment index
+        const shipLength = Number(
+          event.dataTransfer.getData("text/plain")
+        );
+
+        //Calculate the ship's starting coordinate
+        const row = tile.dataset.y;
+        const column = tile.dataset.x;
+        const placement = calculateShipPlacement(row, column, shipLength);
+
+        //Determine all coordinates the ship would occupy
+        const placementTiles = 
+
+        //Remove the previous preview
+        clearPreview(board);
+
+        //Add preview classes to the corresponding board tiles
+        // tiles.classList.add("placement-preview");
+
+        //decide whether placement is invalid or valid somehow ?
     });
 
     //Clean up for things like hover: styling 
@@ -272,6 +303,11 @@ export default function initApp() {
     board.addEventListener("drop", (event)=>{
       event.preventDefault();
       try{
+        if (controller.isGameActive || isTransitioning) {
+          event.preventDefault();
+          return;
+        }
+
         //prevent play from dropping a ship onto the enemies board
         const activeBoard = controller.activePlayer === controller.players[0] ? 
           playerOneBoard : playerTwoBoard;
@@ -285,6 +321,10 @@ export default function initApp() {
         const shipLength = Number(
           event.dataTransfer.getData("text/plain")
         );
+
+        if (!Number.isInteger(shipLength) || shipLength < 1 || shipLength > 5) {
+          return;
+        }
 
         const placement = calculateShipPlacement(row, column, shipLength);
 
@@ -304,6 +344,7 @@ export default function initApp() {
         const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
         updateBoard(controller.activePlayer, playerBoard, true);
         playSound("placeShip");
+        // clearPreview(board);
       } catch (error){
         console.warn(error);
       }
@@ -328,7 +369,7 @@ export default function initApp() {
   };
 
   //Helper to clear previously highlighted placement preview tiles
-  function clearPreview(board) {
+  function clearPreview(board){
     const previewTiles = board.querySelectorAll(
       ".placement-preview, .invalid-preview"
     );

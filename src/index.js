@@ -18,15 +18,3 @@ createBoards();
 
 
 
-
-//Drag and Drop current:
-//Find when to apply classes. 
-//Upon page load, Player 2 board should be hidden. Player 1 + marina visible
-//Player 1 places all ships and confirms. 
-//if CPU mode: hide marina, display player 2 board, start game.
-//if two-player mode: classList.add(placing-player-two)
-//Player 2 places all ships and confirms. 
-//classList.add(battle-phase)
-
-
-//If placing a ship from placeShipBtn, remove ship from marina
