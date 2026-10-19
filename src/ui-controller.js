@@ -273,35 +273,32 @@ export default function initApp() {
         const tile = event.target.closest(".tile");
         if(!tile) return;
 
-        //Retrieve the ship's length and grabbed segment index
+        //Retrieve the ship's length
         const shipLength = draggedShipLength;
         if (!shipLength) return;
 
         //Calculate the ship's starting coordinate
-        const row = tile.dataset.y;
-        const column = tile.dataset.x;
+        const row = Number(tile.dataset.y);
+        const column = Number(tile.dataset.x);
         const placement = calculateShipPlacement(row, column, shipLength);
 
         //Determine all coordinates the ship would occupy
         const placementTiles = [];
 
+        //determine in row/col is changing, and generate hovered coordinates
         if(placement.direction === "right"){
-          //its the column thats changing
           for(let i = 0; i < shipLength; i++){
-            // const previewTile = [placement.row, placement.column + i];
             const tileInDOM = board.querySelector(
               `[data-y="${placement.row}"][data-x="${placement.column + i}"]`,
             );
-            placementTiles.push(tileInDOM);
+            if(tileInDOM) placementTiles.push(tileInDOM);
           }
         } else if (placement.direction === "up"){
-          //its the row thats changing
           for(let i = 0; i < shipLength; i++){
-            // const previewTile = [placement.row + i, placement.column];
             const tileInDOM = board.querySelector(
               `[data-y="${placement.row + i}"][data-x="${placement.column}"]`,
             );
-            placementTiles.push(tileInDOM);
+            if(tileInDOM) placementTiles.push(tileInDOM);
           }
         }
 
@@ -309,20 +306,23 @@ export default function initApp() {
         clearPreview(board);
 
         // Add preview classes to the corresponding board tiles
-        // if(controller.activePlayer.gameboard.canBePlaced()){
+        if(controller.activePlayer.gameboard.canBePlaced()){
           placementTiles.forEach(tile => {
             tile.classList.add('placement-preview');
           });
-        // } else{
-        //   placementTiles.forEach(tile => {
-        //     tile.classList.add('invalid-preview');
-        //   });
-        // }
+        } else{
+          placementTiles.forEach(tile => {
+            tile.classList.add('invalid-preview');
+          });
+        }
     });
 
     //Clean up for things like hover: styling 
-    board.addEventListener("dragleave", ()=>{
-      //?
+    board.addEventListener("dragend", ()=>{
+      draggedShipLength = null;
+
+      clearPreview(playerOneBoard);
+      clearPreview(playerTwoBoard);
     });
 
     //Attempt placement of the ship that's being dragged
