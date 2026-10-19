@@ -1,4 +1,3 @@
-//imports?
 import { CPU, placeCpuShips } from "./cpu-logic.js";
 import GameController from "./game-controller.js";
 import { updateBoard, createBoards } from "./render-board.js";
@@ -72,7 +71,6 @@ export default function initApp() {
 
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
-    shipArea.style.display = "flex";
   }); 
 
   //select two-player mode
@@ -103,11 +101,8 @@ export default function initApp() {
     playerOneName.textContent = `${controller.players[0].name}'s Board`;
     playerTwoName.textContent = `${controller.players[1].name}'s Board`;
 
-    placementStage = "Player 1";
-
     turnText.textContent = "Place your ships...";
     gameText.textContent = "";
-    shipArea.style.display = "flex";
   });
 
 
@@ -185,11 +180,8 @@ export default function initApp() {
 
       if(placementStage === "Player 1" && controller.players[1].type === "human"){
         placementStage = "Player 2";
-        //re-populate shipArea
-        const ships = shipArea.querySelectorAll(".draggableShip");
-        ships.forEach(ship =>{
-          ship.classList.remove("placed");
-        });
+        setBoardLayout("placing-player-two");
+        restoreMarinaShips();
       } else if (placementStage === "Player 2" || controller.players[1].type === "computer"){
         placementStage = "complete";
         disableButtons(
@@ -199,8 +191,7 @@ export default function initApp() {
             "You've already confirmed your ship placements."
           ]
         );
-        boardContainer.className = "";
-        boardContainer.classList.add("battle-phase");
+        setBoardLayout("battle-phase");
         turnText.textContent = `Both players are ready. Click "Start Game!" to begin.`;
         gameText.textContent = "";
       }
@@ -215,11 +206,6 @@ export default function initApp() {
 
 
 
-  //Things to fix:
-  //1. Hide inactive players board and replace it with shipArea during placement phase
-  //Things to consider:
-  //Put the listener for this on the confirmation button itself rather than privacy screen so that the CPU mode can reuse this logic, too
-  
 
   //2. Reset orientation (variable and flex-direction) to horizontal for each players placement phase
 
@@ -235,7 +221,6 @@ export default function initApp() {
       orientation = orientation === "horizontal" ? "vertical" : "horizontal";
 
       const ships = document.querySelectorAll(".draggableShip");
-
       ships.forEach((ship) =>{
         ship.style.flexDirection = orientation === "horizontal" ? "row" : 'column';
       })
@@ -297,43 +282,50 @@ export default function initApp() {
 
         let row = Number(tile.dataset.y);
         let column = Number(tile.dataset.x);
-        let direction;
         const shipLength = Number(
           event.dataTransfer.getData("text/plain")
         );
 
-        if(orientation === "horizontal"){
-          column = column - grabbedSegmentIndex; 
-          direction = "right";
-        } else if (orientation === "vertical"){
-          row = row - (shipLength - 1 - grabbedSegmentIndex); 
-          direction = "up";
-        }
+        const placement = calculateShipPlacement(row, column, shipLength);
 
         const ship = controller.activePlayer.gameboard.ships[shipLength - 1];
         controller.activePlayer.gameboard.placeShip(
-          row,
-          column,
-          direction,
+          placement.row,
+          placement.column,
+          placement.direction,
           ship
         )
 
         const stagedShip = shipArea.querySelector(
           `.draggableShip[data-length="${shipLength}"]`
         );
-
         stagedShip?.classList.add("placed");
 
         const playerBoard = controller.activePlayer === controller.players[0] ? playerOneBoard : playerTwoBoard;
         updateBoard(controller.activePlayer, playerBoard, true);
         playSound("placeShip");
-
-        console.log({ shipLength, row, column });
       } catch (error){
         console.warn(error);
       }
     });
   });
+
+  //Helper to determine where ship will be placed based on cursor position during drag
+  function calculateShipPlacement(row, column, shipLength){
+    if(orientation === "horizontal"){
+      return{
+        row,
+        column: column - grabbedSegmentIndex,
+        direction: "right",
+      };
+    }
+
+    return{
+      row: row - (shipLength - 1 - grabbedSegmentIndex),
+      column,
+      direction: "up",
+    };
+  };
 
 
 
@@ -379,11 +371,8 @@ export default function initApp() {
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
     
     //restore ship marina
-    shipArea.style.display = "flex";
-    const ships = shipArea.querySelectorAll(".draggableShip");
-    ships.forEach(ship =>{
-      ship.classList.remove("placed");
-    })
+    setBoardLayout("placing-player-one");
+    restoreMarinaShips();
   });
 
   //Button end/reset everything and change the current gamemode
@@ -392,9 +381,15 @@ export default function initApp() {
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
+
+    placementStage = "Player 1";
     modalOverlay.style.display = "flex";
     gameSelectModal.style.display = "grid";
+
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
+
+    setBoardLayout("placing-player-one");
+    restoreMarinaShips();
   });
 
   //restart the game from the winning screen modal and re-select game mode
@@ -405,10 +400,15 @@ export default function initApp() {
     controller.resetGame();
     if(controller.players[1].type === "computer") computer.resetCPU();
     createBoards();
+    
+    placementStage = "Player 1";
     gameOverModal.style.display = "none";
     gameSelectModal.style.display = "grid";
+
     enableButtons([placeShipBtn, confirmShipsBtn, startGameBtn]);
-    shipArea.style.display = "flex";
+
+    setBoardLayout("placing-player-one");
+    restoreMarinaShips();
   });
 
 
@@ -514,7 +514,7 @@ export default function initApp() {
 
 
 
-  //Helper functions for event listeners:
+  //HELPER FUNCTIONS FOR EVENT LISTENERS:
 
   //Turn delay function for CPU turn
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -557,6 +557,7 @@ export default function initApp() {
     }
   }
 
+  //helper function to show and hide appropriate board based on game phase
   function setBoardLayout(phase){
     boardContainer.classList.remove(
       "placing-player-one",
@@ -566,6 +567,18 @@ export default function initApp() {
     boardContainer.classList.add(phase);
   }
 
+  //repopulate the ship marina with ships after they've been used and set back to horizontal
+  function restoreMarinaShips() {
+    const ships = shipArea.querySelectorAll(".draggableShip");
+
+    ships.forEach(ship => {
+      ship.classList.remove("placed");
+      ship.style.flexDirection = "row";
+    });
+
+    orientation = "horizontal";
+  }
+    
   //helper function to disable buttons when not offerable to user
   function disableButtons(buttons, messages = []){
     const buttonArray = Array.isArray(buttons) ? buttons : [buttons];

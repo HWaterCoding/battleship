@@ -27,3 +27,6 @@ createBoards();
 //if two-player mode: classList.add(placing-player-two)
 //Player 2 places all ships and confirms. 
 //classList.add(battle-phase)
+
+
+//If placing a ship from placeShipBtn, remove ship from marina
