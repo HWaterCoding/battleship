@@ -1,8 +1,14 @@
 /* Root + Media Queries */
 :root {
   --tile-size: 65px;
-  --board-secondary: #c9c2c2;
-  --board-outline: rgb(136, 130, 130);
+  --board-secondary: #141313;
+  --white-text-outline: 
+    -2px -2px 0 rgba(0,0,0,0.8),  
+     2px -2px 0 rgba(0,0,0,0.8),
+    -2px  2px 0 rgba(0,0,0,0.8),
+     2px  2px 0 rgba(0,0,0,0.8);
+  --ship-tiles: linear-gradient(135deg, rgba(157, 160, 161, 0.700), rgba(176, 182, 182, 0.700));
+  --modal-background: rgba(27, 56, 90, 0.75); 
 }
 
 @media (max-width: 900px) {
@@ -76,8 +82,21 @@ body {
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
-  background-color: rgb(134, 129, 123);
   min-height: 100vh;
+
+}
+
+body::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.651), rgba(255, 0, 0, 0.3)), 
+    url(/assets/images/battleship-background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.8;
+  z-index: -1;
 }
 
 
@@ -108,6 +127,16 @@ main {
 
 #gameButtons button {
   cursor: pointer;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: rgba(25, 221, 247, 0.514); 
+  color: #fff;
+}
+
+#gameButtons button:hover{
+  background-color: rgba(25, 221, 247, 0.753); 
 }
 
 #turnText,
@@ -117,6 +146,13 @@ main {
   min-height: 36px; 
   /* font change + style */
 }
+
+#turnText,
+#gameText{
+  color: #fff;
+  text-shadow: var(--white-text-outline);
+}
+
 
 
 /* Player Boards Section */
@@ -176,6 +212,8 @@ main {
   flex-direction: column;
   align-items: center;
   gap: clamp(1rem, 24px, 2rem);
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #leftPlayer h3,
@@ -247,6 +285,12 @@ main {
   cursor: pointer;
 }
 
+.tile.waterTile:hover{
+  background: linear-gradient(135deg, rgba(21, 89, 129, 0.7), rgba(7, 87, 107, 0.7));
+  border: 1px solid #f0eaea;
+  
+}
+
 .tile.placement-preview {
   background: linear-gradient(135deg, #268f4d, #4cdb82);
 }
@@ -266,23 +310,23 @@ main {
 
 /* Tile State Stylings */
 .waterTile {
-  background: linear-gradient(135deg, #0077be, #00a8cc);
+  background: linear-gradient(135deg, rgba(0, 120, 190, 0.700), rgba(0, 167, 204, 0.700));
 }
 
 .shipTile {
-  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
+  background: var(--ship-tiles);
 }
 
 .missTile {
-  background: linear-gradient(135deg, #d61c1c, #a80505);
+  background: linear-gradient(135deg, rgba(214, 28, 28, 0.700), rgba(168, 5, 5, 0.700));
 }
 
 .hitTile {
-  background: linear-gradient(135deg, #189e39, #10fa30);
+  background: linear-gradient(135deg, rgba(24, 158, 58, 0.700), rgba(16, 250, 47, 0.700));
 }
 
 .sunkTile {
-  background: linear-gradient(135deg, #171817, #323533);
+  background: linear-gradient(135deg, rgba(23, 24, 23, 0.700), rgba(50, 53, 51, 0.700));
 }
 
 
@@ -325,7 +369,12 @@ main {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  background: linear-gradient(0deg, #0077be, #00a8cc, #0077be);
+  background: linear-gradient(
+    0deg, 
+    rgba(0, 120, 190, 0.700), 
+    rgba(0, 167, 204, 0.700), 
+    rgba(0, 120, 190, 0.700)
+  );
   gap: clamp(10px, 2vw, 24px);
   padding: clamp(10px, 2vw, 20px);
   width: calc(var(--tile-size) * 10);
@@ -341,6 +390,7 @@ main {
   display: flex;
   flex-direction: row;
   cursor: grab;
+  border: 1px solid var(--board-secondary);
 }
 
 .draggableShip.placed {
@@ -348,13 +398,11 @@ main {
 }
 
 .shipSquare {
-  background: linear-gradient(135deg, #9da0a1, #b0b6b6);
+  background: var(--ship-tiles);
   box-shadow:
     inset 0 0 20px rgba(255, 255, 255, 0.5),
     0 10px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--board-secondary);
-  border-left: 2px solid var(--board-secondary);
-  border-right: 2px solid var(--board-secondary);
   width: var(--tile-size);
   height: var(--tile-size);
 }
@@ -416,12 +464,11 @@ main {
 
 /* Generic overlay for all modals */
 #modalOverlay {
-  /* display: none; */
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  background-color: rgba(160, 221, 221, 50%);
+  background-color: rgba(0, 0, 0, 0.808);
   height: 100%;
   width: 100%;
   top: 0;
@@ -433,21 +480,24 @@ main {
 /* Start the game with this set as grid */
 #gameSelectModal{
   display: grid;
-  /* display: none; */
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  background-color: rgba(231, 129, 129, 75%);
+  background: var(--modal-background);
 }
 
 #gameSelectModal h1{
   grid-column: 1/-1;
   text-align: center;
   font-size: 36px;
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #gameSelectModal h2{
   text-align: center;
   font-size: 28px;
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #gameSelectModal div{
@@ -484,8 +534,10 @@ main {
   align-items: center;
   gap: 30px;
   width: 550px;
-  background-color: rgba(247, 62, 62, 0.75);
+  background: var(--modal-background);
   padding: 20px;
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #playerVsCpuModal label{
@@ -503,7 +555,9 @@ main {
   /* display: grid; */
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  background-color: rgba(247, 62, 62, 0.75); 
+  background: var(--modal-background);
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #twoPlayerModal div{
@@ -549,12 +603,14 @@ main {
 #placeShipModal {
   display: none;
   /* display: flex; */
-  background-color: rgb(224, 202, 202);
-  box-shadow: 0 0 10px 4px rgb(156, 7, 7);
+  background: var(--modal-background);
+  box-shadow: 0 0 10px 4px rgb(12, 102, 114);
   border-radius: 15px;
   justify-content: center;
   align-items: center;
   padding: clamp(1rem, 20px, 1.5rem);
+  color: #fff;
+  text-shadow: var(--white-text-outline);
 }
 
 #placeShipForm{
@@ -568,12 +624,41 @@ main {
   flex-direction: column;
 } */
 
-#placeShipModalButtons{
-  display: flex;
-  gap: 5px;
+#placeShipErrorText{
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 0 10px 10px 10px;
 }
 
+#placeShipModalButtons{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
 
+#placeShipModalButtons button{
+  padding: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 800;
+
+}
+
+#submitPlaceShipBtn{
+  background-color: #86bcdb;
+}
+
+#submitPlaceShipBtn:HOVER{
+  background-color: #59addf;
+}
+
+#cancelShipBtn{
+  background-color: rgb(245, 165, 165);
+}
+
+#cancelShipBtn:hover{
+  background-color: rgb(248, 135, 135);
+}
 
 /* Game Over Modal */
 #gameOverModal{

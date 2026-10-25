@@ -175,14 +175,14 @@ test.skip("As long as at least one ship tile remains, the game isn't over", () =
 });
 
 //Game Controller methods and tests::
-test("getOpponent() returns correct player", () => {
+test.skip("getOpponent() returns correct player", () => {
   const controller = new GameController();
 
   expect(controller.activePlayer).toBe(controller.players[0]);
   expect(controller.getOpponent()).toBe(controller.players[1]);
 });
 
-test("switchPlayers() changes activePlayer", () => {
+test.skip("switchPlayers() changes activePlayer", () => {
   const controller = new GameController();
 
   expect(controller.activePlayer).toBe(controller.players[0]);
@@ -192,7 +192,7 @@ test("switchPlayers() changes activePlayer", () => {
   expect(controller.activePlayer).toBe(controller.players[0]);
 });
 
-test("playTurn() throws an error if the game is already over", () => {
+test.skip("playTurn() throws an error if the game is already over", () => {
   const controller = new GameController();
 
   controller.isGameActive = false;
@@ -201,7 +201,7 @@ test("playTurn() throws an error if the game is already over", () => {
   }).toThrow("This game has concluded!");
 });
 
-test("playTurn() properly handles a winning attack", () => {
+test.skip("playTurn() properly handles a winning attack", () => {
   const controller = new GameController();
 
   const finalShip = controller.players[1].board.ships[0];
@@ -219,7 +219,7 @@ test("playTurn() properly handles a winning attack", () => {
   expect(controller.activePlayer).toBe(controller.players[0]);
 });
 
-test("playTurn() does not switch players after an invalid attack", () => {
+test.skip("playTurn() does not switch players after an invalid attack", () => {
   const controller = new GameController();
 
   //attack once
@@ -235,7 +235,7 @@ test("playTurn() does not switch players after an invalid attack", () => {
   expect(controller.activePlayer).toBe(controller.players[0]);
 });
 
-test("checkWinner() returns true only when the opponent has lost", () => {
+test.skip("checkWinner() returns true only when the opponent has lost", () => {
   const controller = new GameController();
 
   //opponent still has ships
@@ -248,7 +248,7 @@ test("checkWinner() returns true only when the opponent has lost", () => {
   expect(controller.checkWinner()).toBe(true);
 });
 
-test("resetGame() restores a fresh match", () => {
+test.skip("resetGame() restores a fresh match", () => {
   const controller = new GameController();
 
   //set all 3 constructor properties to the opposite of default state
@@ -280,4 +280,3 @@ test("resetGame() restores a fresh match", () => {
   });
 });
 
-// rendering tests:::

@@ -120,6 +120,9 @@ export default class Gameboard {
   //function to ask if a ship placement is valid during drag-and-drop placement
   canBePlaced(row, col, direction, ship){
     row = this.invertRowCoordinate(row);
+    if (direction !== "right" && direction !== "up") {
+      return false;
+    }
 
     if(direction === "right"){
       for (let i = 0; i < ship.length; i++) {
@@ -144,11 +147,11 @@ export default class Gameboard {
   //verify the entire pleet has been placed
   isFleetPlaced(){
     const allShipsPlaced = this.ships.every((ship) =>
-        this.board.some((row) =>
-          row.some((tile) => tile.ship === ship)
-        )
+      this.board.some((row) =>
+        row.some((tile) => tile.ship === ship)
       )
-      if(!allShipsPlaced) throw new Error("You must place ALL your ships!");
+    )
+    if(!allShipsPlaced) throw new Error("You must place ALL your ships!");
   }
 
   //use coordinates clicked on to "receive" an attack and check if its a miss or hit

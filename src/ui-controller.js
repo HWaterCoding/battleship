@@ -211,11 +211,6 @@ export default function initApp() {
   });
 
 
-
-
-  //2. Reset orientation (variable and flex-direction) to horizontal for each players placement phase
-
-
   //Drag-and-drop ship logic:
 
   //Identify from which tile the ship is being dragged
@@ -263,14 +258,6 @@ export default function initApp() {
     }
   });
 
-  //Clean up for things like hover: styling 
-  shipArea.addEventListener("dragend", ()=>{
-    draggedShipLength = null;
-
-    clearPreview(playerOneBoard);
-    clearPreview(playerTwoBoard);
-  });
-
   //Drag events attachs to both player boards
   [playerOneBoard, playerTwoBoard].forEach(board =>{
     //Allow the ship to be dropped
@@ -293,7 +280,7 @@ export default function initApp() {
         //Determine all coordinates the ship would occupy
         const placementTiles = [];
 
-        //determine in row/col is changing, and generate hovered coordinates
+        //determine if row/col is changing, and generate hovered coordinates
         if(placement.direction === "right"){
           for(let i = 0; i < shipLength; i++){
             const tileInDOM = board.querySelector(
@@ -327,7 +314,6 @@ export default function initApp() {
             tile.classList.add('placement-preview');
           });
         } else{
-          clearPreview(board);
           placementTiles.forEach(tile => {
             tile.classList.add('invalid-preview');
           });
@@ -384,6 +370,15 @@ export default function initApp() {
       }
     });
   });
+
+  //Clean up for things like hover: styling 
+  shipArea.addEventListener("dragend", ()=>{
+    draggedShipLength = null;
+
+    clearPreview(playerOneBoard);
+    clearPreview(playerTwoBoard);
+  });
+
 
   //Helper to determine where ship will be placed based on cursor position during drag
   function calculateShipPlacement(row, column, shipLength){
