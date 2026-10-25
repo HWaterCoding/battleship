@@ -280,3 +280,156 @@ test.skip("resetGame() restores a fresh match", () => {
   });
 });
 
+
+
+// FULL LENGTH GAME TEST WITHOUT UI/RENDERING/DOM
+
+// THIS TEST WILL NOT USE THE CPU TARGETTING ALGORITHMS SO THAT ATTACKS ARE CONSISTENT
+describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
+  test("Two players place fleets, take turns, and finish a game", () => {
+
+    // 1. CREATE THE GAME
+
+    const controller = new GameController([
+      { name: "Human", type: "human" },
+      { name: "Computer", type: "computer" },
+    ]);
+
+    const human = controller.players[0];
+    const computer = controller.players[1];
+
+    expect(controller.isGameActive).toBe(false);
+    expect(controller.winner).toBeNull();
+    expect(controller.activePlayer).toBe(human);
+
+
+    // 2. PLACE BOTH FLEETS
+
+    // Put each ship on a different row, starting at column 0
+
+    for (let i = 0; i < 5; i++) {
+      const humanShip = human.gameboard.ships[i];
+      const computerShip = computer.gameboard.ships[i];
+
+      human.gameboard.placeShip(i, 0, "right", humanShip);
+      computer.gameboard.placeShip(i, 0, "right", computerShip);
+    }
+
+    expect(() => human.gameboard.isFleetPlaced().not.toThrow());
+    expect(() => computer.gameboard.isFleetPlaced().not.toThrow());
+
+
+    // 3. START THE GAME AND VERIFY GAME IS ACTIVE
+
+    controller.startGame();
+
+    expect(controller.isGameActive).toBe(true);
+    expect(controller.activePlayer).toBe(human);
+
+
+    // 4. PREPARE DETERMINISTIC ATTACK COORDINATES
+
+    // Human will hit all 15 computer ship tiles
+    // Computer will deliberately miss every attack
+
+    const humanAttacks = [];
+
+    for (let row = 0; row < 5; row++) {
+      const shipLength = row + 1;
+      for (let col = 0; col < shipLength; col++) {
+        humanAttacks.push([row, col]);
+      }
+    }
+
+    // These are 15 distinct empty coordinates away from the human fleet
+
+    const computerAttacks = [];
+
+    for (let col = 0; col < 10; col++) {
+      computerAttacks.push([9, col]);
+    }
+
+    for (let col = 0; col < 5; col++) {
+      computerAttacks.push([8, col]);
+    }
+
+    expect(humanAttacks).toHaveLength(15);
+    expect(computerAttacks).toHaveLength(15);
+
+
+    // 5. SIMULATE EVERY SINGLE TURN THROUGHOUT THE BATTLE PHASE
+
+    // Human attacks the computers board
+    for (let i = 0; i < humanAttacks.length; i++) {
+      expect(controller.activePlayer).toBe(human);
+
+      const [humanRow, humanCol] = humanAttacks[i];
+
+      const humanResult = controller.playTurn(humanRow, humanCol);
+
+      expect(humanResult.attack).toBe("hit");
+
+      // The final Human attack sinks the last ship
+      const isFinalAttack = i === humanAttacks.length - 1;
+
+      // Final attack should end the game
+      if (isFinalAttack) {
+        expect(controller.winner).toBe(human);
+        expect(controller.isGameActive).toBe(false);
+        expect(controller.activePlayer).toBe(human);
+
+        return;
+      }
+
+      // After a non-winning Human attack the turn should switch to the Computer
+
+      expect(controller.activePlayer).toBe(computer);
+
+      // Computer deliberately misses all of it's attacks
+
+      const [cpuRow, cpuCol] = computerAttacks[i];
+
+      const cpuResult = controller.playTurn(cpuRow, cpuCol);
+
+      expect(cpuResult.attack).toBe("miss");
+
+      // After both have played, it's the humans turn again
+
+      expect(controller.activePlayer).toBe(human);
+      expect(controller.isGameActive).toBe(true);
+      expect(controller.winner).toBeNull();
+    }
+
+
+    // 6. VERIFY THE FINAL GAME STATE
+
+    expect(computer.gameboard.isGameOver()).toBe(true);
+    expect(human.gameboard.isGameOver()).toBe(false);
+
+    expect(computer.gameboard.ships.every(
+      ship => ship.sunk
+    )).toBe(true);
+
+    expect(controller.winner).toBe(human);
+
+
+    // 7. RESET THE GAME AND CHECK THE STATUS OF BOTH PLAYERS FLEETS
+
+    controller.resetGame();
+
+    expect(controller.isGameActive).toBe(false);
+    expect(controller.winner).toBeNull();
+    expect(controller.activePlayer).toBe(human);
+
+    expect(human.gameboard.isGameOver()).toBe(false);
+    expect(computer.gameboard.isGameOver()).toBe(false);
+
+    expect(human.gameboard.ships.every(
+      ship => ship.timesHit === 0
+    )).toBe(true);
+
+    expect(computer.gameboard.ships.every(
+      ship => ship.timesHit === 0
+    )).toBe(true);
+  });
+});
