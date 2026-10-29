@@ -14,9 +14,49 @@
 <body>
     <header>
         <h1>Let's play Battleship!</h1>
-        <!-- <h4>Instructions/Rules</h4> -->
-        <!-- brief explanation of the game -->
-        <!-- open a modal for the rules description -->
+        
+        <!-- Rules and Instructions on How To Play Section -->
+        <div class="rules-wrapper">
+            <!-- Button to sit in header for drop-down panel -->
+            <button id="rulesBtn" class="btn" type="button">
+                How To Play <i class="fa-brands fa-readme"></i>
+            </button>
+
+            <!-- Drop-down Instructions Panel -->
+            <div id="rulesPanel" class="rules-panel">
+                <h2>How To Play Battleship!</h2>
+
+                <!-- Section for talking about ship placement -->
+                <section>
+                    <h3>1. Placing your ships</h3>
+                    <!-- (placeShipBtn vs Drag-and-Drop explanation) -->
+                    <!-- (confirm ships button explanation all ships placed) -->
+                    <!-- INCLUDE AREA TO SPECIFY FOR TWO-PLAYER MODE SHIP PLACEMENT -->
+                    <!-- (Start game button) -->
+                </section>
+
+                <!-- Section for talking about battle phase -->
+                <section>
+                    <h3>2. Battle Phase</h3>
+                     <!-- Player 1's attacks -->
+                     <!-- CPU's Attacks (include delay explanation) -->
+                     <!-- INCLUDE AREA TO SPECIFY FOR TWO-PLAYER PRIVACY DISPLAY BETWEEN ATTACKS -->
+                </section>
+
+                <!-- Section for explaining color coordination -->
+                <section>
+                    <h3>3. Tile Colour Guide</h3>
+                    <ul class="tileLegend">
+                        <li><span class="swatch waterTile"></span>Water</li>
+                        <li><span class="swatch shipTile"></span>Ship</li>
+                        <li><span class="swatch missTile"></span>Miss</li>
+                        <li><span class="swatch hitTile"></span>Hit</li>
+                        <li><span class="swatch sunkTile"></span>Sunk</li>
+                    </ul>
+                </section>
+            </div>
+
+        </div>
     </header>
 
     <main>
