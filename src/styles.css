@@ -1,29 +1,11 @@
-/* Root + Media Queries */
+/* Root */
 :root {
-  --tile-size: 65px;
-  --board-secondary: #141313;
-  --white-text-outline: 
-    -2px -2px 0 rgba(0,0,0,0.8),  
-     2px -2px 0 rgba(0,0,0,0.8),
-    -2px  2px 0 rgba(0,0,0,0.8),
-     2px  2px 0 rgba(0,0,0,0.8);
-  --ship-tiles: linear-gradient(135deg, rgba(157, 160, 161, 0.700), rgba(176, 182, 182, 0.700));
-  --modal-background: rgba(27, 56, 90, 0.75); 
+  --tile-size: clamp(22px, calc((100vw - 8rem) / 10), 65px);
+  --board-secondary: #141313; 
+  --ship-tiles: linear-gradient(135deg, rgba(157, 160, 161, 0.850), rgba(176, 182, 182, 0.850));
+  --water-tiles: linear-gradient(135deg, rgba(0, 120, 190, 0.850), rgba(0, 167, 204, 0.850));
+  --font-display: "Black Ops One", system-ui, sans-serif;
 }
-
-@media (max-width: 900px) {
-  :root {
-    --tile-size: clamp(28px, 6vw, 45px);
-  }
-}
-
-@media (max-width: 750px) {
-  :root {
-    --tile-size: clamp(25px, 8vw, 40px);
-  }
-}
-
-
 
 
 /* Default Styles */
@@ -76,22 +58,23 @@ h6 {
 }
 
 
-/* General Styles */
+/* Body + Background Styles */
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-
+  min-height: 100dvh;
+  position: relative;
 }
 
 body::before{
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(rgba(0, 0, 0, 0.651), rgba(255, 0, 0, 0.3)), 
+    /* linear-gradient(rgba(0, 0, 0, 0.651), rgba(255, 0, 0, 0.3)),  */
+    linear-gradient(rgba(5, 20, 40, 0.75), rgba(5, 20, 40, 0.6)),
     url(/assets/images/battleship-background.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -102,9 +85,13 @@ body::before{
 
 /* Header Section */
 header {
-  background: linear-gradient(180deg, #0077be, #00a8cc);
+  background: linear-gradient(180deg, #003b5e, #006880);
   text-align: center;
   padding: clamp(1rem, 20px, 1.5rem);
+  color: black;
+  -webkit-text-stroke: 2px #fff;
+  paint-order: stroke fill;
+  font-family: var(--font-display);
 }
 
 
@@ -118,41 +105,23 @@ main {
 }
 
 
-/* Above Boards Section */
-#gameButtons {
-  padding: clamp(0.5rem, 15px, 1.5rem);
-  display: flex;
-  gap: clamp(0.5rem, 1rem, 1.5rem);
-}
-
-#gameButtons button {
-  cursor: pointer;
-  padding: 5px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid black;
-  background-color: rgba(25, 221, 247, 0.514); 
-  color: #fff;
-}
-
-#gameButtons button:hover{
-  background-color: rgba(25, 221, 247, 0.753); 
-}
-
+/* Text above boards */
 #turnText,
 #gameText,
 #errorText {
   font-size: 1.5rem;
   min-height: 36px; 
-  /* font change + style */
 }
 
 #turnText,
 #gameText{
+  text-align: center;
+  padding: 0 20px 0 20px;
   color: #fff;
-  text-shadow: var(--white-text-outline);
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill;
+  font-family: var(--font-display);
 }
-
 
 
 /* Player Boards Section */
@@ -161,7 +130,8 @@ main {
 #boardContainer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(4rem, 100px, 8rem);
+  column-gap: calc(4.5rem + clamp(1.5rem, 4vw, 5rem));
+  row-gap: clamp(1.5rem, 6vw, 6rem);
 }
 
 #boardContainer.placing-player-one{
@@ -193,8 +163,10 @@ main {
 }
 
 @media (max-width: 1650px){
-  #boardContainer{
-    grid-template-columns: 1fr;
+  #boardContainer {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: clamp(2rem, 40px, 3rem);
   }
 
   #boardContainer.placing-player-two #shipPlacementArea,
@@ -213,7 +185,14 @@ main {
   align-items: center;
   gap: clamp(1rem, 24px, 2rem);
   color: #fff;
-  text-shadow: var(--white-text-outline);
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+#leftPlayer h2,
+#rightPlayer h2,
+#shipPlacementArea h2{
+  font-family: var(--font-display);
 }
 
 #leftPlayer h3,
@@ -222,10 +201,42 @@ main {
 }
 
 .boardSection {
+  position: relative;
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-template-rows: 1fr auto auto auto;
-  gap: 8px;
+  grid-template-columns: calc(var(--tile-size) * 10);
+  row-gap: 8px;
+}
+
+.y-coords {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: 8px;
+  width: 1.25rem;
+  height: calc(var(--tile-size) * 10);
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  font-weight: 600;
+}
+
+.y-label {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 2.25rem);
+  height: calc(var(--tile-size) * 10);
+  display: flex;
+  align-items: center;
+}
+
+.x-coords {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  font-weight: 600;
+}
+
+.x-label {
+  text-align: center;
+  margin-top: -8px;
 }
 
 #leftPlayerBoard,
@@ -234,37 +245,7 @@ main {
   flex-direction: column;
   width: calc(var(--tile-size) * 10);
   height: calc(var(--tile-size) * 10);
-  grid-column: 3/4;
-  grid-row: 1/2;
   border: 1px solid var(--board-secondary);
-}
-
-.y-label{
-  grid-column: 1/2;
-  grid-row: 1/2;
-  text-align: center;
-  align-self: center;
-  margin-right: 20px;
-}
-
-.y-coords {
-  display: grid;
-  grid-template-rows: repeat(10, 1fr);
-  grid-column: 2/3;
-  grid-row: 1/2;
-}
-
-.x-label{
-  grid-column: 3/4;
-  grid-row: 3/4;
-  text-align: center;
-}
-
-.x-coords {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-column: 3/4;
-  grid-row: 2/3;
 }
 
 .y-coords p,
@@ -275,20 +256,26 @@ main {
   justify-content: center;
 }
 
+.x-label,
+.y-label {
+  line-height: 1;
+}
 
-/* Tile Styling */
+/* Default Tile Styling */
 .tile {
-  box-shadow:
-    inset 0 0 20px rgba(255, 255, 255, 0.5),
-    0 10px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--board-secondary);
-  cursor: pointer;
+  cursor: crosshair;
+}
+
+.missTile,
+.hitTile,
+.sunkTile{
+  cursor: default;
 }
 
 .tile.waterTile:hover{
-  background: linear-gradient(135deg, rgba(21, 89, 129, 0.7), rgba(7, 87, 107, 0.7));
+  background: linear-gradient(135deg, rgba(21, 89, 129, 0.850), rgba(7, 87, 107, 0.850));
   border: 1px solid #f0eaea;
-  
 }
 
 .tile.placement-preview {
@@ -309,57 +296,263 @@ main {
 }
 
 /* Tile State Stylings */
-.waterTile {
-  background: linear-gradient(135deg, rgba(0, 120, 190, 0.700), rgba(0, 167, 204, 0.700));
+.waterTile,
+.missTile{
+  background: var(--water-tiles);
 }
 
-.shipTile {
+.shipTile,
+.hitTile{
   background: var(--ship-tiles);
 }
 
-.missTile {
-  background: linear-gradient(135deg, rgba(214, 28, 28, 0.700), rgba(168, 5, 5, 0.700));
+.missTile,
+.hitTile,
+.sunkTile{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hitTile {
-  background: linear-gradient(135deg, rgba(24, 158, 58, 0.700), rgba(16, 250, 47, 0.700));
+.missTile::after,
+.hitTile::after,
+.sunkTile::after{
+  content: "";
+  width: 40%;
+  aspect-ratio: 1;
+  border-radius: 50%;
 }
 
-.sunkTile {
-  background: linear-gradient(135deg, rgba(23, 24, 23, 0.700), rgba(50, 53, 51, 0.700));
+.missTile::after {
+  background: #fff;
+}
+
+.hitTile::after,
+.sunkTile::after{
+  background: #ff4d3d;
+  box-shadow: 0 0 10px #ff4d3d;
+}
+
+.sunkTile{
+  background: linear-gradient(135deg, rgba(23, 24, 23, 0.850), rgba(50, 53, 51, 0.850));
 }
 
 
 
-
-
-/* Ship Placement Section */
-
-#shipBtns{
-  padding: clamp(.5rem, 12px, 1rem);
+/* All Modal Stylings */
+/* Generic overlay for all modals */
+#modalOverlay {
+  display: flex;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.65);
+  inset: 0;
+  z-index: 10;
+  overflow: auto;
+  padding: 1rem;
 }
 
-#shipBtns button{
+/* Generic Modal Classes */
+.modal{
+  width: min(100%, var(--modal-w, 520px));
+  margin: auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border-radius: 16px;
+  background: rgba(20, 45, 75, 0.3);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.modal-wide{
+  --modal-w: 780px;
+}
+
+
+/* Place Ship Modal Form */
+#placeShipModal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#placeShipForm{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#placeShipForm div{
+  display: flex;
+  justify-content: space-between;
+}
+
+#placeShipForm > h3:first-child{
+  font-size: 1.6rem;
+}
+
+#placeShipErrorText{
+  text-align: center;
+  padding: 0 10px 10px 10px;
+  color: #ff0000;
+}
+
+#placeShipModal h3,
+#placeShipModal label{
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+  text-align: center;
+}
+
+#placeShipModal label{
+  font-size: 1.3em;
+}
+
+.modal input,
+.modal select{
+  padding: 0.4em 0.6em;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+#placeShipModalButtons{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+
+/* Game-mode Selection Modal */
+#gameSelectModal{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+#gameSelectModal h1{
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  color: #fff;
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+#gameSelectModal h2{
+  text-align: center;
+  font-size: 28px;
+  color: #fff;
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+#gameSelectModal div{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin: clamp(1rem, 24px, 2rem);
+}
+
+#gameSelectModal div button{
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
+  margin: 10px;
 }
 
-#placeShipBtn{
-  background-color: rgb(253, 164, 164);
+#gameSelectModal div img:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 10px 8px rgba(255,255,255,0.2);
 }
 
-#placeShipBtn:hover{
-  background-color: rgb(233, 130, 130);
+#gameSelectModal img{
+  width: 200px;
+  border-radius: 50%;
 }
 
-#confirmShipsBtn{
-  background-color: rgb(155, 247, 171);
+
+/* Single-Player Vs CPU Modal */
+#playerVsCpuModal{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 
-#confirmShipsBtn:hover{
-  background-color: rgb(120, 235, 139);
+#playerVsCpuModal label{
+  font-size: 2.4rem;
+  text-align: center;
+  font-weight: 800;
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+
+/* Two Player Mode Modal */
+#twoPlayerModal{
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+}
+
+#twoPlayerModal div{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 20px;
+}
+
+#twoPlayerModal input,
+#playerVsCpuModal input{
+  padding: 10px 5px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+#twoPlayerModal div label{
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+
+/* Game Over Modal */
+#gameOverModal{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1rem, 20px, 1.5rem);
+  text-align: center;
+}
+
+#gameOverModal h1 {
+  font-size: clamp(2.25rem, 7vw, 3.5rem);
+}
+
+#gameOverModal h1,
+#gameOverModal h2{
+  -webkit-text-stroke: 4px black;
+  paint-order: stroke fill; 
+}
+
+
+/* Media query for modal widths */
+@media (max-width: 760px) {
+  #gameSelectModal,
+  #twoPlayerModal{
+    grid-template-columns: 1fr;
+  }
+  #twoPlayerModal div{
+    margin: 0;
+  }
+  #gameSelectModal img{
+    width: 140px;
+  }
 }
 
 
@@ -371,9 +564,9 @@ main {
   flex-wrap: wrap;
   background: linear-gradient(
     0deg, 
-    rgba(0, 120, 190, 0.700), 
-    rgba(0, 167, 204, 0.700), 
-    rgba(0, 120, 190, 0.700)
+    rgba(0, 120, 190, 0.850), 
+    rgba(0, 167, 204, 0.850), 
+    rgba(0, 120, 190, 0.850)
   );
   gap: clamp(10px, 2vw, 24px);
   padding: clamp(10px, 2vw, 20px);
@@ -382,8 +575,7 @@ main {
   box-shadow:
   inset 0 0 20px rgba(255, 255, 255, 0.5),
   0 10px 20px rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--board-secondary);
-  border-radius: 8px;
+  border: 2px solid var(--board-secondary);
 }
 
 .draggableShip{
@@ -399,12 +591,17 @@ main {
 
 .shipSquare {
   background: var(--ship-tiles);
-  box-shadow:
-    inset 0 0 20px rgba(255, 255, 255, 0.5),
-    0 10px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--board-secondary);
   width: var(--tile-size);
   height: var(--tile-size);
+}
+
+.shipSquare:hover{
+  background: linear-gradient(
+    135deg,
+    rgba(135, 141, 143, 0.7),
+    rgba(140, 146, 146, 0.7)
+  );
 }
 
 #rotateShipBtn{
@@ -415,22 +612,25 @@ main {
   width: var(--tile-size);
   height: var(--tile-size);
   background-color: #7a7d80;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
 }
 
 #rotateShipBtn:hover{
-  background-color: #a9adb1;
+  background-color: #8c9094;
 }
 
 #rotateShipBtn i{
-  font-size: calc(var(--tile-size) * 0.5);
+  -webkit-text-stroke: 2px rgb(233, 215, 215);
+  paint-order: stroke fill; 
+  font-size: 2.5rem;
 }
 
 
 /* Privacy screen overlay and modal */
-/* Update: Make this not cover header/footer */
 #privacyOverlay{
   display: none;
-  /* display: flex; */
   background-color: #7a7d80;
   justify-content: center;
   align-items: center;
@@ -441,262 +641,120 @@ main {
 
 #privacyScreen{
   display: none;
-  /* display: flex; */
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
 
-#privacyBtn{
-  font-size: clamp(1.5rem, 30px, 2rem);
-  padding: 5px 10px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background-color: rgb(167, 221, 132);
-}
-
-#privacyBtn:hover{
-  transform: scale(1.1);
-  background-color: rgb(153, 230, 103);
-}
-
-
-/* Generic overlay for all modals */
-#modalOverlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.808);
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
-
-/* Game-mode Selection Modal */
-/* Start the game with this set as grid */
-#gameSelectModal{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  background: var(--modal-background);
-}
-
-#gameSelectModal h1{
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 36px;
-  color: #fff;
-  text-shadow: var(--white-text-outline);
-}
-
-#gameSelectModal h2{
-  text-align: center;
-  font-size: 28px;
-  color: #fff;
-  text-shadow: var(--white-text-outline);
-}
-
-#gameSelectModal div{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  margin: clamp(1rem, 24px, 2rem);
-}
-
-#gameSelectModal div button{
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  margin: 10px;
-}
-
-#gameSelectModal div button:hover{
-  transform: scale(1.1);
-}
-
-#gameSelectModal img{
-  width: 200px;
-  border-radius: 50%;
-}
-
-
-/* Single-Player Vs CPU Modal */
-/* Switch this to start as display: none */
-#playerVsCpuModal{
-  display: none;
-  /* display: grid; */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  width: 550px;
-  background: var(--modal-background);
-  padding: 20px;
-  color: #fff;
-  text-shadow: var(--white-text-outline);
-}
-
-#playerVsCpuModal label{
-  font-size: 2.4rem;
-  text-align: center;
-  font-weight: 800;
-}
-
-
-
-/* Two Player Mode Modal */
-/* Switch this to start as display: none */
-#twoPlayerModal{
-  display: none;
-  /* display: grid; */
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  background: var(--modal-background);
-  color: #fff;
-  text-shadow: var(--white-text-outline);
-}
-
-#twoPlayerModal div{
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 20px;
-  margin: 20px;
-}
-
-#twoPlayerModal input,
-#playerVsCpuModal input{
-  padding: 10px 5px;
-  font-size: 1.4rem;
-  text-align: center;
-}
-
-#twoPlayerModal div p,
-#twoPlayerModal div label{
-  text-align: center;
-  font-size: 1.6rem;
-  font-weight: 800;
-}
-
-.playBtn{
-  grid-column: 1/-1;
-  justify-self: center;
-  text-align: center;
-  font-size: 1.4rem;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-.playBtn:hover{
-  transform: scale(1.1);
-}
-
-
-
-/* Place Ship Modal Form */
-#placeShipModal {
-  display: none;
-  /* display: flex; */
-  background: var(--modal-background);
-  box-shadow: 0 0 10px 4px rgb(12, 102, 114);
-  border-radius: 15px;
-  justify-content: center;
-  align-items: center;
-  padding: clamp(1rem, 20px, 1.5rem);
-  color: #fff;
-  text-shadow: var(--white-text-outline);
-}
-
-#placeShipForm{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* #placeShipForm div{
-  display: flex;
-  flex-direction: column;
-} */
-
-#placeShipErrorText{
-  text-align: center;
-  font-size: 1.6rem;
-  padding: 0 10px 10px 10px;
-}
-
-#placeShipModalButtons{
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-#placeShipModalButtons button{
-  padding: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 800;
-
-}
-
-#submitPlaceShipBtn{
-  background-color: #86bcdb;
-}
-
-#submitPlaceShipBtn:HOVER{
-  background-color: #59addf;
-}
-
-#cancelShipBtn{
-  background-color: rgb(245, 165, 165);
-}
-
-#cancelShipBtn:hover{
-  background-color: rgb(248, 135, 135);
-}
-
-/* Game Over Modal */
-#gameOverModal{
-  display: none;
-  /* display: flex; */
-  background-color: rgba(247, 62, 62, 0.75);
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(1rem, 20px, 1.5rem);
-  padding: clamp(0.5rem, 10px, 1rem);
-}
-
-#gameOverModal h2{
-  /* change font of game over announcement */
-}
-
-#gameOverModal h1{
-  /* change font of winning text */
-}
-
-#gameOverModal button{
-  /* style game over button */
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
-
 
 /* Footer Section */
 footer {
   display: flex;
-  gap: 5px;
+  gap: 15px;
   justify-content: center;
   align-items: center;
-  padding: clamp(1rem, 20px, 1.5rem);
-  background:  linear-gradient(0deg, #0077be, #00a8cc);
+  padding: 5px;
+  background:  linear-gradient(0deg, #003b5e, #006880);
+}
+
+footer p {
+  -webkit-text-stroke: 10px #fff;
+  paint-order: stroke fill;
+}
+
+footer a{
+  color: rgb(173, 216, 230);
+  font-size: 2rem;
 }
 
 footer a:hover{
-  transform: scale(1.3);
+  transform: scale(1.2);
+}
+
+
+
+/* All Button Stylings and Classes */
+.btn{
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.2;
+  padding: 0.55em 1.2em;
+  color: #fff;
+  background: var(--btn-bg, #1597c4);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  -webkit-text-stroke: 3px #000;
+  paint-order: stroke fill;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s, background-color 0.12s;
+}
+
+.btn:hover:not(:disabled){
+  background: var(--btn-bg-hover, #1fb4e6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.45);
+}
+
+.btn:active:not(:disabled){
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.btn:focus-visible{
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.btn:disabled{
+  background: #8a949a;
+  color: #d5d9db;
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-confirm{
+  --btn-bg: #1fa83a;
+  --btn-bg-hover: #2ecc4f;
+}
+
+.btn-neutral{
+  --btn-bg: #5d6b75;
+  --btn-bg-hover: #7a8a96;
+}
+
+.btn-danger{
+  --btn-bg: #c0392b;
+  --btn-bg-hover: #e04a3a;
+}
+
+.btn-large{
+  font-size: 1.5rem;
+}
+
+/* PlaceShip and ConfirmShip Buttons */
+#shipBtns{
+  padding: clamp(.5rem, 12px, 1rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Modal Play Buttons */
+.playBtn{
+  grid-column: 1/-1;
+  justify-self: center;
+  text-align: center;
+}
+
+/* Start, Reset, Change Gamemode Buttons */
+#gameButtons {
+  display: flex;
+  padding: clamp(0.5rem, 2vw, 1.5rem);
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }

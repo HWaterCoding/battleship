@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3857/3857575.png">
     <script src="https://kit.fontawesome.com/00250d9010.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -23,13 +26,13 @@
                 <h2 id="privacyText1">Please pass the screen to (Player 1).</h2>
                 <h3 id="privacyText2">Make sure (Player 2) cannot see the screen.</h3>
                 <h4>If you are ready to play, please click play!</h4>
-                <button id="privacyBtn">Ready</button>
+                <button id="privacyBtn" class="btn btn-large">Ready</button>
             </div>
         </div>
 
         <div id="modalOverlay">
             <!-- Modal to chose between 2 player and CPU mode -->
-            <div id="gameSelectModal">
+            <div id="gameSelectModal" class="modal modal-wide">
                 <h1>Select your preferred gamemode!</h1>
                 <div>
                     <h2>Player vs. CPU</h2>
@@ -42,14 +45,14 @@
             </div>
 
              <!-- Modal display for Player Vs. CPU mode -->
-            <div id="playerVsCpuModal">
+            <div id="playerVsCpuModal" class="modal">
                 <label for="singlePlayerUsername">Your Name:</label>
                 <input type="text" id="singlePlayerUsername" placeholder="Choose a name!">
-                <button id="playCpuBtn" class="playBtn">Let's Play!</button>
+                <button id="playCpuBtn" class="btn playBtn btn-large">Let's Play!</button>
             </div>
 
             <!-- Modal display for two player mode -->
-            <div id="twoPlayerModal">
+            <div id="twoPlayerModal" class="modal modal-wide">
                 <div>
                     <label for="playerOneUsername">Player 1 Name:</label>
                     <input type="text" id="playerOneUsername" placeholder="Choose a name!">
@@ -58,13 +61,14 @@
                     <label for="playerTwoUsername">Player 2 Name:</label>
                     <input type="text" id="playerTwoUsername" placeholder="Choose a name!">
                 </div>
-                <button id="twoPlayerPlayBtn" class="playBtn">Let's Play!</button>
+                <button id="twoPlayerPlayBtn" class="btn playBtn btn-large">Let's Play!</button>
             </div>
 
             <!-- placing ships modal -->
-            <div id="placeShipModal">
+            <div id="placeShipModal" class="modal">
                 <form id="placeShipForm">
-                    <h3 id="placeShipErrorText">Place your ship!</h3>
+                    <h3>Place your ship!</h3>
+                    <h4 id="placeShipErrorText"></h4>
 
                     <div>
                         <label for="shipLength">Ship Length:</label>
@@ -89,25 +93,25 @@
                     </select>
                     
                     <div id="placeShipModalButtons">
-                        <button id="submitPlaceShipBtn" type="submit">Place Ship</button>
-                        <button id="cancelShipBtn">Cancel</button>
+                        <button id="submitPlaceShipBtn" class="btn" type="submit">Place Ship</button>
+                        <button id="cancelShipBtn" class="btn btn-neutral" type="button">Cancel</button>
                     </div>
                 </form>
             </div>
 
             <!-- Modal to display at the end of a game with result -->
-            <div id="gameOverModal">
+            <div id="gameOverModal" class="modal">
                 <h1>Game Over!</h1>
                 <h2 id="gameResultText">The winner is John!</h2>
-                <button id="restartGameBtn">Restart Game</button>
+                <button id="restartGameBtn" class="btn btn-large">Restart Game</button>
             </div>
         </div>
 
-        <!-- Buttons that start and reset the game  -->
+        <!-- Buttons that start, reset, and change the game  -->
         <div id="gameButtons">
-            <button id="startGameBtn">Start Game</button>
-            <button id="resetGameBtn">Reset Game</button>
-            <button id="changeGameBtn">Change Game</button>
+            <button id="startGameBtn" class="btn">Start Game</button>
+            <button id="resetGameBtn" class="btn btn-danger">Reset Game</button>
+            <button id="changeGameBtn" class="btn btn-danger">Change Game</button>
         </div>
     
         <!-- Text updates through the game to reflect current state -->
@@ -224,8 +228,8 @@
         </div>
 
         <div id="shipBtns">
-            <button id="placeShipBtn">Place A Ship</button>
-            <button id="confirmShipsBtn">Confirm Ships</button>
+            <button id="placeShipBtn" class="btn">Place A Ship</button>
+            <button id="confirmShipsBtn" class="btn btn-confirm">Confirm Ships</button>
         </div>
 
     </main>

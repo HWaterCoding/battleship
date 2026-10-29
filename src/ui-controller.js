@@ -137,7 +137,7 @@ export default function initApp() {
   //open form btn
   placeShipBtn.addEventListener("click", ()=>{
     placeShipForm.reset();
-    placeShipErrorText.textContent = "Place your ship!";
+    placeShipErrorText.textContent = "";
     modalOverlay.style.display = "flex";
     placeShipModal.style.display = "flex";
     shipLengthInput.focus();
@@ -167,7 +167,6 @@ export default function initApp() {
       placeShipModal.style.display = "none";
       gameText.textContent = "";
     }catch (error){
-      placeShipErrorText.style.color = "red";
       placeShipErrorText.textContent = error;
     }
   })
@@ -673,7 +672,6 @@ export default function initApp() {
         messageArray[index] : (messageArray[0] || "");
 
       button.disabled = true;
-      button.style.cursor = "not-allowed";
       button.title = message;
     });
   }
@@ -690,7 +688,6 @@ export default function initApp() {
         messageArray[index] : (messageArray[0] || "");
     
       button.disabled = false;
-      button.style.cursor = "pointer";
       button.title = message;
     });
   }
