@@ -85,6 +85,7 @@ body::before{
 
 /* Header Section */
 header {
+  position: relative;
   background: linear-gradient(180deg, #003b5e, #006880);
   text-align: center;
   padding: clamp(1rem, 20px, 1.5rem);
@@ -92,6 +93,7 @@ header {
   -webkit-text-stroke: 2px #fff;
   paint-order: stroke fill;
   font-family: var(--font-display);
+  z-index: 20;
 }
 
 
@@ -352,10 +354,8 @@ main {
 }
 
 /* Generic Modal Classes */
-.modal{
-  width: min(100%, var(--modal-w, 520px));
-  margin: auto;
-  padding: clamp(1.25rem, 4vw, 2.5rem);
+.modal,
+.rules-panel{
   border-radius: 16px;
   background: rgba(20, 45, 75, 0.3);
   color: #fff;
@@ -364,9 +364,93 @@ main {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
+.modal{
+  width: min(100%, var(--modal-w, 520px));
+  margin: auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
 .modal-wide{
   --modal-w: 780px;
 }
+
+/* Rules Panel */
+.rules-wrapper{
+  position: relative;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.rules-panel{
+  display: none;
+  position: absolute;
+  top: calc(100% + 2.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 640px);
+  max-height: min(70dvh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.5rem;
+  background: rgba(22, 52, 88, 0.95);
+
+  /* reset inherited header styles */
+  text-align: left;
+  font-family: system-ui, sans-serif;
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+}
+
+.rules-panel.open{
+  display: block;
+}
+
+.rules-panel section + section {
+  margin-top: 1.5rem;
+}
+
+.rules-panel section p{
+  padding: 10px;
+}
+
+.rules-panel section p,
+.rules-panel ul{
+  margin-left: 1.5rem;
+}
+
+.rules-panel h2{
+  text-align: center;
+}
+
+.rules-panel h2,
+.rules-panel h3{
+  font-family: var(--font-display);
+  -webkit-text-stroke: 3px #000;
+  paint-order: stroke fill;
+  margin-bottom: 0.5rem;
+}
+
+.legend{
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.legend li{
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.swatch{
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border: 1px solid var(--board-secondary);
+}
+
+
 
 
 /* Place Ship Modal Form */
@@ -655,6 +739,7 @@ footer {
   align-items: center;
   padding: 5px;
   background:  linear-gradient(0deg, #003b5e, #006880);
+  z-index: 20;
 }
 
 footer p {
@@ -757,10 +842,4 @@ footer a:hover{
   gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: center;
-}
-
-#rulesBtn{
-  background: none;
-  border: none;
-  cursor: pointer;
 }

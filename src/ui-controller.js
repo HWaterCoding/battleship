@@ -106,6 +106,27 @@ export default function initApp() {
   });
 
 
+
+  // "How To Play" Rules Drop-Down Section
+  const rulesBtn = document.getElementById("rulesBtn");
+  const rulesPanel = document.getElementById("rulesPanel");
+
+  //when btn pressed, toggle panel classes
+  //attach general listener to document for click
+  //if click is NOT on panel, close panel.
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Privacy screen between turns
   const privacyOverlay = document.getElementById("privacyOverlay");
   const privacyScreen = document.getElementById("privacyScreen");
