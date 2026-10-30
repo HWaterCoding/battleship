@@ -43,7 +43,7 @@ export default class Gameboard {
     return this.board.map((row) => [...row]);
   }
 
-  //place ship on board by passing in coordinates and direction
+  //place ship on board by passing in coordinates, direction, and length
   placeShip(row, col, direction, ship) {
     //ensure the ship hasn't already been placed
     const hasBeenPlaced = this.board.some((row) =>

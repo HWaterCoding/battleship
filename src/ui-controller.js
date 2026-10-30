@@ -405,7 +405,7 @@ export default function initApp() {
     });
   });
 
-  //Clean up for things like hover: styling
+  //Clean up placement preview once drag event is over
   shipArea.addEventListener("dragend", () => {
     draggedShipLength = null;
 
@@ -630,7 +630,7 @@ export default function initApp() {
   //Turn delay function for CPU turn
   const turnDelay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  //function to display privacy interface
+  //display privacy interface after an attack
   async function displayPrivacy() {
     isTransitioning = true;
 
@@ -645,7 +645,7 @@ export default function initApp() {
     privacyTextTwo.textContent = `Make sure ${controller.getOpponent().name} cannot see the board!`;
   }
 
-  //helper function to choose which audio to play after an attack
+  //choose which audio to play after an attack
   function chooseSound(attackResult) {
     if (attackResult.attack === "hit") {
       if (attackResult.sunk) return "sunk";
@@ -655,7 +655,7 @@ export default function initApp() {
     }
   }
 
-  //helper function to choose which board should be visible and which is hidden
+  //choose which board should have visible ships and which shouldn't
   function renderPerspective() {
     if (
       controller.activePlayer === controller.players[0] ||
@@ -669,7 +669,7 @@ export default function initApp() {
     }
   }
 
-  //helper function to show and hide appropriate board based on game phase
+  //position boards and ship marina on grid based on game-phase
   function setBoardLayout(phase) {
     boardContainer.classList.remove(
       "placing-player-one",
@@ -691,7 +691,7 @@ export default function initApp() {
     orientation = "horizontal";
   }
 
-  //helper function to disable buttons when not offerable to user
+  //disable buttons when not offerable to user
   function disableButtons(buttons, messages = []) {
     const buttonArray = Array.isArray(buttons) ? buttons : [buttons];
     const messageArray = Array.isArray(messages) ? messages : [messages];
@@ -707,7 +707,7 @@ export default function initApp() {
     });
   }
 
-  //helper function to enable buttons so the user can use them
+  //enable buttons so the user can use them
   function enableButtons(buttons, messages = []) {
     //convert whatever is passed in to an array, even if single element
     const buttonArray = Array.isArray(buttons) ? buttons : [buttons];

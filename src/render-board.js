@@ -1,5 +1,4 @@
-//BOTH INITIAL DOM LOADING AND TURN-GENERATED DOM UPDATES
-
+//Function to create the initial visual gameboards
 export function createBoards() {
   const leftPlayerBoard = document.getElementById("leftPlayerBoard");
   const rightPlayerBoard = document.getElementById("rightPlayerBoard");
@@ -35,6 +34,7 @@ export function createBoards() {
   }
 }
 
+//Function to update visual gameboards after every attack/placement
 export function updateBoard(player, boardContainer, visible) {
   const gameboard = player.gameboard.getBoard();
 
@@ -64,18 +64,15 @@ export function updateBoard(player, boardContainer, visible) {
         }
       } else if (tile.attacked === "hit") {
         if (tile.ship.sunk) {
-          //ASK HERE IF THE SHIP HIT IS SUNK. IF IT'S SUNK, NEW CLASS. .SUNKSHIP
           tileInDOM.className = "";
           tileInDOM.classList.add("tile", "columns", "sunkTile");
         } else {
           tileInDOM.className = "";
           tileInDOM.classList.add("tile", "columns", "hitTile");
-          //eventually, update this to add a fire emoji to the tiles content
         }
       } else if (tile.attacked === "miss") {
         tileInDOM.className = "";
         tileInDOM.classList.add("tile", "columns", "missTile");
-        //eventually, update this to add a red X emoji to the tiles content
       }
     });
   });
