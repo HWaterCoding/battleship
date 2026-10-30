@@ -7,26 +7,26 @@ import placeShipSound from "../assets/audio-files/place-ship-sound.mp3";
 
 //all game sounds
 const sounds = {
-    hit: new Audio(hitShipSound),
-    miss: new Audio(missAttackSound),
-    sunk: new Audio(sunkShipSound),
-    win: new Audio(winGameSound),
-    loss: new Audio(loseGameSound),
-    placeShip: new Audio(placeShipSound),
-}
+  hit: new Audio(hitShipSound),
+  miss: new Audio(missAttackSound),
+  sunk: new Audio(sunkShipSound),
+  win: new Audio(winGameSound),
+  loss: new Audio(loseGameSound),
+  placeShip: new Audio(placeShipSound),
+};
 
 let currentAudio = null;
 
-export default function playSound(sound){
-    if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-    }
+export default function playSound(sound) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
 
-    currentAudio = sounds[sound];
-    currentAudio.currentTime = 0;   
+  currentAudio = sounds[sound];
+  currentAudio.currentTime = 0;
 
-    currentAudio.play().catch(error => {
-        console.error("Playback failed:", error);
-    });
+  currentAudio.play().catch((error) => {
+    console.error("Playback failed:", error);
+  });
 }

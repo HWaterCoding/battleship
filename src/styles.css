@@ -1,12 +1,19 @@
 /* Root */
 :root {
   --tile-size: clamp(22px, calc((100vw - 8rem) / 10), 65px);
-  --board-secondary: #141313; 
-  --ship-tiles: linear-gradient(135deg, rgba(157, 160, 161, 0.850), rgba(176, 182, 182, 0.850));
-  --water-tiles: linear-gradient(135deg, rgba(0, 120, 190, 0.850), rgba(0, 167, 204, 0.850));
+  --board-secondary: #141313;
+  --ship-tiles: linear-gradient(
+    135deg,
+    rgba(157, 160, 161, 0.85),
+    rgba(176, 182, 182, 0.85)
+  );
+  --water-tiles: linear-gradient(
+    135deg,
+    rgba(0, 120, 190, 0.85),
+    rgba(0, 167, 204, 0.85)
+  );
   --font-display: "Black Ops One", system-ui, sans-serif;
 }
-
 
 /* Default Styles */
 *,
@@ -57,7 +64,6 @@ h6 {
   text-wrap: balance;
 }
 
-
 /* Body + Background Styles */
 body {
   line-height: 1.5;
@@ -68,7 +74,7 @@ body {
   position: relative;
 }
 
-body::before{
+body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -81,7 +87,6 @@ body::before{
   opacity: 0.8;
   z-index: -1;
 }
-
 
 /* Header Section */
 header {
@@ -96,7 +101,6 @@ header {
   z-index: 20;
 }
 
-
 /* Main Section */
 main {
   display: flex;
@@ -106,17 +110,16 @@ main {
   position: relative;
 }
 
-
 /* Text above boards */
 #turnText,
 #gameText,
 #errorText {
   font-size: 1.5rem;
-  min-height: 36px; 
+  min-height: 36px;
 }
 
 #turnText,
-#gameText{
+#gameText {
   text-align: center;
   padding: 0 20px 0 20px;
   color: #fff;
@@ -124,7 +127,6 @@ main {
   paint-order: stroke fill;
   font-family: var(--font-display);
 }
-
 
 /* Player Boards Section */
 
@@ -136,18 +138,18 @@ main {
   row-gap: clamp(1.5rem, 6vw, 6rem);
 }
 
-#boardContainer.placing-player-one{
+#boardContainer.placing-player-one {
   #rightPlayer {
     display: none;
   }
 }
 
-#boardContainer.placing-player-two{
+#boardContainer.placing-player-two {
   #leftPlayer {
     display: none;
   }
 
-  #shipPlacementArea{
+  #shipPlacementArea {
     grid-column: 1;
     grid-row: 1;
   }
@@ -158,13 +160,13 @@ main {
   }
 }
 
-#boardContainer.battle-phase{
+#boardContainer.battle-phase {
   #shipPlacementArea {
     display: none;
   }
 }
 
-@media (max-width: 1650px){
+@media (max-width: 1650px) {
   #boardContainer {
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
@@ -178,7 +180,6 @@ main {
   }
 }
 
-
 #leftPlayer,
 #rightPlayer,
 #shipPlacementArea {
@@ -188,12 +189,12 @@ main {
   gap: clamp(1rem, 24px, 2rem);
   color: #fff;
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
 
 #leftPlayer h2,
 #rightPlayer h2,
-#shipPlacementArea h2{
+#shipPlacementArea h2 {
   font-family: var(--font-display);
 }
 
@@ -271,12 +272,16 @@ main {
 
 .missTile,
 .hitTile,
-.sunkTile{
+.sunkTile {
   cursor: default;
 }
 
-.tile.waterTile:hover{
-  background: linear-gradient(135deg, rgba(21, 89, 129, 0.850), rgba(7, 87, 107, 0.850));
+.tile.waterTile:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(21, 89, 129, 0.85),
+    rgba(7, 87, 107, 0.85)
+  );
   border: 1px solid #f0eaea;
 }
 
@@ -299,18 +304,18 @@ main {
 
 /* Tile State Stylings */
 .waterTile,
-.missTile{
+.missTile {
   background: var(--water-tiles);
 }
 
 .shipTile,
-.hitTile{
+.hitTile {
   background: var(--ship-tiles);
 }
 
 .missTile,
 .hitTile,
-.sunkTile{
+.sunkTile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -318,7 +323,7 @@ main {
 
 .missTile::after,
 .hitTile::after,
-.sunkTile::after{
+.sunkTile::after {
   content: "";
   width: 40%;
   aspect-ratio: 1;
@@ -330,16 +335,18 @@ main {
 }
 
 .hitTile::after,
-.sunkTile::after{
+.sunkTile::after {
   background: #ff4d3d;
   box-shadow: 0 0 10px #ff4d3d;
 }
 
-.sunkTile{
-  background: linear-gradient(135deg, rgba(23, 24, 23, 0.850), rgba(50, 53, 51, 0.850));
+.sunkTile {
+  background: linear-gradient(
+    135deg,
+    rgba(23, 24, 23, 0.85),
+    rgba(50, 53, 51, 0.85)
+  );
 }
-
-
 
 /* All Modal Stylings */
 /* Generic overlay for all modals */
@@ -355,7 +362,7 @@ main {
 
 /* Generic Modal Classes */
 .modal,
-.rules-panel{
+.rules-panel {
   border-radius: 16px;
   background: rgba(20, 45, 75, 0.3);
   color: #fff;
@@ -364,24 +371,24 @@ main {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-.modal{
+.modal {
   width: min(100%, var(--modal-w, 520px));
   margin: auto;
   padding: clamp(1.25rem, 4vw, 2.5rem);
 }
 
-.modal-wide{
+.modal-wide {
   --modal-w: 780px;
 }
 
 /* Rules Panel */
-.rules-wrapper{
+.rules-wrapper {
   position: relative;
   display: inline-block;
   margin-top: 0.5rem;
 }
 
-.rules-panel{
+.rules-panel {
   display: none;
   position: absolute;
   top: calc(100% + 2.5rem);
@@ -401,7 +408,7 @@ main {
   paint-order: normal;
 }
 
-.rules-panel.open{
+.rules-panel.open {
   display: block;
 }
 
@@ -409,49 +416,46 @@ main {
   margin-top: 1.5rem;
 }
 
-.rules-panel section p{
+.rules-panel section p {
   padding: 10px;
 }
 
 .rules-panel section p,
-.rules-panel ul{
+.rules-panel ul {
   margin-left: 1.5rem;
 }
 
-.rules-panel h2{
+.rules-panel h2 {
   text-align: center;
 }
 
 .rules-panel h2,
-.rules-panel h3{
+.rules-panel h3 {
   font-family: var(--font-display);
   -webkit-text-stroke: 3px #000;
   paint-order: stroke fill;
   margin-bottom: 0.5rem;
 }
 
-.legend{
+.legend {
   list-style: none;
   padding: 0;
   display: grid;
   gap: 0.6rem;
 }
 
-.legend li{
+.legend li {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.swatch{
+.swatch {
   width: 32px;
   height: 32px;
   flex: none;
   border: 1px solid var(--board-secondary);
 }
-
-
-
 
 /* Place Ship Modal Form */
 #placeShipModal {
@@ -460,78 +464,77 @@ main {
   align-items: center;
 }
 
-#placeShipForm{
+#placeShipForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#placeShipForm div{
+#placeShipForm div {
   display: flex;
   justify-content: space-between;
 }
 
-#placeShipForm > h3:first-child{
+#placeShipForm > h3:first-child {
   font-size: 1.6rem;
 }
 
-#placeShipErrorText{
+#placeShipErrorText {
   text-align: center;
   padding: 0 10px 10px 10px;
   color: #ff0000;
 }
 
 #placeShipModal h3,
-#placeShipModal label{
+#placeShipModal label {
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
   text-align: center;
 }
 
-#placeShipModal label{
+#placeShipModal label {
   font-size: 1.3em;
 }
 
 .modal input,
-.modal select{
+.modal select {
   padding: 0.4em 0.6em;
   border: 2px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.9);
 }
 
-#placeShipModalButtons{
+#placeShipModalButtons {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 
-
 /* Game-mode Selection Modal */
-#gameSelectModal{
+#gameSelectModal {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-#gameSelectModal h1{
+#gameSelectModal h1 {
   grid-column: 1/-1;
   text-align: center;
   font-size: clamp(1.5rem, 5vw, 2.25rem);
   color: #fff;
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
 
-#gameSelectModal h2{
+#gameSelectModal h2 {
   text-align: center;
   font-size: 28px;
   color: #fff;
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
 
-#gameSelectModal div{
+#gameSelectModal div {
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -539,26 +542,25 @@ main {
   margin: clamp(1rem, 24px, 2rem);
 }
 
-#gameSelectModal div button{
+#gameSelectModal div button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   margin: 10px;
 }
 
-#gameSelectModal div img:hover{
+#gameSelectModal div img:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 10px 8px rgba(255,255,255,0.2);
+  box-shadow: 0 0 10px 8px rgba(255, 255, 255, 0.2);
 }
 
-#gameSelectModal img{
+#gameSelectModal img {
   width: 200px;
   border-radius: 50%;
 }
 
-
 /* Single-Player Vs CPU Modal */
-#playerVsCpuModal{
+#playerVsCpuModal {
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -566,23 +568,22 @@ main {
   gap: 30px;
 }
 
-#playerVsCpuModal label{
+#playerVsCpuModal label {
   font-size: 2.4rem;
   text-align: center;
   font-weight: 800;
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
 
-
 /* Two Player Mode Modal */
-#twoPlayerModal{
+#twoPlayerModal {
   display: none;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem 2rem;
 }
 
-#twoPlayerModal div{
+#twoPlayerModal div {
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -590,23 +591,22 @@ main {
 }
 
 #twoPlayerModal input,
-#playerVsCpuModal input{
+#playerVsCpuModal input {
   padding: 10px 5px;
   font-size: 1.4rem;
   text-align: center;
 }
 
-#twoPlayerModal div label{
+#twoPlayerModal div label {
   text-align: center;
   font-size: 1.6rem;
   font-weight: 800;
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
 
-
 /* Game Over Modal */
-#gameOverModal{
+#gameOverModal {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -619,50 +619,48 @@ main {
 }
 
 #gameOverModal h1,
-#gameOverModal h2{
+#gameOverModal h2 {
   -webkit-text-stroke: 4px black;
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
 }
-
 
 /* Media query for modal widths */
 @media (max-width: 760px) {
   #gameSelectModal,
-  #twoPlayerModal{
+  #twoPlayerModal {
     grid-template-columns: 1fr;
   }
-  #twoPlayerModal div{
+  #twoPlayerModal div {
     margin: 0;
   }
-  #gameSelectModal img{
+  #gameSelectModal img {
     width: 140px;
   }
 }
 
-
 /* Ship Drag-and-Drop Section */
-#shipArea{
+#shipArea {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   background: linear-gradient(
-    0deg, 
-    rgba(0, 120, 190, 0.850), 
-    rgba(0, 167, 204, 0.850), 
-    rgba(0, 120, 190, 0.850)
+    0deg,
+    rgba(0, 120, 190, 0.85),
+    rgba(0, 167, 204, 0.85),
+    rgba(0, 120, 190, 0.85)
   );
   gap: clamp(10px, 2vw, 24px);
   padding: clamp(10px, 2vw, 20px);
   width: calc(var(--tile-size) * 10);
   height: calc(var(--tile-size) * 10);
   box-shadow:
-  inset 0 0 20px rgba(255, 255, 255, 0.5),
-  0 10px 20px rgba(0, 0, 0, 0.2);
+    inset 0 0 20px rgba(255, 255, 255, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.2);
   border: 2px solid var(--board-secondary);
 }
 
-.draggableShip{
+.draggableShip {
   display: flex;
   flex-direction: row;
   cursor: grab;
@@ -680,7 +678,7 @@ main {
   height: var(--tile-size);
 }
 
-.shipSquare:hover{
+.shipSquare:hover {
   background: linear-gradient(
     135deg,
     rgba(135, 141, 143, 0.7),
@@ -688,7 +686,7 @@ main {
   );
 }
 
-#rotateShipBtn{
+#rotateShipBtn {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -701,19 +699,18 @@ main {
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
 }
 
-#rotateShipBtn:hover{
+#rotateShipBtn:hover {
   background-color: #8c9094;
 }
 
-#rotateShipBtn i{
+#rotateShipBtn i {
   -webkit-text-stroke: 2px rgb(233, 215, 215);
-  paint-order: stroke fill; 
+  paint-order: stroke fill;
   font-size: 2.5rem;
 }
 
-
 /* Privacy screen overlay and modal */
-#privacyOverlay{
+#privacyOverlay {
   display: none;
   background-color: #7a7d80;
   justify-content: center;
@@ -723,13 +720,12 @@ main {
   z-index: 5;
 }
 
-#privacyScreen{
+#privacyScreen {
   display: none;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
-
 
 /* Footer Section */
 footer {
@@ -738,7 +734,7 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 5px;
-  background:  linear-gradient(0deg, #003b5e, #006880);
+  background: linear-gradient(0deg, #003b5e, #006880);
   z-index: 20;
 }
 
@@ -747,19 +743,17 @@ footer p {
   paint-order: stroke fill;
 }
 
-footer a{
+footer a {
   color: rgb(173, 216, 230);
   font-size: 2rem;
 }
 
-footer a:hover{
+footer a:hover {
   transform: scale(1.2);
 }
 
-
-
 /* All Button Stylings and Classes */
-.btn{
+.btn {
   font-family: var(--font-display);
   font-size: 1.1rem;
   line-height: 1.2;
@@ -772,26 +766,29 @@ footer a:hover{
   -webkit-text-stroke: 3px #000;
   paint-order: stroke fill;
   cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s, background-color 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s,
+    background-color 0.12s;
 }
 
-.btn:hover:not(:disabled){
+.btn:hover:not(:disabled) {
   background: var(--btn-bg-hover, #1fb4e6);
   transform: translateY(-2px);
   box-shadow: 0 6px 0 rgba(0, 0, 0, 0.45);
 }
 
-.btn:active:not(:disabled){
+.btn:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
 }
 
-.btn:focus-visible{
+.btn:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 3px;
 }
 
-.btn:disabled{
+.btn:disabled {
   background: #8a949a;
   color: #d5d9db;
   opacity: 0.6;
@@ -800,28 +797,28 @@ footer a:hover{
   transform: none;
 }
 
-.btn-confirm{
+.btn-confirm {
   --btn-bg: #1fa83a;
   --btn-bg-hover: #2ecc4f;
 }
 
-.btn-neutral{
+.btn-neutral {
   --btn-bg: #5d6b75;
   --btn-bg-hover: #7a8a96;
 }
 
-.btn-danger{
+.btn-danger {
   --btn-bg: #c0392b;
   --btn-bg-hover: #e04a3a;
 }
 
-.btn-large{
+.btn-large {
   font-size: 1.5rem;
 }
 
 /* PlaceShip and ConfirmShip Buttons */
-#shipBtns{
-  padding: clamp(.5rem, 12px, 1rem);
+#shipBtns {
+  padding: clamp(0.5rem, 12px, 1rem);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -829,7 +826,7 @@ footer a:hover{
 }
 
 /* Modal Play Buttons */
-.playBtn{
+.playBtn {
   grid-column: 1/-1;
   justify-self: center;
   text-align: center;

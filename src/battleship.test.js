@@ -280,14 +280,11 @@ test.skip("resetGame() restores a fresh match", () => {
   });
 });
 
-
-
 // FULL LENGTH GAME TEST WITHOUT UI/RENDERING/DOM
 
 // THIS TEST WILL NOT USE THE CPU TARGETTING ALGORITHMS SO THAT ATTACKS ARE CONSISTENT
 describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
   test("Two players place fleets, take turns, and finish a game", () => {
-
     // 1. CREATE THE GAME
 
     const controller = new GameController([
@@ -301,7 +298,6 @@ describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
     expect(controller.isGameActive).toBe(false);
     expect(controller.winner).toBeNull();
     expect(controller.activePlayer).toBe(human);
-
 
     // 2. PLACE BOTH FLEETS
 
@@ -318,14 +314,12 @@ describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
     expect(() => human.gameboard.isFleetPlaced().not.toThrow());
     expect(() => computer.gameboard.isFleetPlaced().not.toThrow());
 
-
     // 3. START THE GAME AND VERIFY GAME IS ACTIVE
 
     controller.startGame();
 
     expect(controller.isGameActive).toBe(true);
     expect(controller.activePlayer).toBe(human);
-
 
     // 4. PREPARE DETERMINISTIC ATTACK COORDINATES
 
@@ -355,7 +349,6 @@ describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
 
     expect(humanAttacks).toHaveLength(15);
     expect(computerAttacks).toHaveLength(15);
-
 
     // 5. SIMULATE EVERY SINGLE TURN THROUGHOUT THE BATTLE PHASE
 
@@ -400,18 +393,14 @@ describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
       expect(controller.winner).toBeNull();
     }
 
-
     // 6. VERIFY THE FINAL GAME STATE
 
     expect(computer.gameboard.isGameOver()).toBe(true);
     expect(human.gameboard.isGameOver()).toBe(false);
 
-    expect(computer.gameboard.ships.every(
-      ship => ship.sunk
-    )).toBe(true);
+    expect(computer.gameboard.ships.every((ship) => ship.sunk)).toBe(true);
 
     expect(controller.winner).toBe(human);
-
 
     // 7. RESET THE GAME AND CHECK THE STATUS OF BOTH PLAYERS FLEETS
 
@@ -424,12 +413,12 @@ describe("Complete Battleship game lifecycle without DOM/UI elements", () => {
     expect(human.gameboard.isGameOver()).toBe(false);
     expect(computer.gameboard.isGameOver()).toBe(false);
 
-    expect(human.gameboard.ships.every(
-      ship => ship.timesHit === 0
-    )).toBe(true);
+    expect(human.gameboard.ships.every((ship) => ship.timesHit === 0)).toBe(
+      true,
+    );
 
-    expect(computer.gameboard.ships.every(
-      ship => ship.timesHit === 0
-    )).toBe(true);
+    expect(computer.gameboard.ships.every((ship) => ship.timesHit === 0)).toBe(
+      true,
+    );
   });
 });

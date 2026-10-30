@@ -2,9 +2,9 @@ import Players from "./players.js";
 
 export default class GameController {
   constructor(playerDataArray) {
-    this.players = playerDataArray.map(player =>
-      new Players(player.name, player.type)
-    )
+    this.players = playerDataArray.map(
+      (player) => new Players(player.name, player.type),
+    );
     this.activePlayer = this.players[0];
     this.isGameActive = false;
     this.winner = null;
@@ -69,7 +69,7 @@ export default class GameController {
     this.winner = null;
   }
 
-  startGame(){
+  startGame() {
     this.isGameActive = true;
   }
 }

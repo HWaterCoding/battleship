@@ -1,284 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3857/3857575.png">
-    <script src="https://kit.fontawesome.com/00250d9010.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="https://cdn-icons-png.flaticon.com/512/3857/3857575.png"
+    />
+    <script
+      src="https://kit.fontawesome.com/00250d9010.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <header>
-        <h1>Let's play Battleship!</h1>
-        
-        <!-- Rules and Instructions on How To Play Section -->
-        <div class="rules-wrapper">
-            <!-- Button to sit in header for drop-down panel -->
-            <button id="rulesBtn" class="btn" type="button">
-                How To Play <i class="fa-brands fa-readme"></i>
-            </button>
+      <h1>Let's play Battleship!</h1>
 
-            <!-- Drop-down Instructions Panel -->
-            <div id="rulesPanel" class="rules-panel">
-                <h2>How To Play Battleship!</h2>
+      <!-- Rules and Instructions on How To Play Section -->
+      <div class="rules-wrapper">
+        <!-- Button to sit in header for drop-down panel -->
+        <button id="rulesBtn" class="btn" type="button">
+          How To Play <i class="fa-brands fa-readme"></i>
+        </button>
 
-                <!-- Section for talking about ship placement -->
-                <section>
-                    <h3>1. Placing your ships</h3>
-                    <p>Drag ships from the Ship Marina onto your board, or use the "Place A Ship" to enter your coordinates manually!</p>
-                    <p>You have 5 ships, lengths ranging 1 - 5. All ships must be placed before you can play.</p>
-                    <p>Once you've placed all your ships, press the "Confirm Ships" button!</p>
-                    <p>If you are in Two-Player mode, please pass the screen to Player 2, and let them place their ships, too.</p>
-                    <p>Once both players have placed their fleet, click "Start Game" in order to begin attacking each other!</p>
-                </section>
+        <!-- Drop-down Instructions Panel -->
+        <div id="rulesPanel" class="rules-panel">
+          <h2>How To Play Battleship!</h2>
 
-                <!-- Section for talking about battle phase -->
-                <section>
-                    <h3>2. Battle Phase</h3>
-                    <p>Once the game has begun, it is Player 1's turn to attack.</p>
-                    <p>If you are playing Two-Player mode, a privacy screen will be displayed. Please pass the screen to Player 2.</p>
-                    <p>If you are playing vs. the CPU, please wait a moment for it to think of it's attack.</p>
-                </section>
+          <!-- Section for talking about ship placement -->
+          <section>
+            <h3>1. Placing your ships</h3>
+            <p>
+              Drag ships from the Ship Marina onto your board, or use the "Place
+              A Ship" to enter your coordinates manually!
+            </p>
+            <p>
+              You have 5 ships, lengths ranging 1 - 5. All ships must be placed
+              before you can play.
+            </p>
+            <p>
+              Once you've placed all your ships, press the "Confirm Ships"
+              button!
+            </p>
+            <p>
+              If you are in Two-Player mode, please pass the screen to Player 2,
+              and let them place their ships, too.
+            </p>
+            <p>
+              Once both players have placed their fleet, click "Start Game" in
+              order to begin attacking each other!
+            </p>
+          </section>
 
-                <!-- Section for explaining color coordination -->
-                <section>
-                    <h3>3. Tile Colour Guide</h3>
-                    <ul class="legend">
-                        <li><span class="swatch waterTile"></span>Water</li>
-                        <li><span class="swatch shipTile"></span>Ship</li>
-                        <li><span class="swatch missTile"></span>Miss</li>
-                        <li><span class="swatch hitTile"></span>Hit</li>
-                        <li><span class="swatch sunkTile"></span>Sunk</li>
-                    </ul>
-                </section>
-            </div>
+          <!-- Section for talking about battle phase -->
+          <section>
+            <h3>2. Battle Phase</h3>
+            <p>Once the game has begun, it is Player 1's turn to attack.</p>
+            <p>
+              If you are playing Two-Player mode, a privacy screen will be
+              displayed. Please pass the screen to Player 2.
+            </p>
+            <p>
+              If you are playing vs. the CPU, please wait a moment for it to
+              think of it's attack.
+            </p>
+          </section>
 
+          <!-- Section for explaining color coordination -->
+          <section>
+            <h3>3. Tile Colour Guide</h3>
+            <ul class="legend">
+              <li><span class="swatch waterTile"></span>Water</li>
+              <li><span class="swatch shipTile"></span>Ship</li>
+              <li><span class="swatch missTile"></span>Miss</li>
+              <li><span class="swatch hitTile"></span>Hit</li>
+              <li><span class="swatch sunkTile"></span>Sunk</li>
+            </ul>
+          </section>
         </div>
+      </div>
     </header>
 
     <main>
+      <div id="privacyOverlay">
+        <div id="privacyScreen">
+          <h2 id="privacyText1">Please pass the screen to (Player 1).</h2>
+          <h3 id="privacyText2">Make sure (Player 2) cannot see the screen.</h3>
+          <h4>If you are ready to play, please click play!</h4>
+          <button id="privacyBtn" class="btn btn-large">Ready</button>
+        </div>
+      </div>
 
-        <div id="privacyOverlay">
-            <div id="privacyScreen">
-                <h2 id="privacyText1">Please pass the screen to (Player 1).</h2>
-                <h3 id="privacyText2">Make sure (Player 2) cannot see the screen.</h3>
-                <h4>If you are ready to play, please click play!</h4>
-                <button id="privacyBtn" class="btn btn-large">Ready</button>
-            </div>
+      <div id="modalOverlay">
+        <!-- Modal to chose between 2 player and CPU mode -->
+        <div id="gameSelectModal" class="modal modal-wide">
+          <h1>Select your preferred gamemode!</h1>
+          <div>
+            <h2>Player vs. CPU</h2>
+            <button id="cpuBtn">
+              <img
+                src="/assets/images/player-vs-cpu.webp"
+                alt="Can you beat a computer?"
+              />
+            </button>
+          </div>
+          <div>
+            <h2>Two Player Mode</h2>
+            <button id="twoPlayerBtn">
+              <img
+                src="/assets/images/player-vs-player.webp"
+                alt="Play with a friend!"
+              />
+            </button>
+          </div>
         </div>
 
-        <div id="modalOverlay">
-            <!-- Modal to chose between 2 player and CPU mode -->
-            <div id="gameSelectModal" class="modal modal-wide">
-                <h1>Select your preferred gamemode!</h1>
-                <div>
-                    <h2>Player vs. CPU</h2>
-                    <button id="cpuBtn"><img src="/assets/images/player-vs-cpu.webp" alt="Can you beat a computer?"></button>
-                </div>
-                <div>
-                    <h2>Two Player Mode</h2>
-                    <button id="twoPlayerBtn"><img src="/assets/images/player-vs-player.webp" alt="Play with a friend!"></button>
-                </div>
-            </div>
-
-             <!-- Modal display for Player Vs. CPU mode -->
-            <div id="playerVsCpuModal" class="modal">
-                <label for="singlePlayerUsername">Your Name:</label>
-                <input type="text" id="singlePlayerUsername" placeholder="Choose a name!">
-                <button id="playCpuBtn" class="btn playBtn btn-large">Let's Play!</button>
-            </div>
-
-            <!-- Modal display for two player mode -->
-            <div id="twoPlayerModal" class="modal modal-wide">
-                <div>
-                    <label for="playerOneUsername">Player 1 Name:</label>
-                    <input type="text" id="playerOneUsername" placeholder="Choose a name!">
-                </div>
-                <div>
-                    <label for="playerTwoUsername">Player 2 Name:</label>
-                    <input type="text" id="playerTwoUsername" placeholder="Choose a name!">
-                </div>
-                <button id="twoPlayerPlayBtn" class="btn playBtn btn-large">Let's Play!</button>
-            </div>
-
-            <!-- placing ships modal -->
-            <div id="placeShipModal" class="modal">
-                <form id="placeShipForm">
-                    <h3>Place your ship!</h3>
-                    <h4 id="placeShipErrorText"></h4>
-
-                    <div>
-                        <label for="shipLength">Ship Length:</label>
-                        <input type="number" name="shipLength" id="shipLength" min="1" max="5" required>
-                    </div>
-
-                    <div>
-                        <label for="columnCoord">X-axis:</label>
-                        <input type="number" id="columnCoord" min="0" max="9" required>
-                    </div>
-
-                    <div>
-                        <label for="rowCoord">Y-axis:</label>
-                        <input type="number" id="rowCoord" min="0" max="9" required>
-                    </div>
-
-                    <select name="shipDirection" id="shipDirection" required>
-                        <option value="up">Up</option>
-                        <option value="right">Right</option>
-                        <option value="down">Down</option>
-                        <option value="left">Left</option>
-                    </select>
-                    
-                    <div id="placeShipModalButtons">
-                        <button id="submitPlaceShipBtn" class="btn" type="submit">Place Ship</button>
-                        <button id="cancelShipBtn" class="btn btn-neutral" type="button">Cancel</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Modal to display at the end of a game with result -->
-            <div id="gameOverModal" class="modal">
-                <h1>Game Over!</h1>
-                <h2 id="gameResultText">The winner is John!</h2>
-                <button id="restartGameBtn" class="btn btn-large">Restart Game</button>
-            </div>
+        <!-- Modal display for Player Vs. CPU mode -->
+        <div id="playerVsCpuModal" class="modal">
+          <label for="singlePlayerUsername">Your Name:</label>
+          <input
+            type="text"
+            id="singlePlayerUsername"
+            placeholder="Choose a name!"
+          />
+          <button id="playCpuBtn" class="btn playBtn btn-large">
+            Let's Play!
+          </button>
         </div>
 
-        <!-- Buttons that start, reset, and change the game  -->
-        <div id="gameButtons">
-            <button id="startGameBtn" class="btn">Start Game</button>
-            <button id="resetGameBtn" class="btn btn-danger">Reset Game</button>
-            <button id="changeGameBtn" class="btn btn-danger">Change Game</button>
-        </div>
-    
-        <!-- Text updates through the game to reflect current state -->
-        <p id="turnText"></p> 
-        <p id="gameText"></p>  
-
-        <!-- Player 1 Board, Player 2 Board, and Ship Marina Area -->
-        <div id="boardContainer" class="placing-player-one">
-            <!-- Player 1 board -->
-            <div id="leftPlayer">
-                <h2 id="playerOneName">Player 1's Board</h2>
-                <div class="boardSection">
-                    <h3 class="y-label">y</h3>
-                    <div class="y-coords">
-                        <p>9</p>
-                        <p>8</p>
-                        <p>7</p>
-                        <p>6</p>
-                        <p>5</p>
-                        <p>4</p>
-                        <p>3</p>
-                        <p>2</p>
-                        <p>1</p>
-                        <p>0</p>
-                    </div>
-
-                    <div id="leftPlayerBoard"></div>
-
-                    <div class="x-coords">
-                        <p>0</p> 
-                        <p>1</p>
-                        <p>2</p>
-                        <p>3</p>
-                        <p>4</p>
-                        <p>5</p>
-                        <p>6</p>
-                        <p>7</p>
-                        <p>8</p>
-                        <p>9</p>
-                    </div>
-                    <h3 class="x-label">x</h3>
-                </div>
-            </div>
-
-            <!-- Player 2 board -->
-            <div id="rightPlayer">
-                <h2 id="playerTwoName">Player 2's Board</h2>
-                <div class="boardSection">
-                    <h3 class="y-label">y</h3>
-                    <div class="y-coords">
-                        <p>9</p>
-                        <p>8</p>
-                        <p>7</p>
-                        <p>6</p>
-                        <p>5</p>
-                        <p>4</p>
-                        <p>3</p>
-                        <p>2</p>
-                        <p>1</p>
-                        <p>0</p>
-                    </div>
-
-                    <div id="rightPlayerBoard"></div>
-
-                    <div class="x-coords">
-                        <p>0</p> 
-                        <p>1</p>
-                        <p>2</p>
-                        <p>3</p>
-                        <p>4</p>
-                        <p>5</p>
-                        <p>6</p>
-                        <p>7</p>
-                        <p>8</p>
-                        <p>9</p>
-                    </div>
-                    <h3 class="x-label">x</h3>
-                </div>
-            </div>
-
-            <!-- Ship Placement Marina for drag-and-drop -->
-            <div id="shipPlacementArea">
-                <h2>Ship Marina</h2>
-                <div id="shipArea">
-                    <div class="draggableShip" data-length="1" draggable="true">
-                        <div class="shipSquare"></div>
-                    </div>
-                    <div class="draggableShip" data-length="2" draggable="true">
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                    </div>
-                    <div class="draggableShip" data-length="3" draggable="true">
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                    </div>
-                    <div class="draggableShip" data-length="4" draggable="true">
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                    </div>
-                    <div class="draggableShip" data-length="5" draggable="true">
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                        <div class="shipSquare"></div>
-                    </div>
-                    
-                    <button id="rotateShipBtn" title="Rotate Ships"><i class="fa-solid fa-rotate"></i></button>
-                </div>
-            </div>
+        <!-- Modal display for two player mode -->
+        <div id="twoPlayerModal" class="modal modal-wide">
+          <div>
+            <label for="playerOneUsername">Player 1 Name:</label>
+            <input
+              type="text"
+              id="playerOneUsername"
+              placeholder="Choose a name!"
+            />
+          </div>
+          <div>
+            <label for="playerTwoUsername">Player 2 Name:</label>
+            <input
+              type="text"
+              id="playerTwoUsername"
+              placeholder="Choose a name!"
+            />
+          </div>
+          <button id="twoPlayerPlayBtn" class="btn playBtn btn-large">
+            Let's Play!
+          </button>
         </div>
 
-        <div id="shipBtns">
-            <button id="placeShipBtn" class="btn">Place A Ship</button>
-            <button id="confirmShipsBtn" class="btn btn-confirm">Confirm Ships</button>
+        <!-- placing ships modal -->
+        <div id="placeShipModal" class="modal">
+          <form id="placeShipForm">
+            <h3>Place your ship!</h3>
+            <h4 id="placeShipErrorText"></h4>
+
+            <div>
+              <label for="shipLength">Ship Length:</label>
+              <input
+                type="number"
+                name="shipLength"
+                id="shipLength"
+                min="1"
+                max="5"
+                required
+              />
+            </div>
+
+            <div>
+              <label for="columnCoord">X-axis:</label>
+              <input type="number" id="columnCoord" min="0" max="9" required />
+            </div>
+
+            <div>
+              <label for="rowCoord">Y-axis:</label>
+              <input type="number" id="rowCoord" min="0" max="9" required />
+            </div>
+
+            <select name="shipDirection" id="shipDirection" required>
+              <option value="up">Up</option>
+              <option value="right">Right</option>
+              <option value="down">Down</option>
+              <option value="left">Left</option>
+            </select>
+
+            <div id="placeShipModalButtons">
+              <button id="submitPlaceShipBtn" class="btn" type="submit">
+                Place Ship
+              </button>
+              <button id="cancelShipBtn" class="btn btn-neutral" type="button">
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
 
+        <!-- Modal to display at the end of a game with result -->
+        <div id="gameOverModal" class="modal">
+          <h1>Game Over!</h1>
+          <h2 id="gameResultText">The winner is John!</h2>
+          <button id="restartGameBtn" class="btn btn-large">
+            Restart Game
+          </button>
+        </div>
+      </div>
+
+      <!-- Buttons that start, reset, and change the game  -->
+      <div id="gameButtons">
+        <button id="startGameBtn" class="btn">Start Game</button>
+        <button id="resetGameBtn" class="btn btn-danger">Reset Game</button>
+        <button id="changeGameBtn" class="btn btn-danger">Change Game</button>
+      </div>
+
+      <!-- Text updates through the game to reflect current state -->
+      <p id="turnText"></p>
+      <p id="gameText"></p>
+
+      <!-- Player 1 Board, Player 2 Board, and Ship Marina Area -->
+      <div id="boardContainer" class="placing-player-one">
+        <!-- Player 1 board -->
+        <div id="leftPlayer">
+          <h2 id="playerOneName">Player 1's Board</h2>
+          <div class="boardSection">
+            <h3 class="y-label">y</h3>
+            <div class="y-coords">
+              <p>9</p>
+              <p>8</p>
+              <p>7</p>
+              <p>6</p>
+              <p>5</p>
+              <p>4</p>
+              <p>3</p>
+              <p>2</p>
+              <p>1</p>
+              <p>0</p>
+            </div>
+
+            <div id="leftPlayerBoard"></div>
+
+            <div class="x-coords">
+              <p>0</p>
+              <p>1</p>
+              <p>2</p>
+              <p>3</p>
+              <p>4</p>
+              <p>5</p>
+              <p>6</p>
+              <p>7</p>
+              <p>8</p>
+              <p>9</p>
+            </div>
+            <h3 class="x-label">x</h3>
+          </div>
+        </div>
+
+        <!-- Player 2 board -->
+        <div id="rightPlayer">
+          <h2 id="playerTwoName">Player 2's Board</h2>
+          <div class="boardSection">
+            <h3 class="y-label">y</h3>
+            <div class="y-coords">
+              <p>9</p>
+              <p>8</p>
+              <p>7</p>
+              <p>6</p>
+              <p>5</p>
+              <p>4</p>
+              <p>3</p>
+              <p>2</p>
+              <p>1</p>
+              <p>0</p>
+            </div>
+
+            <div id="rightPlayerBoard"></div>
+
+            <div class="x-coords">
+              <p>0</p>
+              <p>1</p>
+              <p>2</p>
+              <p>3</p>
+              <p>4</p>
+              <p>5</p>
+              <p>6</p>
+              <p>7</p>
+              <p>8</p>
+              <p>9</p>
+            </div>
+            <h3 class="x-label">x</h3>
+          </div>
+        </div>
+
+        <!-- Ship Placement Marina for drag-and-drop -->
+        <div id="shipPlacementArea">
+          <h2>Ship Marina</h2>
+          <div id="shipArea">
+            <div class="draggableShip" data-length="1" draggable="true">
+              <div class="shipSquare"></div>
+            </div>
+            <div class="draggableShip" data-length="2" draggable="true">
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+            </div>
+            <div class="draggableShip" data-length="3" draggable="true">
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+            </div>
+            <div class="draggableShip" data-length="4" draggable="true">
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+            </div>
+            <div class="draggableShip" data-length="5" draggable="true">
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+              <div class="shipSquare"></div>
+            </div>
+
+            <button id="rotateShipBtn" title="Rotate Ships">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="shipBtns">
+        <button id="placeShipBtn" class="btn">Place A Ship</button>
+        <button id="confirmShipsBtn" class="btn btn-confirm">
+          Confirm Ships
+        </button>
+      </div>
     </main>
 
     <footer>
-        <p>Copyright &copy; HWaterCoding</p>
-        <a href="https://github.com/HWaterCoding" target="_blank"><i class="fa-brands fa-github"></i></a>
+      <p>Copyright &copy; HWaterCoding</p>
+      <a href="https://github.com/HWaterCoding" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
     </footer>
-
-</body>
+  </body>
 </html>

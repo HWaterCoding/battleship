@@ -63,15 +63,15 @@ export function updateBoard(player, boardContainer, visible) {
           }
         }
       } else if (tile.attacked === "hit") {
-        if(tile.ship.sunk){
+        if (tile.ship.sunk) {
           //ASK HERE IF THE SHIP HIT IS SUNK. IF IT'S SUNK, NEW CLASS. .SUNKSHIP
-            tileInDOM.className = "";
-            tileInDOM.classList.add("tile", "columns", "sunkTile");
-          } else{
-            tileInDOM.className = "";
-            tileInDOM.classList.add("tile", "columns", "hitTile");
-            //eventually, update this to add a fire emoji to the tiles content
-          }
+          tileInDOM.className = "";
+          tileInDOM.classList.add("tile", "columns", "sunkTile");
+        } else {
+          tileInDOM.className = "";
+          tileInDOM.classList.add("tile", "columns", "hitTile");
+          //eventually, update this to add a fire emoji to the tiles content
+        }
       } else if (tile.attacked === "miss") {
         tileInDOM.className = "";
         tileInDOM.classList.add("tile", "columns", "missTile");

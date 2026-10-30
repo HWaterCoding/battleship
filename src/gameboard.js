@@ -49,7 +49,7 @@ export default class Gameboard {
     const hasBeenPlaced = this.board.some((row) =>
       row.some((tile) => tile.ship === ship),
     );
-    if(hasBeenPlaced) throw new Error("That ship already placed!");
+    if (hasBeenPlaced) throw new Error("That ship already placed!");
 
     row = this.invertRowCoordinate(row);
     //make sure the ship is being placed on an empty square
@@ -66,7 +66,8 @@ export default class Gameboard {
           if (targetColumn > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
-          if (current.ship !== null) throw new Error("There's already a ship here.");
+          if (current.ship !== null)
+            throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row][col + i];
@@ -80,7 +81,8 @@ export default class Gameboard {
           if (targetColumn < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[row][targetColumn];
-          if (current.ship !== null) throw new Error("There's already a ship here.");
+          if (current.ship !== null)
+            throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row][col - i];
@@ -94,7 +96,8 @@ export default class Gameboard {
           if (targetRow < 0) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
-          if (current.ship !== null) throw new Error("There's already a ship here.");
+          if (current.ship !== null)
+            throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row - i][col];
@@ -107,7 +110,8 @@ export default class Gameboard {
           if (targetRow > 9) throw new Error("The ship can't fit there!");
 
           const current = this.board[targetRow][col];
-          if (current.ship !== null) throw new Error("There's already a ship here.");
+          if (current.ship !== null)
+            throw new Error("There's already a ship here.");
         }
         for (let i = 0; i < ship.length; i++) {
           const current = this.board[row + i][col];
@@ -118,13 +122,13 @@ export default class Gameboard {
   }
 
   //function to ask if a ship placement is valid during drag-and-drop placement
-  canBePlaced(row, col, direction, ship){
+  canBePlaced(row, col, direction, ship) {
     row = this.invertRowCoordinate(row);
     if (direction !== "right" && direction !== "up") {
       return false;
     }
 
-    if(direction === "right"){
+    if (direction === "right") {
       for (let i = 0; i < ship.length; i++) {
         const targetColumn = col + i;
         if (targetColumn < 0 || targetColumn > 9) return false;
@@ -132,7 +136,7 @@ export default class Gameboard {
         const current = this.board[row][targetColumn];
         if (current.ship !== null) return false;
       }
-    } else if(direction === "up"){
+    } else if (direction === "up") {
       for (let i = 0; i < ship.length; i++) {
         const targetRow = row - i;
         if (targetRow < 0 || targetRow > 9) return false;
@@ -145,13 +149,11 @@ export default class Gameboard {
   }
 
   //verify the entire pleet has been placed
-  isFleetPlaced(){
+  isFleetPlaced() {
     const allShipsPlaced = this.ships.every((ship) =>
-      this.board.some((row) =>
-        row.some((tile) => tile.ship === ship)
-      )
-    )
-    if(!allShipsPlaced) throw new Error("You must place ALL your ships!");
+      this.board.some((row) => row.some((tile) => tile.ship === ship)),
+    );
+    if (!allShipsPlaced) throw new Error("You must place ALL your ships!");
   }
 
   //use coordinates clicked on to "receive" an attack and check if its a miss or hit
@@ -178,42 +180,42 @@ export default class Gameboard {
 
     return {
       sunk: tile.ship !== null ? tile.ship.sunk : false,
-      attack: tile.attacked
+      attack: tile.attacked,
     };
   }
 
   //pass in a tile and ask if it has already been attacked
-  isAttacked(row, col){
+  isAttacked(row, col) {
     row = this.invertRowCoordinate(row);
-  
-    if(this.board[row][col].attacked === "unattacked"){
+
+    if (this.board[row][col].attacked === "unattacked") {
       return false;
-    } else{
+    } else {
       return true;
     }
   }
 
   //retrieve information about the last attack for CPU
-  getAttackInfo(row, col){
+  getAttackInfo(row, col) {
     row = this.invertRowCoordinate(row);
 
     //this tile was a successful hit
-    if(this.board[row][col].attacked === "hit"){
-      if(this.board[row][col].ship.sunk === true){
+    if (this.board[row][col].attacked === "hit") {
+      if (this.board[row][col].ship.sunk === true) {
         return {
           hit: true,
-          sunk: true
-        }
+          sunk: true,
+        };
       } else {
         return {
           hit: true,
-          sunk: false
-        }
+          sunk: false,
+        };
       }
-    } else{
+    } else {
       return {
-        hit: false
-      }
+        hit: false,
+      };
     }
   }
 
