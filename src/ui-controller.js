@@ -106,24 +106,26 @@ export default function initApp() {
   });
 
 
-
   // "How To Play" Rules Drop-Down Section
   const rulesBtn = document.getElementById("rulesBtn");
   const rulesPanel = document.getElementById("rulesPanel");
 
-  //when btn pressed, toggle panel classes
-  //attach general listener to document for click
-  //if click is NOT on panel, close panel.
+  //toggle the .open class on the rules panel
+  function setRulesOpen(isOpen){
+    rulesPanel.classList.toggle("open", isOpen);
+  }
 
+  //call the setRulesOpen function and flip the value
+  rulesBtn.addEventListener("click", ()=>{
+    setRulesOpen(!rulesPanel.classList.contains("open"));
+  });
 
-
-
-
-
-
-
-
-
+  //close rules panel is click is anywhere outside of it or button
+  document.addEventListener("mousedown", (event)=>{
+    if(!rulesPanel.contains(event.target) && !rulesBtn.contains(event.target)){
+      setRulesOpen(false);
+    }
+  });
 
 
 
